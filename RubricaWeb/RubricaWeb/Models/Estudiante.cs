@@ -1,8 +1,11 @@
-﻿using System;
+﻿using RubricaWeb.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+
+
 
 namespace RubricaWeb.Models
 {
@@ -13,7 +16,8 @@ namespace RubricaWeb.Models
         private string apellidoEstudiante;
         private int idCurso;
         private string dniEstudiante;
-        public int IdEstudiante { get => idEstudiante; set => idEstudiante=value; }
+  
+        public int IdEstudiante { get => idEstudiante; set => idEstudiante = value; }
 
         [Required]
         public string DniEstudiante { get => dniEstudiante; set => dniEstudiante = value; }
@@ -26,6 +30,11 @@ namespace RubricaWeb.Models
 
         [Required]
         public int IdCurso { get => idCurso; set => idCurso = value; }
+
+        
+
+        
+
 
 
     }

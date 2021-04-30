@@ -1,0 +1,57 @@
+﻿@model IEnumerable<RubricaWeb.ViewModels.VM_Estudiante>
+
+
+@{
+    ViewBag.Title = "ListadoEstudiantes";
+}
+
+<h2>ListadoEstudiantes</h2>
+
+
+
+@using (Html.BeginForm())
+
+{
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.NombreCompleto)
+
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Dni)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Curso)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-center">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NombreCompleto)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Dni)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Curso)
+                            </td>
+                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+}
+
