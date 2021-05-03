@@ -1,0 +1,48 @@
+﻿@model RubricaWeb.Models.Materia
+
+
+@{
+    ViewBag.Title = "CargaMateria";
+    List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
+
+}
+
+<h2>Carga de Materia</h2>
+
+@using (Html.BeginForm())
+{
+    <form>
+
+        <!-- Dni input-->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="form-outline mb-4">
+                    @Html.TextBoxFor(model => model.NombreMateria, htmlAttributes: new { @class = "form-control", @id = "txtNombreMateria" })
+                    <label class="form-label text-center" for="form3Example3">Nombre Materia</label>
+                </div>
+            </div>
+
+            <!-- Curso DropDownList-->
+            <div class="col">
+                <div class="form-outline mb-4">
+                    @Html.DropDownList("IdCurso", items, "Seleccione un Curso", htmlAttributes: new { @class = "form-control" })
+                    @*<label class="form-label" for="form3Example4">Password</label>*@
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CargarButton-->
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-primary">Cargar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+
+}
