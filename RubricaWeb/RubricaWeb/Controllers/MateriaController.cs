@@ -71,6 +71,25 @@ namespace RubricaWeb.Controllers
         }
 
 
+        
+        public ActionResult EliminarMateria(int idMateria)
+        {
+           AD_Materia.EliminarMateria(idMateria);
+
+           
+
+            return RedirectToAction("ListadoMaterias", "Materia");
+
+        }
+
+
+
+        public ActionResult EditarMateria (VM_Materia modelo, string parametro)
+        {
+
+            return RedirectToAction("ListadoMaterias", "Materia");
+
+        }
 
 
     }

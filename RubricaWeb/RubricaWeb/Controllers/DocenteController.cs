@@ -20,8 +20,8 @@ namespace RubricaWeb.Controllers
 
         public ActionResult CargaDocente()
         {
-            List<VM_Rol> listaCursos = AD_ViewModel.ListaDeRoles();
-            List<SelectListItem> items = listaCursos.ConvertAll(i =>
+            List<VM_Rol> listaDocentes = AD_ViewModel.ListaDeRoles();
+            List<SelectListItem> items = listaDocentes.ConvertAll(i =>
             {
                 return new SelectListItem()
                 {
@@ -37,14 +37,200 @@ namespace RubricaWeb.Controllers
         }
 
 
+        [HttpPost]
+        public ActionResult CargaDocente(Docente model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool resultado = AD_Docente.AgregarDocente(model);
+
+                if (resultado)
+                {
+
+                    return RedirectToAction("ListadoDocentes", "Docente");
+                }
+                else
+                {
+                    return View(model);
+
+                }
+            }
+            else
+            {
+                return View(model);
+            }
+        }
 
 
 
+        public ActionResult ListadoDocentes()
+        {
+
+            List<VM_Docente> lista = AD_Docente.ListadoDocentes();
+            return View(lista);
+        }
 
 
 
+        public ActionResult AsignarMateriasDocentes()
+        {
+            List<Docente> listaDocentes = AD_Docente.ComboDocentes();
+            List<SelectListItem> itemsDocentes = listaDocentes.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.NombreDocente,
+                    Value = i.IdDocente.ToString(),
+
+                    Selected = false
+                };
+            });
+            ViewBag.itemsDocentes = itemsDocentes;
+
+            List<Materia> listaMaterias = AD_Materia.ComboMateria();
+            List<SelectListItem> itemsMaterias = listaMaterias.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.NombreMateria,
+                    Value = i.IdMateria.ToString(),
+
+                    Selected = false
+                };
+            });
+            ViewBag.itemsMaterias = itemsMaterias;
 
 
+
+            List<VM_Curso> listaCursos = AD_ViewModel.ListaDeCursos();
+            List<SelectListItem> itemsCursos = listaCursos.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.NombreCurso,
+                    Value = i.IdCurso.ToString(),
+
+                    Selected = false
+                };
+            });
+            ViewBag.itemsCursos = itemsCursos;
+
+
+            return View();
+
+        }
+
+        [HttpPost]
+        public ActionResult AsignarMateriasDocentes(VM_DocenteXMateria model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool resultado = AD_ViewModel.cargarDocentesXMateria(model);
+
+                if (resultado)
+                {
+
+                    return RedirectToAction("ListadoDocentes", "Docente");
+                }
+                else
+                {
+                    return View(model);
+
+                }
+            }
+            else
+            {
+                return View(model);
+            }
+
+
+        }
+
+        [HttpGet]
+        public JsonResult Materia(int IdCurso)
+        {
+            List<Materia> listaMaterias = AD_Materia.ComboMateriaId(IdCurso);
+            List<SelectListItem> itemsMaterias = listaMaterias.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.NombreMateria,
+                    Value = i.IdMateria.ToString(),
+
+                    Selected = false
+                };
+            });
+
+            return Json(listaMaterias, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+        public ActionResult EliminarDocente(int idDocente)
+        {
+            AD_Docente.EliminarDocente(idDocente);
+
+
+
+            return RedirectToAction("ListadoDocentes", "Docente");
+
+        }
+
+
+        public ActionResult MostrarDatosDocentes(int idDocente)
+        {
+            VM_Docente resultado = AD_Docente.ObtenerDocenteXId(idDocente);
+            List<VM_Materia> lista = AD_Materia.ListaMateriasPorDocentes(idDocente);
+            ViewBag.listaMaterias = lista;
+            ViewBag.docente = resultado;
+
+            return View(resultado);          
+            
+        }
+
+
+        public ActionResult EditarDocente(int idDocente)
+        {
+            List<VM_Rol> listaDocentes = AD_ViewModel.ListaDeRoles();
+            List<SelectListItem> items = listaDocentes.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.Rol,
+                    Value = i.IdRol.ToString(),
+
+                    Selected = false
+                };
+            });
+            ViewBag.items = items;
+
+
+            Docente resultado = AD_Docente.DocenteParaEditar(idDocente);
+            return View(resultado);
+           
+        }
+
+
+        [HttpPost]
+        public ActionResult EditarDocente(Docente model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                bool resultado = AD_Docente.ActualizarDatosDocente(model);
+                if (resultado)
+                {
+                    int id = model.IdDocente;
+                    return RedirectToAction("MostrarDatosDocentes", "Docente", new { idDocente = id});
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
+            return View();
+
+        }
 
     }
 }

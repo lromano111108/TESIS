@@ -21,7 +21,7 @@ namespace RubricaWeb.AccesoDatos
             {
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = @"INSERT INTO Estudiantes VALUES(@dniEstudiante,@nombreEstudiante,@idCurso,@apellidoEstudiante  )";
+                string consulta = @"INSERT INTO Estudiantes VALUES(@dniEstudiante,@nombreEstudiante,@idCurso,@apellidoEstudiante, 1 )";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@dniEstudiante", nuevoEstudiante.DniEstudiante);
                 cmd.Parameters.AddWithValue("@nombreEstudiante", nuevoEstudiante.NombreEstudiante);

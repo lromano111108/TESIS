@@ -1,0 +1,89 @@
+﻿@model RubricaWeb.ViewModels.VM_DocenteXMateria
+
+
+
+@{
+    ViewBag.Title = "AsignarMateriasDocentes";
+
+    List<SelectListItem> itemsDocentes = (List<SelectListItem>)ViewBag.itemsDocentes;
+    List<SelectListItem> itemsCursos = (List<SelectListItem>)ViewBag.itemsCursos;
+
+}
+
+<h2>Asignar Materias al Docente</h2>
+
+@using (Html.BeginForm())
+{
+    <form>
+
+        <div class="row mb-4">
+            <div class="col">
+                <div class="form-outline mb-4">
+                    @Html.DropDownList("IdDocente", itemsDocentes, "DOCENTE", htmlAttributes: new { @class = "form-control"})
+                </div>
+            </div>      
+        </div>
+        <div class="row mb-4">
+
+            <!-- Rol DropDownList-->
+            <div class="col">
+                <div class="form-outline mb-4">
+                    @Html.DropDownList("IdCurso", itemsCursos, "CURSO", htmlAttributes: new { @class = "form-control"})
+                </div>
+            </div>
+            <div class="col form-group">                
+                <select id="materia" name="idMateria" class="form-control">
+                   
+                </select>
+            </div>           
+        </div>
+
+        <!-- CargarButton-->
+        <div class="container">
+            <div class="row">
+               
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-primary">Cargar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+
+
+
+}
+
+
+<script>
+    var cboMateria = document.getElementById("IdCurso");
+    cboMateria.addEventListener("change", Refresh);
+    Refresh();
+    function Refresh() {
+        fetch("@Url.Content("~/Docente/Materia")" + "?IdCurso=" + cboMateria.value)
+            .then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+            .then(function (data) {
+                console.log(data)
+                let cbo = document.getElementById("materia");
+                cbo.innerHTML = "";
+                data.forEach(function (element) {
+
+                    let opt = document.createElement("option");
+                    opt.appendChild(document.createTextNode(element.NombreMateria));
+                    opt.value = element.IdMateria;
+                    //opt.Text = element.Text;
+                    console.log(opt);
+                    cbo.appendChild(opt);
+                    //document.getElementsByName("materia").value = opt.value;
+
+                })
+
+            })
+    }
+</script>

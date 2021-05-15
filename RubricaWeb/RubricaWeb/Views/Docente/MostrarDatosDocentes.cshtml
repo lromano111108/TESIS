@@ -1,0 +1,87 @@
+﻿@model RubricaWeb.ViewModels.VM_Docente
+
+
+
+
+@{
+    ViewBag.Title = "MostrarDatosDocentes";
+    List<RubricaWeb.ViewModels.VM_Materia> itemsMaterias = (List<RubricaWeb.ViewModels.VM_Materia>)ViewBag.listaMaterias;
+
+}
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(Model => Model.IdDocente)
+    <main>
+        <div class="container py-4">
+            <header class="pb-3 mb-4 border-bottom">
+                <h1> Datos del Docente</h1>
+            </header>
+
+            <div class="p-5 mb-4 bg-light rounded-3">
+                <div class="container-fluid py-5">
+                    <h1 class="display-5 fw-bold">@Model.NombreDocente</h1>
+                    <p class="col-md-8 fs-4">
+                        <b> DNI: </b> @Model.DniDocente <br />
+                        <b>Dirección: </b> @Model.Direccion <br />
+                        <b>Telefono: </b> @Model.Telefono <br />
+                        <b>E-mail: </b> @Model.Email <br />
+                        <b>Rol Principal: </b> @Model.Rol <br />
+                    </p>
+                    <a href="@Url.Action("ListadoDocentes", "Docente", new { })" class="btn btn-outline-info">Volver</a>
+                    <a href="@Url.Action("EditarDocente", "Docente", new {@idDocente= Model.IdDocente })" class="btn btn-outline-info">Editar</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="row">
+        <div class="col-10 offset-1">
+            <h4 class="text-center"> Materias Asignadas</h4>
+            <table class="table table-bordered table-striped">
+
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            Materia
+                        </th>
+                        <th class="text-center">
+                            Curso
+                        </th>
+                        <th class="text-center">
+                            Accion
+                        </th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var item in itemsMaterias)
+                        {
+                            <tr class="text-center">
+                                <td>
+                                    @Html.Label(item.materia)
+                                </td>
+                                <td>
+                                    @Html.Label(item.curso)
+                                </td>
+
+                                <td>
+                                    <a href="@Url.Action("EliminarDocente", "Docente", new { @idDocente = item.idCurso })" class="btn btn-danger">ELIMINAR</a>
+
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+
+
+}

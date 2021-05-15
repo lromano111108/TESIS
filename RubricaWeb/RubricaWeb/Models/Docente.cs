@@ -13,6 +13,9 @@ namespace RubricaWeb.Models
         private string nombreDocente;
         private string apellidoDocente;
         private int idRol;
+        private string direccion;
+        private string telefono;
+        private string email;
 
 
         public int IdDocente { get => idDocente; set => idDocente = value; }
@@ -28,6 +31,13 @@ namespace RubricaWeb.Models
 
         [Required] 
         public int IdRol { get => idRol; set => idRol= value; }
+        [Required]
+        public string Direccion { get => direccion; set => direccion = value; }
+        [Required]
+        public string Telefono { get => telefono; set => telefono = value; }
+        [Required]
+        public string Email { get => email; set => email = value; }
+
 
     }
 }

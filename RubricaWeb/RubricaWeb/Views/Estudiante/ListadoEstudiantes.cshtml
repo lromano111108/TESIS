@@ -14,7 +14,7 @@
 {
     //LISTADO PRIMER AÑO
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-10 offset-1">
             <h4 class="text-center"> Primer Año</h4>
             <table class="table table-bordered table-striped">
 
@@ -66,7 +66,7 @@
 
     //LISTADO SEGUNDO AÑO
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-10 offset-1">
             <h4 class="text-center"> Segundo Año</h4>
 
             <table class="table table-bordered table-striped">
@@ -88,14 +88,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @{ int index2 = 0;
+                    @{ int index2 = 1;
                         foreach (var item in Model)
                         {
                             if (item.Curso == "Segundo Año")
 
                             {
                                 <tr class="text-center">
-                                    <td>  @(index2 + 1) </td>
+                                    <td>  @(index2 ++) </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.NombreCompleto)
                                     </td>
@@ -118,7 +118,7 @@
 
     //LISTADO TERCER AÑO
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-10 offset-1">
             <h4 class="text-center"> Tercer Año</h4>
             <table class="table table-bordered table-striped">
 
@@ -139,14 +139,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @{ int index3 = 0;
+                    @{ int index3 = 1;
                         foreach (var item in Model)
                         {
                             if (item.Curso == "Tercer Año")
 
                             {
                                 <tr class="text-center">
-                                    <td>  @(index3 + 1) </td>
+                                    <td>  @(index3 ++) </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.NombreCompleto)
                                     </td>
@@ -169,7 +169,7 @@
 
     //LISTADO CUARTO AÑO
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-10 offset-1">
             <h4 class="text-center"> Cuarto Año</h4>
             <table class="table table-bordered table-striped">
 
@@ -190,14 +190,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @{ int index4 = 0;
+                    @{ int index4 = 1;
                         foreach (var item in Model)
                         {
                             if (item.Curso == "Cuarto Año")
 
                             {
                                 <tr class="text-center">
-                                    <td>  @(index4 + 1) </td>
+                                    <td>  @(index4 ++) </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.NombreCompleto)
                                     </td>
@@ -219,7 +219,7 @@
 
     //LISTADO QUINTO AÑO
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-10 offset-1">
             <h4 class="text-center"> Quinto Año</h4>
             <table class="table table-bordered table-striped">
 
@@ -240,14 +240,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @{ int index5 = 0;
+                    @{ int index5 = 1;
                         foreach (var item in Model)
                         {
                             if (item.Curso == "Quinto Año")
 
                             {
                                 <tr class="text-center">
-                                    <td>  @(index5 + 1) </td>
+                                    <td>  @(index5 ++) </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.NombreCompleto)
                                     </td>
@@ -272,7 +272,7 @@
 
     //LISTADO SEXTO AÑO
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-10 offset-1">
             <h4 class="text-center"> Sexto Año</h4>
             <table class="table table-bordered table-striped">
                 <thead>
