@@ -17,7 +17,7 @@
         <div class="row mb-4">
             <div class="col">
                 <div class="form-outline mb-4">
-                    @Html.TextBoxFor(model => model.NombreMateria, htmlAttributes: new { @class = "form-control", @id = "txtNombreMateria" })
+                    @Html.TextBoxFor(model => model.NombreMateria, htmlAttributes: new { @class = "form-control", @id = "txtNombreMateria", required = "required" })
                     <label class="form-label text-center" for="form3Example3">Nombre Materia</label>
                 </div>
             </div>
@@ -25,11 +25,20 @@
             <!-- Curso DropDownList-->
             <div class="col">
                 <div class="form-outline mb-4">
-                    @Html.DropDownList("IdCurso", items, "Seleccione un Curso", htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownList("IdCurso", items, "Seleccione un Curso", htmlAttributes: new { @class = "form-control", required = "required" })
                     @*<label class="form-label" for="form3Example4">Password</label>*@
                 </div>
             </div>
 
+        </div>
+
+        <div class="row mb-4">
+            <div class="col">
+                <div class="form-outline mb-4">
+                    @Html.TextBoxFor(model => model.Horas, htmlAttributes: new { @class = "form-control", @id = "txtHoras", required = "required" })
+                    <label class="form-label text-center" for="form3Example3">Ingrese la Cantidad de Horas</label>
+                </div>
+            </div>
         </div>
 
         <!-- CargarButton-->
@@ -41,8 +50,5 @@
             </div>
         </div>
     </form>
-
-
-
 
 }

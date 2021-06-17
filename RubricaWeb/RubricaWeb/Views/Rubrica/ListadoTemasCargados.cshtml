@@ -1,0 +1,84 @@
+﻿
+@{
+
+    List<RubricaWeb.ViewModels.VM_ListadoRubrica> tema = (List<RubricaWeb.ViewModels.VM_ListadoRubrica>)ViewBag.listaTemas;
+    string nombreMateria = ViewBag.NombreMateria;
+    string nombreCurso = ViewBag.NombreCurso;
+    RubricaWeb.ViewModels.VM_DocenteXMateria datos = (RubricaWeb.ViewModels.VM_DocenteXMateria)ViewBag.datosDocente;
+    int idcurso = ViewBag.idCurso;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ListadoTemasCargados</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+    @using (Html.BeginForm())
+    {
+
+        <div class="container-fluid">
+            <header class="pb-3 mb-4 border-bottom">
+                <h3 class="text-center"> @Html.Label(nombreMateria)</h3>
+                <h5 class="text-center"> @Html.Label(nombreCurso)</h5>
+            </header>
+
+            <div class="row border  text-center table-striped">
+                <div class="col-1 table-bordered font-weight-bold bg-info "> N° TEMA </div>
+                <div class="col-2 border font-weight-bold bg-info ">DESCRIPCION TEMA</div>
+                <div class="col-2 border font-weight-bold bg-info ">APRENDIZAJE</div>
+                <div class="col-1 border font-weight-bold bg-info ">Criterio 1:</div>
+                <div class="col-1 border font-weight-bold bg-info ">Criterio 2:</div>
+                <div class="col-1 border font-weight-bold bg-info ">Criterio 3:</div>
+                <div class="col-1 border font-weight-bold bg-info ">Criterio 4:</div>
+                <div class="col-1 border font-weight-bold bg-info ">Criterio 5:</div>
+                <div class="col-1 border font-weight-bold bg-info ">Criterio 6:</div>
+                <div class="col-1 border font-weight-bold bg-info ">Accion</div>
+
+                @{ foreach (var item in tema)
+
+                    {
+                        @Html.HiddenFor(IdMateria => item.idMateria, new { @Name = item.idMateria })
+                        @Html.HiddenFor(IdTema => item.idTema, new { @Name = item.idTema })
+
+
+                        <div class="col-1 border">@Html.Label(item.numeroTema)</div>
+                        <div class="col-2 border">@Html.Label(item.descripcionTema)</div>
+                        <div class="col-2 border">  @Html.Label(item.aprendizaje)</div>
+                        <div class="col-1 border">  @Html.Label(item.descripcionCriterio1)</div>
+                        <div class="col-1 border">  @Html.Label(item.descripcionCriterio2)</div>
+                        <div class="col-1 border">  @Html.Label(item.descripcionCriterio3)</div>
+                        <div class="col-1 border">  @Html.Label(item.descripcionCriterio4)</div>
+                        <div class="col-1 border">  @Html.Label(item.descripcionCriterio5)</div>
+                        <div class="col-1 border">  @Html.Label(item.descripcionCriterio6)</div>
+                        <div class="col-1 p-0 border align-items-center">
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                    Accion
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="@Url.Action("Rubrica", "Rubrica", new {  @idMateria = item.idMateria, idNroTema = item.idNroTema, idTema = item.idTema})">Editar Rubrica</a>
+                                    <a class="dropdown-item" href="@Url.Action("ListadoTemasCargados", "Rubrica", new {  @idMateria = item.idMateria, idNroTema = item.idNroTema})">Ver Notass</a>
+                                    <a class="dropdown-item" href="#">Link 3</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+                <a class="btn btn-outline-primary" href="@Url.Action("CargaTemas", "Rubrica", new {  @idDocente = datos.idDocente,@idMateria = datos.idMateria, @idCurso = idcurso})">TEMA NUEVO</a>
+                <a class="btn btn-outline-primary" href="@Url.Action("LibretaMateria", "Rubrica", new {  @idMateria = datos.idMateria})">VER NOTAS</a>
+
+            </div>
+        </div>
+    }
+</body>
+</html>

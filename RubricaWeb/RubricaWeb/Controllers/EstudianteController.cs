@@ -39,6 +39,7 @@ namespace RubricaWeb.Controllers
         [HttpPost]
         public ActionResult CargaEstudiante(Estudiante model)
         {
+            bool esCompleto = false;
             if (ModelState.IsValid)
             {
                 bool resultado = AD_Estudiante.AgregarEstudiante(model);
@@ -46,7 +47,7 @@ namespace RubricaWeb.Controllers
                 if (resultado)
                 {
 
-                    return RedirectToAction("ListadoEstudiantes", "Estudiante");
+                    return RedirectToAction("ListadoEstudiantes", "Estudiante", new {idCurso = model.IdCurso , esCompleto});
                 }
                 else
                 {
@@ -60,18 +61,104 @@ namespace RubricaWeb.Controllers
             }
         }
 
-        public ActionResult ListadoEstudiantes()
+        public ActionResult ListadoEstudiantes(int idCurso, bool esCompleto)
         {
-            
-            List<VM_Estudiante> lista = AD_Estudiante.ListadoEstudiantes();
-            return View(lista);
+
+            if (esCompleto)
+            {
+                List<VM_Estudiante> lista = AD_Estudiante.ListadoEstudiantes();
+                ViewBag.listaEstudiantes = lista;
+                return View();
+            }
+            else
+            {
+                List<VM_Estudiante> lista = AD_Estudiante.ListadoEstudiantesXId(idCurso);
+                ViewBag.listaEstudiantes = lista;
+                return View();
+            }
+           
         }
+
+
+
+        public ActionResult MostrarDatosEstudiante(int idEstudiante)
+        {
+            VM_Estudiante resultado = AD_Estudiante.ObtenerEstudianteXId(idEstudiante);
+            List<VM_Materia> lista = AD_Estudiante.ListaMateriaPorEstudiante(idEstudiante);
+            ViewBag.listaMaterias = lista;
+            //ViewBag.estudiante = resultado;
+
+            return View(resultado);
+
+        }
+
+        public ActionResult EditarEstudiante(int IdEstudiante)
+        {
+            List<VM_Curso> listaCursos = AD_ViewModel.ListaDeCursos();
+            List<SelectListItem> items = listaCursos.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.NombreCurso,
+                    Value = i.IdCurso.ToString(),
+
+                    Selected = false
+                };
+            });
+            ViewBag.items = items;
+
+
+            Estudiante resultado = AD_Estudiante.EstudianteParaEditar(IdEstudiante);
+            return View(resultado);
+
+        }
+
+
+
+        [HttpPost]
+        public ActionResult EditarEstudiante(Estudiante model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                bool resultado = AD_Estudiante.ActualizarDatosEstudiante(model);
+                if (resultado)
+                {
+
+                    return RedirectToAction("MostrarDatosEstudiante", "Estudiante", new { idEstudiante = model.IdEstudiante });
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
+            return View();
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
     }
 
-   
+
+
 
 
 }

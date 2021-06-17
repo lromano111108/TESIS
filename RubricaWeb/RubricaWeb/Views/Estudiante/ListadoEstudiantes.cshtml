@@ -3,6 +3,8 @@
 
 @{
     ViewBag.Title = "ListadoEstudiantes";
+    List<RubricaWeb.ViewModels.VM_Estudiante> itemsEstudiantes = (List<RubricaWeb.ViewModels.VM_Estudiante>)ViewBag.listaEstudiantes;
+
 }
 
 <h2>ListadoEstudiantes</h2>
@@ -12,12 +14,12 @@
 @using (Html.BeginForm())
 
 {
-    //LISTADO PRIMER AÑO
+    int contador = 1;
+    int index = 1;
     <div class="row">
-        <div class="col-6 offset-3">
-            <h4 class="text-center"> Primer Año</h4>
+        <div class="col-10 offset-1">
+            <h4 class="text-center"> Listado </h4>
             <table class="table table-bordered table-striped">
-
                 <thead>
                     <tr>
                         <th class="text-center">
@@ -32,293 +34,40 @@
                         <th class="text-center">
                             Curso
                         </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{ int index = 0;
-                        foreach (var item in Model)
-                        {
-                            if (item.Curso == "Primer Año")
-
-                            {
-                                <tr class="text-center">
-                                    <td>  @(index + 1) </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.NombreCompleto)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Dni)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Curso)
-                                    </td>
-
-                                </tr>
-                            }
-                        }
-                    }
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-    <br />
-
-    //LISTADO SEGUNDO AÑO
-    <div class="row">
-        <div class="col-6 offset-3">
-            <h4 class="text-center"> Segundo Año</h4>
-
-            <table class="table table-bordered table-striped">
-
-                <thead>
-                    <tr>
                         <th class="text-center">
-                            N°
-                        </th>
-                        <th class="text-center">
-                            Apellido y Nombre
-                        </th>
-                        <th class="text-center">
-                            Documento de Identidad
-                        </th>
-                        <th class="text-center">
-                            Curso
+                            Acciones
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    @{ int index2 = 0;
-                        foreach (var item in Model)
-                        {
-                            if (item.Curso == "Segundo Año")
-
-                            {
-                                <tr class="text-center">
-                                    <td>  @(index2 + 1) </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.NombreCompleto)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Dni)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Curso)
-                                    </td>
-
-                                </tr>
-                            }
-                        }
-                    }
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-
-    //LISTADO TERCER AÑO
-    <div class="row">
-        <div class="col-6 offset-3">
-            <h4 class="text-center"> Tercer Año</h4>
-            <table class="table table-bordered table-striped">
-
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            N°
-                        </th>
-                        <th class="text-center">
-                            Apellido y Nombre
-                        </th>
-                        <th class="text-center">
-                            Documento de Identidad
-                        </th>
-                        <th class="text-center">
-                            Curso
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{ int index3 = 0;
-                        foreach (var item in Model)
-                        {
-                            if (item.Curso == "Tercer Año")
-
-                            {
-                                <tr class="text-center">
-                                    <td>  @(index3 + 1) </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.NombreCompleto)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Dni)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Curso)
-                                    </td>
-                                </tr>
-                            }
-                        }
-                    }
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-    <br />
-
-    //LISTADO CUARTO AÑO
-    <div class="row">
-        <div class="col-6 offset-3">
-            <h4 class="text-center"> Cuarto Año</h4>
-            <table class="table table-bordered table-striped">
-
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            N°
-                        </th>
-                        <th class="text-center">
-                            Apellido y Nombre
-                        </th>
-                        <th class="text-center">
-                            Documento de Identidad
-                        </th>
-                        <th class="text-center">
-                            Curso
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{ int index4 = 0;
-                        foreach (var item in Model)
-                        {
-                            if (item.Curso == "Cuarto Año")
-
-                            {
-                                <tr class="text-center">
-                                    <td>  @(index4 + 1) </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.NombreCompleto)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Dni)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Curso)
-                                    </td>
-                                </tr>
-                            }
-                        }
-                    }
-                </tbody>
+                @foreach (var item in itemsEstudiantes)
+                {
+                    <tbody>
+                        <tr class="text-center">
+                            <td>  @(index ++) </td>
+                            <td>
+                                @Html.DisplayFor(Model => item.NombreCompleto)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(Model => item.Dni)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(Model => item.Curso)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("EliminarEstudiante", "Estudiante", new { @IdEstudiante = item.IdEstudiante })" class="btn btn-danger">ELIMINAR</a>
+                                <a href="@Url.Action("MostrarDatosEstudiante", "Estudiante", new { @IdEstudiante = item.IdEstudiante })" class="btn btn-info">DATOS</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                }
             </table>
         </div>
     </div>
     <br />
 
-    //LISTADO QUINTO AÑO
-    <div class="row">
-        <div class="col-6 offset-3">
-            <h4 class="text-center"> Quinto Año</h4>
-            <table class="table table-bordered table-striped">
 
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            N°
-                        </th>
-                        <th class="text-center">
-                            Apellido y Nombre
-                        </th>
-                        <th class="text-center">
-                            Documento de Identidad
-                        </th>
-                        <th class="text-center">
-                            Curso
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{ int index5 = 0;
-                        foreach (var item in Model)
-                        {
-                            if (item.Curso == "Quinto Año")
 
-                            {
-                                <tr class="text-center">
-                                    <td>  @(index5 + 1) </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.NombreCompleto)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Dni)
-                                    </td>
 
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Curso)
-                                    </td>
-
-                                </tr>
-                            }
-                        }
-                    }
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-    <br />
-
-    //LISTADO SEXTO AÑO
-    <div class="row">
-        <div class="col-6 offset-3">
-            <h4 class="text-center"> Sexto Año</h4>
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            N°
-                        </th>
-                        <th class="text-center">
-                            Apellido y Nombre
-                        </th>
-                        <th class="text-center">
-                            Documento de Identidad
-                        </th>
-                        <th class="text-center">
-                            Curso
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{ int index6 = 0;
-                        foreach (var item in Model)
-                        {
-                            if (item.Curso == "Sexto Año")
-
-                            {
-                                <tr class="text-center">
-                                    <td>  @(index6 + 1) </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.NombreCompleto)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Dni)
-                                    </td>
-
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Curso)
-                                    </td>
-
-                                </tr>
-                            }
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
 
 
 }

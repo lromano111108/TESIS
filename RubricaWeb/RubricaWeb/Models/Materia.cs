@@ -11,6 +11,7 @@ namespace RubricaWeb.Models
         private int idMateria;
         private string nombreMateria;
         private int idCurso;
+        private int horas;
 
         public int IdMateria { get => idMateria; set => idMateria = value; }
 
@@ -20,5 +21,8 @@ namespace RubricaWeb.Models
         [Required]
         public int IdCurso { get => idCurso; set => idCurso= value; }
 
+
+        [Required]
+        public int Horas { get => horas; set => horas = value; }
     }
 }

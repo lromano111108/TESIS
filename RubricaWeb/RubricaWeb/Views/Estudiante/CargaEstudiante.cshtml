@@ -17,13 +17,13 @@
         <div class="col">
             <div class="form-outline">
 
-                @Html.TextBoxFor(model => model.NombreEstudiante, htmlAttributes: new { @class = "form-control", @id = "txtNombreEstudiante" })
+                @Html.TextBoxFor(model => model.NombreEstudiante, htmlAttributes: new { @class = "form-control", @id = "txtNombreEstudiante", required = "required" })
                 <label class="form-label text-lg-center" for="form3Example1">Nombre</label>
             </div>
         </div>
         <div class="col">
             <div class="form-outline">
-                @Html.TextBoxFor(model => model.ApellidoEstudiante, htmlAttributes: new { @class = "form-control", @id = "txtApellidoEstudiante" })
+                @Html.TextBoxFor(model => model.ApellidoEstudiante, htmlAttributes: new { @class = "form-control", @id = "txtApellidoEstudiante", required = "required" })
                 <label class="form-label text-center" for="form3Example2">Apellido</label>
             </div>
         </div>
@@ -33,7 +33,7 @@
     <div class="row mb-4">
         <div class="col">
             <div class="form-outline mb-4">
-                @Html.TextBoxFor(model => model.DniEstudiante, htmlAttributes: new { @class = "form-control", @id = "txtDniEstudiante" })
+                @Html.TextBoxFor(model => model.DniEstudiante, htmlAttributes: new { @class = "form-control", @id = "txtDniEstudiante", required="required"})
                 <label class="form-label text-center" for="form3Example3">Numero de Documento</label>
             </div>
         </div>
@@ -41,7 +41,8 @@
         <!-- Curso DropDownList-->
         <div class="col">
             <div class="form-outline mb-4">
-                @Html.DropDownList("IdCurso", items, "Elija un Curso", htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("IdCurso", items, "Elija un Curso", htmlAttributes: new { @class = "form-control", required = "required" })
+             
                 @*<label class="form-label" for="form3Example4">Password</label>*@
             </div>
         </div>

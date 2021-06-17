@@ -1,0 +1,64 @@
+﻿@model IEnumerable<RubricaWeb.ViewModels.VM_Docente>
+@{
+    ViewBag.Title = "ListadoDocentes";
+}
+
+<h2>ListadoDocentes</h2>
+
+
+
+@using (Html.BeginForm())
+
+{
+    //LISTADO PRIMER AÑO
+    <div class="row">
+        <div class="col-10 offset-1">
+            <h4 class="text-center"> Primer Año</h4>
+            <table class="table table-bordered table-striped">
+
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            Apellido y Nombre
+                        </th>
+                        <th class="text-center">
+                            Dni
+                        </th>
+                        <th class="text-center">
+                            Rol
+                        </th>
+                        <th class="text-center">
+                            Acciones
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var item in Model)
+                        {
+                            <tr class="text-center">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NombreDocente)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DniDocente)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Rol)
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("EliminarDocente", "Docente", new { @idDocente = item.IdDocente })" class="btn btn-danger">ELIMINAR</a>
+                                    <a href="@Url.Action("MostrarDatosDocentes", "Docente", new { @idDocente = item.IdDocente })" class="btn btn-info">DATOS</a>
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <br />
+}

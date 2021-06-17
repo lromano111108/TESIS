@@ -11,328 +11,99 @@
 
 @using (Html.BeginForm())
 
+
 {
-    //LISTADO PRIMER AÑO
-    <div class="row">
-        <div class="col-10 offset-1">
-            <h4 class="text-center"> Primer Año</h4>
-            <table class="table table-bordered table-striped">
+    int contador = 0;
 
-                <thead>
-                    <tr>
 
-                        <th class="text-center">
-                            Nombre Materia
-                        </th>
-                        <th class="text-center">
-                            Curso
-                        </th>
-                        <th class="text-center">
-                            Docente
-                        </th>
-                        <th class="text-center">
-                            Accion
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        foreach (var item in Model)
-                        {
-                            if (item.curso == "Primer Año")
+    foreach (var item in Model)
+    {
+        if (item.orden != 0)
+        {
+            contador++;
+           
+            <div class="row">
+                <div class="col-10 offset-1">
+                    <h4 class="text-center">  </h4>
+                    <table class="table table-bordered table-striped">
 
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    Nombre Materia
+                                </th>
+                                <th class="text-center">
+                                    Curso
+                                </th>
+                                <th class="text-center">
+                                    Docente
+                                </th>
+                                <th class="text-center">
+                                    Cantidad de Horas
+                                </th>
+                                <th class="text-center">
+                                    Accion
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var items in Model)
                             {
-                                <tr class="text-center">
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.materia)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.curso)
-                                    </td>
-                                    <td>
-                                        ACA VA A IR EL NOMBRE DEL PROFESOR
-                                    </td>
-                                    <td>
-                                        ACA VAN A IR LOS BOTONES
-                                    </td>
 
-                                </tr>
-                            }
-                        }
-                    }
-                </tbody>
-            </table>
+                                if (items.orden == contador & (items.orden != 0))
 
-        </div>
-    </div>
-    <br />
+                                {
+                                    <tr class="text-center">
+                                        <td>
+                                            @Html.DisplayFor(modelItem => items.materia)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => items.curso)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => items.docente)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => items.horas)
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("EliminarMateria", "Materia", new { @idMateria = items.idMateria, @idDocente=items.idDocente })" class="btn btn-danger">Eliminar Materia</a>
+                                            <a href="@Url.Action("AsignarDocente", "Materia", new { @idMateria = items.idMateria })" class="btn btn-danger">Asignar Docente</a>
 
-    //LISTADO SEGUNDO AÑO
-    <div class="row">
-        <div class="col-10 offset-1">
-            <h4 class="text-center"> Segundo Año</h4>
+                                            <button class="btn btn-danger" type="submit">
+                                                @Html.ActionLink("Eliminar Materia", "EditarMateria", "Materia", new { Model, parametro = 1 })
+                                            </button>
+                                        </td>
+                                    </tr>
 
-            <table class="table table-bordered table-striped">
-
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            Nombre Materia
-                        </th>
-                        <th class="text-center">
-                            Curso
-                        </th>
-                        <th class="text-center">
-                            Docente
-                        </th>
-                        <th class="text-center">
-                            Accion
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        foreach (var item in Model)
-                        {
-                            if (item.curso == "Segundo Año")
-
-                            {
-                                <tr class="text-center">
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.materia)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.curso)
-                                    </td>
-                                    <td>
-                                        ACA VA A IR EL NOMBRE DEL PROFESOR
-                                    </td>
-                                    <td>
-                                        ACA VAN A IR LOS BOTONES
-                                    </td>
-
-                                </tr>
-                            }
-                        }
-                    }
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-
-    //LISTADO TERCER AÑO
-    <div class="row">
-        <div class="col-10 offset-1">
-            <h4 class="text-center"> Tercer Año</h4>
-            <table class="table table-bordered table-striped">
-
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            Nombre Materia
-                        </th>
-                        <th class="text-center">
-                            Curso
-                        </th>
-                        <th class="text-center">
-                            Docente
-                        </th>
-                        <th class="text-center">
-                            Accion
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        foreach (var item in Model)
-                        {
-                            if (item.curso == "Tercer Año")
-
-                            {
-                                <tr class="text-center">
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.materia)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.curso)
-                                    </td>
-                                    <td>
-                                        ACA VA A IR EL NOMBRE DEL PROFESOR
-                                    </td>
-                                    <td>
-                                        ACA VAN A IR LOS BOTONES
-                                    </td>
-
-                                </tr>
-                            }
-                        }
-                    }
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-    <br />
-
-    //LISTADO CUARTO AÑO
-    <div class="row">
-        <div class="col-10 offset-1">
-            <h4 class="text-center"> Cuarto Año</h4>
-            <table class="table table-bordered table-striped">
-
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            Nombre Materia
-                        </th>
-                        <th class="text-center">
-                            Curso
-                        </th>
-                        <th class="text-center">
-                            Docente
-                        </th>
-                        <th class="text-center">
-                            Accion
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        foreach (var item in Model)
-                        {
-                            if (item.curso == "Cuarto Año")
-
-                            {
-                                <tr class="text-center">
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.materia)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.curso)
-                                    </td>
-                                    <td>
-                                        ACA VA A IR EL NOMBRE DEL PROFESOR
-                                    </td>
-                                    <td>
-                                        ACA VAN A IR LOS BOTONES
-                                    </td>
-                                </tr>
-                            }
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <br />
-
-    //LISTADO QUINTO AÑO
-    <div class="row">
-        <div class="col-10 offset-1">
-            <h4 class="text-center"> Quinto Año</h4>
-            <table class="table table-bordered table-striped">
-
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            Nombre Materia
-                        </th>
-                        <th class="text-center">
-                            Curso
-                        </th>
-                        <th class="text-center">
-                            Docente
-                        </th>
-                        <th class="text-center">
-                            Accion
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        foreach (var item in Model)
-                        {
-                            if (item.curso == "Quinto Año")
-
-                            {
-                                <tr class="text-center">
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.materia)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.curso)
-                                    </td>
-                                    <td>
-                                        ACA VA A IR EL NOMBRE DEL PROFESOR
-                                    </td>
-                                    <td>
-                                        ACA VAN A IR LOS BOTONES
-                                    </td>
-
-                                </tr>
+                                }
 
                             }
-                        }
-                    }
-                </tbody>
-            </table>
 
-        </div>
-    </div>
-    <br />
+                        </tbody>
 
-    //LISTADO SEXTO AÑO
-    <div class="row">
-        <div class="col-10 offset-1">
-            <h4 class="text-center"> Sexto Año</h4>
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            Nombre Materia
-                        </th>
-                        <th class="text-center">
-                            Curso
-                        </th>
-                        <th class="text-center">
-                            Docente
-                        </th>
-                        <th class="text-center">
-                            Accion
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        foreach (var item in Model)
-                        {
-                            if (item.curso == "Sexto Año")
+                    </table>
 
-                            {
-                                <tr class="text-center">
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.materia)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.curso)
-                                    </td>
-                                    <td>
-                                        ACA VA A IR EL NOMBRE DEL PROFESOR
-                                    </td>
-                                    <td>
-                                        ACA VAN A IR LOS BOTONES
-                                    </td>
+                </div>
 
-                                </tr>
-                            }
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+            </div>
+            <br />
 
 
+
+        }
+
+    }
+    <a href="@Url.Action("CargarMateria", "Materia")" class="btn btn-outline-danger">Agregar Materia</a>
+    <button class="btn btn-block" type="submit">
+        @Html.ActionLink("AgregarMateria", "CargarMateria", "Materia")
+    </button>
 }
+
+
+
+
+
+
 
