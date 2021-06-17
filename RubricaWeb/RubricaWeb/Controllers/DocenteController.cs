@@ -115,7 +115,6 @@ namespace RubricaWeb.Controllers
             });
             ViewBag.itemsCursos = itemsCursos;
 
-
             return View();
 
         }
@@ -123,8 +122,15 @@ namespace RubricaWeb.Controllers
         [HttpPost]
         public ActionResult AsignarMateriasDocentes(VM_DocenteXMateria model)
         {
-            if (ModelState.IsValid)
+            if(AD_Materia.DocenteConMateria(model))
             {
+                return RedirectToAction("CargaDocente", "Docente");
+            }
+
+           else if (ModelState.IsValid)
+            {            
+
+
                 bool resultado = AD_ViewModel.cargarDocentesXMateria(model);
 
                 if (resultado)
@@ -176,6 +182,16 @@ namespace RubricaWeb.Controllers
 
         }
 
+        public ActionResult BajaMateriaDocente(int idDocente, int idMateria)
+        {
+            AD_Docente.BajaMateriaDeDocente(idDocente, idMateria);
+
+
+
+            return RedirectToAction("MostrarDatosDocentes", "Docente", new {idDocente });
+
+        }
+
 
         public ActionResult MostrarDatosDocentes(int idDocente)
         {
@@ -186,6 +202,54 @@ namespace RubricaWeb.Controllers
 
             return View(resultado);          
             
+        }
+    
+
+
+
+
+        public ActionResult PanelDocente(int idDocente)
+        {
+            VM_Docente resultado = AD_Docente.ObtenerDocenteXId(idDocente);
+            List<VM_Materia> lista = AD_Materia.ListaMateriasPorDocentes(idDocente);
+            ViewBag.listaMaterias = lista;
+            ViewBag.docente = resultado;
+            int idMateria = 0;
+            foreach (var item in lista)
+            {
+                idMateria = item.idMateria;
+            }
+
+            List<VM_Tema> listaCursos = AD_Rubrica.comboTemasCargados();
+            List<SelectListItem> itemsTemas = listaCursos.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.NumeroDeTema,
+                    Value = i.IdTema.ToString(),
+
+                    Selected = false
+                };
+            });
+            ViewBag.itemsTemas = itemsTemas;
+
+            //List<VM_Tema> listaTemas = AD_ViewModel.ListaDeCursos();
+            //List<SelectListItem> itemsTemas = listaTemas.ConvertAll(i =>
+            //{
+            //    return new SelectListItem()
+            //    {
+            //        Text = i.NombreCurso,
+            //        Value = i.IdCurso.ToString(),
+
+            //        Selected = false
+            //    };
+            //});
+         
+
+
+
+            return View(resultado);
+
         }
 
 
@@ -220,8 +284,8 @@ namespace RubricaWeb.Controllers
                 bool resultado = AD_Docente.ActualizarDatosDocente(model);
                 if (resultado)
                 {
-                    int id = model.IdDocente;
-                    return RedirectToAction("MostrarDatosDocentes", "Docente", new { idDocente = id});
+                   
+                    return RedirectToAction("MostrarDatosDocentes", "Docente", new { idDocente = model.IdDocente});
                 }
                 else
                 {

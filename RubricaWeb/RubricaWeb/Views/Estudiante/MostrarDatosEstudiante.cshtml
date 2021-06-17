@@ -1,0 +1,87 @@
+﻿@model RubricaWeb.ViewModels.VM_Estudiante
+
+
+
+
+@{
+    ViewBag.Title = "MostrarDatosDocentes";
+    List<RubricaWeb.ViewModels.VM_Materia> itemsMaterias = (List<RubricaWeb.ViewModels.VM_Materia>)ViewBag.listaMaterias;
+
+}
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(Model => Model.IdEstudiante)
+    <main>
+        <div class="container py-4">
+            <header class="pb-3 mb-4 border-bottom">
+                <h1> Datos del Estudiante</h1>
+            </header>
+
+            <div class="p-5 mb-4 bg-light rounded-3">
+                <div class="container-fluid py-5">
+                    <h1 class="display-5 fw-bold">@Model.NombreCompleto</h1>
+                    <p class="col-md-8 fs-4">
+                        <b> DNI : </b> @Model.Dni <br />
+                        <b>CURSO : </b> @Model.Curso <br />
+
+                    </p>
+                    <a href="@Url.Action("ListadoEstudiantes", "Estudiante", new {idCurso = 0, esCompleto = true })" class="btn btn-outline-info">Listado Estudiantes</a>
+                    <a href="@Url.Action("EditarEstudiante", "Estudiante", new {IdEstudiante= Model.IdEstudiante})" class="btn btn-outline-info">Editar</a>
+                    <a href="@Url.Action("ListadoEstudiantes", "Estudiante", new {idCurso= Model.IdCurso, esCompleto = false})" class="btn btn-outline-info">Listado Curso</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="row">
+        <div class="col-10 offset-1">
+            <h4 class="text-center"> Materias</h4>
+            <table class="table table-bordered table-striped">
+
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            MATERIA
+                        </th>
+                        <th class="text-center">
+                            NOTAS
+                        </th>
+                        <th class="text-center">
+                            Accion
+                        </th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var item in itemsMaterias)
+                        {
+                            <tr class="text-center">
+                                <td>
+                                    @Html.Label(item.materia)
+                                </td>
+                                <td>
+                                    @Html.Label(item.curso)
+                                </td>
+
+                                <td>
+                                    @Html.HiddenFor(IdMateria => item.idMateria)
+                                    <a href="@Url.Action("BajaMateriaDocente", "Docente", new { @IdEstudiante = Model.IdEstudiante, @idMateria = item.idMateria})" class="btn btn-info">VER NOTAS</a>
+
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+
+
+}

@@ -23,7 +23,7 @@ namespace RubricaWeb.ViewModels
 
         public string Email { get; set; }
 
-
+        public int idNroTema { get; set; }
 
 
     }

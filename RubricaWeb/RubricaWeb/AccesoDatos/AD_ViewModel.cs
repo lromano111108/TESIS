@@ -116,18 +116,19 @@ namespace RubricaWeb.AccesoDatos
 
             try
             {
-                SqlCommand cmd = new SqlCommand();
-
-                string consulta = @"INSERT INTO Docentes_por_Materias VALUES(@idMateria,@idDocente, @Activo)";
-                cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@idMateria", nuevaCarga.idMateria);
-                cmd.Parameters.AddWithValue("@idDocente", nuevaCarga.idDocente);
-                cmd.Parameters.AddWithValue("@Activo", "true");
-
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = consulta;
-
                 cn.Open();
+                SqlCommand cmd = cn.CreateCommand();
+                cmd.CommandText = "sp_InsertarDocenteXMateria";
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                //string consulta = @"EXEC sp_InsertarDocenteXMateria (@idMateria, @idDocente)";
+                cmd.Parameters.Clear();
+                cmd.Parameters.Add(new SqlParameter ("@idMateria", nuevaCarga.idMateria));
+                cmd.Parameters.Add(new SqlParameter("@idDocente", nuevaCarga.idDocente));
+
+              
+
+                                
+
                 cmd.Connection = cn;
                 cmd.ExecuteNonQuery();
                 resultado = true;
@@ -144,7 +145,52 @@ namespace RubricaWeb.AccesoDatos
             return resultado;
         }
 
+        public static List<VM_ComboValorCriterios> ComboValorCriterios()
+        {
+            List<VM_ComboValorCriterios> resultado = new List<VM_ComboValorCriterios>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
 
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"SELECT * FROM ValoresCriterios";
+                cmd.Parameters.Clear();
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        VM_ComboValorCriterios valor = new VM_ComboValorCriterios();
+                        valor.IdValor = int.Parse(dr["idValor"].ToString());
+                        valor.ValorCriterio = int.Parse(dr["valor"].ToString());
+
+                        resultado.Add(valor);
+                    }
+                }
+
+            }
+            catch (Exception exc)
+            {
+
+                throw exc;
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
 
     }
 }

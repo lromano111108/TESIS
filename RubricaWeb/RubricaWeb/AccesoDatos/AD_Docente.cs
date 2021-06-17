@@ -263,7 +263,47 @@ namespace RubricaWeb.AccesoDatos
             return resultado;
         }
 
+        public static bool BajaMateriaDeDocente (int idDocente, int idMateria)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
 
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"update Docentes_por_Materias
+                                    SET [Activo] = 'False'
+                                    WHERE idDocente=@idDocente
+                                    AND idMateria= @idMateria";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@idDocente", idDocente);
+                cmd.Parameters.AddWithValue("@idMateria", idMateria);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
 
 
 
@@ -380,6 +420,57 @@ namespace RubricaWeb.AccesoDatos
             return resultado;
         }
 
+
+        public static VM_Docente ObtenerDocenteXMateria(int idMateria)
+        {
+            VM_Docente resultado = new VM_Docente();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"SELECT DPM.idDocente
+                                    FROM Docentes_por_Materias DPM
+                                    WHERE dpm.idMateria = idMateria
+                                    and DPM.Activo= 'true'";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@idMateria", idMateria);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader(); //ejecuta la sentencia sql
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado.IdDocente = int.Parse(dr["idDocente"].ToString());
+                        
+
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
 
     }
 }

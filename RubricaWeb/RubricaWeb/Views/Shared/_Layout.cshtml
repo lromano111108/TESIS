@@ -1,33 +1,92 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <title>@ViewBag.Title - Rubrica Web</title>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Nombre de la aplicación", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Cargar Estudiantes", "CargaEstudiante", "Estudiante")</li>
-                    <li>@Html.ActionLink("Alta Materias", "CargarMateria", "Materia")</li>
-                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
+
+
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand text-white">
+                @*<img src="" height="">*@
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            @*@Html.ActionLink("Nombre de la aplicación", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+            <div class="collapse navbar-collapse " id="menu">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" data-toggle="dropdown" data-target="desplegable" hrf="#">
+                            Estudiantes
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="@Url.Action("CargaEstudiante", "Estudiante", new {})">
+                                Agregar Estudiante
+                            </a>
+                            <a class="dropdown-item" href="@Url.Action("ListadoEstudiantes", "Estudiante", new {idCurso = 0, esCompleto = true})">
+                                Listado Estudiantes
+                            </a>
+                        </div>
+
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" data-toggle="dropdown" data-target="desplegable" hrf="#">
+                            Materias
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="@Url.Action("CargarMateria", "Materia", new {})">
+                                Agregar Materia
+                            </a>
+                            <a class="dropdown-item" href="@Url.Action("AsignarMateriasDocentes", "Docente", new {})">
+                                Asignar Materia a Docente
+                            </a>
+                            <a class="dropdown-item" href="@Url.Action("ListadoMaterias", "Materia", new {})">
+                                Listado Materias
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" data-toggle="dropdown" data-target="desplegable" hrf="#">
+                            Docentes
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="@Url.Action("CargaDocente", "Docente", new {})">
+                                Agregar Docente
+                            </a>
+                            <a class="dropdown-item" href="@Url.Action("AsignarMateriasDocentes", "Docente", new {})">
+                                Asignar Materia a Docente
+                            </a>
+                            <a class="dropdown-item" href="@Url.Action("ListadoDocentes", "Docente", new {})">
+                                Listado Docentes
+                            </a>
+                        </div>
+                    </li>
+
+
                 </ul>
+
             </div>
-        </div>
+            <span class="navbar-text mr-sm-2"> RUBRICA WEB</span>
+        </nav>
     </div>
+
     <div class="container body-content">
         @RenderBody()
         <hr />

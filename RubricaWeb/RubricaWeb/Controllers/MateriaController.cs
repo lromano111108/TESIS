@@ -72,9 +72,9 @@ namespace RubricaWeb.Controllers
 
 
         
-        public ActionResult EliminarMateria(int idMateria)
+        public ActionResult EliminarMateria(int idMateria, int idDocente)
         {
-           AD_Materia.EliminarMateria(idMateria);
+           AD_Materia.EliminarMateria(idMateria, idDocente);
 
            
 
@@ -91,6 +91,52 @@ namespace RubricaWeb.Controllers
 
         }
 
+
+        public ActionResult AsignarDocente(int idMateria)
+        {
+            List<Docente> listaDocentes = AD_Docente.ComboDocentes();
+            List<SelectListItem> itemsDocentes = listaDocentes.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.NombreDocente,
+                    Value = i.IdDocente.ToString(),
+
+                    Selected = false
+                };
+            });
+            ViewBag.itemsDocentes = itemsDocentes;
+
+            List<Materia> listaMaterias = AD_Materia.ComboMateria();
+            List<SelectListItem> itemsMaterias = listaMaterias.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.NombreMateria,
+                    Value = i.IdMateria.ToString(),
+
+                    Selected = false
+                };
+            });
+            ViewBag.itemsMaterias = itemsMaterias;
+
+
+
+            List<VM_Curso> listaCursos = AD_ViewModel.ListaDeCursos();
+            List<SelectListItem> itemsCursos = listaCursos.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.NombreCurso,
+                    Value = i.IdCurso.ToString(),
+
+                    Selected = false
+                };
+            });
+            ViewBag.itemsCursos = itemsCursos;
+            return RedirectToAction("AsignarMateriasDocentes", "Docente", new { idMateria});
+
+        }
 
     }
 }

@@ -1,0 +1,65 @@
+﻿@model RubricaWeb.Models.Estudiante
+
+
+@{
+    ViewBag.Title = "CargaEstudiante";
+    List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
+
+}
+
+<h2>CargaEstudiante</h2>
+
+@using (Html.BeginForm())
+{
+    <form>
+
+        <div class="row mb-4">
+            <div class="col">
+                <div class="form-outline">
+
+                    @Html.TextBoxFor(model => model.NombreEstudiante, htmlAttributes: new { @class = "form-control", @id = "txtNombreEstudiante" })
+                    <label class="form-label text-lg-center" for="form3Example1">Nombre</label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-outline">
+                    @Html.TextBoxFor(model => model.ApellidoEstudiante, htmlAttributes: new { @class = "form-control", @id = "txtApellidoEstudiante" })
+                    <label class="form-label text-center" for="form3Example2">Apellido</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dni input-->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="form-outline mb-4">
+                    @Html.TextBoxFor(model => model.DniEstudiante, htmlAttributes: new { @class = "form-control", @id = "txtDniEstudiante" })
+                    <label class="form-label text-center" for="form3Example3">Numero de Documento</label>
+                </div>
+            </div>
+
+            <!-- Curso DropDownList-->
+            <div class="col">
+                <div class="form-outline mb-4">
+                    @Html.DropDownList("IdCurso", items, "Elija un Curso", htmlAttributes: new { @class = "form-control" })
+                    @*<label class="form-label" for="form3Example4">Password</label>*@
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CargarButton-->
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-primary">Cargar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+
+}
+

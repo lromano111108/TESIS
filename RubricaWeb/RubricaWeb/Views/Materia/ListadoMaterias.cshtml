@@ -21,7 +21,7 @@
         if (item.orden != 0)
         {
             contador++;
-            //LISTADO PRIMER AÑO
+           
             <div class="row">
                 <div class="col-10 offset-1">
                     <h4 class="text-center">  </h4>
@@ -39,6 +39,9 @@
                                     Docente
                                 </th>
                                 <th class="text-center">
+                                    Cantidad de Horas
+                                </th>
+                                <th class="text-center">
                                     Accion
                                 </th>
                             </tr>
@@ -48,7 +51,7 @@
                             @foreach (var items in Model)
                             {
 
-                                if (items.orden == contador & (items.orden !=0))
+                                if (items.orden == contador & (items.orden != 0))
 
                                 {
                                     <tr class="text-center">
@@ -62,7 +65,11 @@
                                             @Html.DisplayFor(modelItem => items.docente)
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("EliminarMateria", "Materia", new { @idMateria = items.idMateria })" class="btn btn-danger">BORRRRRAR</a>
+                                            @Html.DisplayFor(modelItem => items.horas)
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("EliminarMateria", "Materia", new { @idMateria = items.idMateria, @idDocente=items.idDocente })" class="btn btn-danger">Eliminar Materia</a>
+                                            <a href="@Url.Action("AsignarDocente", "Materia", new { @idMateria = items.idMateria })" class="btn btn-danger">Asignar Docente</a>
 
                                             <button class="btn btn-danger" type="submit">
                                                 @Html.ActionLink("Eliminar Materia", "EditarMateria", "Materia", new { Model, parametro = 1 })
@@ -84,9 +91,14 @@
             <br />
 
 
+
         }
 
     }
+    <a href="@Url.Action("CargarMateria", "Materia")" class="btn btn-outline-danger">Agregar Materia</a>
+    <button class="btn btn-block" type="submit">
+        @Html.ActionLink("AgregarMateria", "CargarMateria", "Materia")
+    </button>
 }
 
 

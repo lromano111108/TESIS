@@ -68,8 +68,9 @@
                                 </td>
 
                                 <td>
-                                    <a href="@Url.Action("EliminarDocente", "Docente", new { @idDocente = item.idCurso })" class="btn btn-danger">ELIMINAR</a>
-
+                                    @Html.HiddenFor(IdMateria => item.idMateria)
+                                    <a href="@Url.Action("BajaMateriaDocente", "Docente", new { @idDocente = Model.IdDocente, @idMateria = item.idMateria})" class="btn btn-danger">Dar de Baja</a>
+                                  
 
                                 </td>
                             </tr>
