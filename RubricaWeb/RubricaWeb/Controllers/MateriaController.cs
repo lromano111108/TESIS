@@ -34,6 +34,42 @@ namespace RubricaWeb.Controllers
             });
             ViewBag.items = items;
             return View();
+           
+        }
+
+
+        public ActionResult ModificarMateria(int idMateria)
+        {
+            List<VM_Curso> listaCursos = AD_ViewModel.ListaDeCursos();
+            List<SelectListItem> items = listaCursos.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.NombreCurso,
+                    Value = i.IdCurso.ToString(),
+
+                    Selected = false
+                };
+            });
+            ViewBag.items = items;
+
+            Materia materia = AD_Materia.MateriaXId(idMateria);
+            return View(materia);
+
+           
+        } 
+        
+        
+        [HttpPost]
+        public ActionResult ModificarMateria(Materia model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool resultado = AD_Materia.EditarMateria(model);
+
+
+            }
+            return RedirectToAction("ListadoMaterias", "Materia", new { idCurso = model.IdCurso, esCompleto = false });
 
         }
 
@@ -47,8 +83,18 @@ namespace RubricaWeb.Controllers
 
                 if (resultado)
                 {
+                    int idCurso = model.IdCurso;
+                    List<VM_Estudiante> listaCurso = AD_Estudiante.ListadoEstudiantesCursoXID(idCurso);
 
-                    return RedirectToAction("ListadoMaterias", "Materia");
+                    int idMateria = AD_Materia.ultimoIdMateria();
+
+                    foreach (var estudiante in listaCurso)
+                    {
+                       AD_Estudiante.AgregarEstudianteXMateria(estudiante.IdEstudiante,idMateria);
+
+                    }
+
+                    return RedirectToAction("ListadoMaterias", "Materia", new { idCurso = idCurso, esCompleto = false });
                 }
                 else
                 {
@@ -63,11 +109,48 @@ namespace RubricaWeb.Controllers
         }
 
 
-        public ActionResult ListadoMaterias()
+        public ActionResult ListadoMaterias(int idCurso, bool esCompleto)
         {
+            string mensaje = "LISTADO COMPLETO DE Materias";
+            List<VM_Curso> listaCursos = AD_ViewModel.ListaDeCursos();
+            List<SelectListItem> items = listaCursos.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.NombreCurso,
+                    Value = i.IdCurso.ToString(),
 
-            List<VM_Materia> lista = AD_Materia.ListadoMaterias ();
-            return View(lista);
+                    Selected = false
+                };
+            });
+            ViewBag.items = items;
+
+
+            if (esCompleto)
+            {
+                List<VM_Materia> lista = AD_Materia.ListadoMaterias(idCurso);
+                ViewBag.Mensaje = mensaje;
+                return View(lista);
+            }
+
+            else
+            {
+                List<VM_Materia> lista = AD_Materia.ListadoMaterias(idCurso);
+                
+                if (lista.Count==0)
+                {
+                    lista = new List<VM_Materia>();
+                   mensaje="El Curso Seleccionado No Posee Materias Asignadas";
+
+                }
+                else
+                {
+                    mensaje = lista[0].curso;
+                }
+                
+                ViewBag.Mensaje = mensaje;
+                return View(lista);
+            }
         }
 
 
@@ -78,7 +161,7 @@ namespace RubricaWeb.Controllers
 
            
 
-            return RedirectToAction("ListadoMaterias", "Materia");
+            return RedirectToAction("ListadoMaterias", "Materia", new { idCurso = 0, esCompleto = true });
 
         }
 
@@ -87,7 +170,26 @@ namespace RubricaWeb.Controllers
         public ActionResult EditarMateria (VM_Materia modelo, string parametro)
         {
 
-            return RedirectToAction("ListadoMaterias", "Materia");
+            return RedirectToAction("ListadoMaterias", "Materia", new { idCurso = 0, esCompleto = true });
+
+        }
+
+
+
+
+        public ActionResult insertarEstudianteXMateria(int idCurso, int idMateria)
+        {
+            
+            List<VM_Estudiante> listaCurso = AD_Estudiante.ListadoEstudiantesCursoXID(idCurso);
+
+            foreach (var estudiante in listaCurso)
+            {
+                AD_Estudiante.AgregarEstudianteXMateria(estudiante.IdEstudiante, idMateria);
+
+            }
+            return RedirectToAction("ListadoMaterias", "Materia", new { idCurso, esCompleto = true });
+
+            
 
         }
 
@@ -135,8 +237,9 @@ namespace RubricaWeb.Controllers
             });
             ViewBag.itemsCursos = itemsCursos;
             return RedirectToAction("AsignarMateriasDocentes", "Docente", new { idMateria});
-
         }
+
+
 
     }
 }

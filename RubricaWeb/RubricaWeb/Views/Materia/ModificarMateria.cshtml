@@ -1,0 +1,62 @@
+﻿@model RubricaWeb.Models.Materia
+@{
+    ViewBag.Title = "EditarMateria";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
+
+}
+
+
+
+@using (Html.BeginForm())
+{
+    <form>
+        <div class="container mt-4 rounded" style="background-color:rgba(255, 255, 255, 0.82)">
+            <h2 class="text-center font-weight-bolder mt-4">Editar Materia</h2>
+            <!-- Dni input-->
+            <div class="row mt-3 ">
+                <div class="col-12 d-flex">
+                    <div class="col-6">
+                        @Html.TextBoxFor(model => model.NombreMateria, htmlAttributes: new { @class = "form-control", @id = "txtNombreMateria", required = "required", type = "Text" })
+                        <label class="form-label text-center" for="form3Example3">Materia</label>
+                        @*<div class="form mb-4">
+
+                            </div>*@
+                    </div>
+
+                    <!-- Curso DropDownList-->
+                    <div class="col-6">
+                        <div class="form mb-4">
+                            @*@Html.DropDownList("IdCurso", items, "Seleccione un Curso", htmlAttributes: new { @class = "form-control", required = "required" })*@
+                            @Html.DropDownListFor(model => model.IdCurso, items, "Elija un Curso", htmlAttributes: new { @class = "form-control", required = "required" })
+                            @*<label class="form-label" for="form3Example4">Password</label>*@
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="row">
+                <div class="col-6 m-3">
+                    @Html.TextBoxFor(model => model.Horas, htmlAttributes: new { @class = "form-control", @id = "txtHoras", required = "required", type = "number" })
+                    <label class="form-label text-center" for="form3Example3">Horas Cátedra</label>
+                    @*<div class="form-outline mb-4">
+                            @Html.TextBoxFor(model => model.Horas, htmlAttributes: new { @class = "form-control", @id = "txtHoras", required = "required" })
+                            <label class="form-label text-center" for="form3Example3">Ingrese la Cantidad de Horas</label>
+                        </div>*@
+                </div>
+            </div>
+
+            <!-- CargarButton-->
+            <div class="container">
+                <div class="row">
+                    <div class="col text-center mb-4">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+}

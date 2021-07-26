@@ -3,9 +3,10 @@
 
 @{
     ViewBag.Title = "ListadoMaterias";
+    List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
+
 }
 
-<h2>Listado de Materias Por Curso</h2>
 
 
 
@@ -13,94 +14,156 @@
 
 
 {
-    int contador = 0;
-
-
-    foreach (var item in Model)
-    {
-        if (item.orden != 0)
-        {
-            contador++;
-           
-            <div class="row">
-                <div class="col-10 offset-1">
-                    <h4 class="text-center">  </h4>
-                    <table class="table table-bordered table-striped">
-
-                        <thead>
-                            <tr>
-                                <th class="text-center">
-                                    Nombre Materia
-                                </th>
-                                <th class="text-center">
-                                    Curso
-                                </th>
-                                <th class="text-center">
-                                    Docente
-                                </th>
-                                <th class="text-center">
-                                    Cantidad de Horas
-                                </th>
-                                <th class="text-center">
-                                    Accion
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach (var items in Model)
-                            {
-
-                                if (items.orden == contador & (items.orden != 0))
-
-                                {
-                                    <tr class="text-center">
-                                        <td>
-                                            @Html.DisplayFor(modelItem => items.materia)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => items.curso)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => items.docente)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => items.horas)
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("EliminarMateria", "Materia", new { @idMateria = items.idMateria, @idDocente=items.idDocente })" class="btn btn-danger">Eliminar Materia</a>
-                                            <a href="@Url.Action("AsignarDocente", "Materia", new { @idMateria = items.idMateria })" class="btn btn-danger">Asignar Docente</a>
-
-                                            <button class="btn btn-danger" type="submit">
-                                                @Html.ActionLink("Eliminar Materia", "EditarMateria", "Materia", new { Model, parametro = 1 })
-                                            </button>
-                                        </td>
-                                    </tr>
-
-                                }
-
-                            }
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
+    int index = 1;
+    <div class="container">
+        <div class="col-12 ">
+            <div class="row justify-content-center mt-3">
+                <h2 class="text-center rounded" style="background-color:rgba(255, 255, 255, 0.82)"> @ViewBag.Mensaje  </h2>
             </div>
-            <br />
+
+
+            <div class="row mb-4">
+                <div class="col-12 h6 align-content-end">
+                    @Html.DropDownList("IdCurso", items, "Curso", htmlAttributes: new { @class = "form-control h6", @onchange = "Refresh()", @id = "IdCurso" })
+                </div>                             
+            </div>
+
+        </div>
+        <table class="table bg-light border-1 table-hover  rounded align-items-center" id="listado">
+
+            <thead class="thead-dark">
+                <tr class="align-content-center">
+                    <th class="text-center">
+                        N°
+                    </th>
+                    <th class="text-center">
+                        Materia
+                    </th>
+                    <th class="text-center">
+                        Curso
+                    </th>
+                    <th class="text-center">
+                        Docente
+                    </th>
+                    <th class="text-center">
+                        Cantidad de Horas
+                    </th>
+                    <th class="text-center">
+                        Accion
+                    </th>
+                </tr>
+            </thead>
+
+
+            @foreach (var materia in Model)
+            {
+                if (materia.idDocente == 0)
+                {
+                    <tbody class="">
+                        <tr class="text-center justify-content-center" style="background-color: #FDFDEF;">
+                            <td>
+                                @(index++)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => materia.materia)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => materia.curso)
+                            </td>
+                            <td class="font-weight-bold">
+                                SIN ASIGNAR
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => materia.horas)
+                            </td>
+                            <td class="d-inline-flex">
+                                @{int id = materia.idMateria; }
+                                <a href="@Url.Action("ModificarMateria", "Materia", new { @idMateria = materia.idMateria })" class="col-3 text-primary"><i class="fas fa-edit"></i> <br /> Editar Materia</a>
+                                <a href="@Url.Action("EliminarMateria", "Materia", new { @idMateria = materia.idMateria, @idDocente=materia.idDocente })" class="col-3 text-danger"><i class="fas fa-ban "></i> <br /> Eliminar Materia</a>
+                                <a href="@Url.Action("AsignarMateriasDocentes", "Docente", new { @id= materia.idMateria,@parametro="materia" })" class="col-3 text-info"> <i class="fas fa-user-plus"></i> <br />Asignar Docente</a>
+                                <a href="@Url.Action("insertarEstudianteXMateria", "Materia", new { @idCurso=materia.idCurso, @idMateria = materia.idMateria })" class="col-3 text-success"><i class="fas fa-sync-alt"></i><br />Actualizar Estudiantes</a>
+
+                                @*<button class="btn btn-danger" type="submit">
+                                        @Html.ActionLink("Eliminar Materia", "EditarMateria", "Materia", new { Model, parametro = 1 })
+                                    </button>*@
+                            </td>
+                        </tr>
 
 
 
-        }
+
+                    </tbody>
+                }
+                else
+                {
+                    <tbody>
+                        <tr class="text-center m-0 p-0">
+                            <td>
+                                @(index ++)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => materia.materia)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => materia.curso)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => materia.docente)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => materia.horas)
+                            </td>
+                            <td class="d-inline-flex m-0 p-0">
+                                <a href="@Url.Action("ModificarMateria", "Materia", new { @idMateria = materia.idMateria })" class="col-3 text-primary"><i class="fas fa-edit"></i> <br /> Editar Materia</a>
+                                <a href="@Url.Action("EliminarMateria", "Materia", new { @idMateria = materia.idMateria, @idDocente=materia.idDocente })" class="col-3 text-danger"><i class="fas fa-ban "></i> <br />Eliminar Materia</a>
+                                <a href="@Url.Action("insertarEstudianteXMateria", "Materia", new { @idCurso=materia.idCurso, @idMateria = materia.idMateria })" class="col-3 text-danger"><i class="fas fa-user-minus"></i><br />Baja Docente</a>
+                                <a href="@Url.Action("insertarEstudianteXMateria", "Materia", new { @idCurso=materia.idCurso, @idMateria = materia.idMateria })" class="col-3 text-success"><i class="fas fa-sync-alt"></i><br />Actualizar Estudiantes</a>
+                            </td>
+                        </tr>
+
+
+
+
+                    </tbody>
+                }
+
+            }
+
+        </table>
+
+        <div class="row text-center">
+            <div class="col-12">
+                <a href="@Url.Action("CargarMateria", "Materia", new {})" class="btn text-dark bg-light font-weight-bold text-center"><i class="fas fa-file-medical text-primary" style="width:40px; height:40px;"></i><br />NUEVA <br />MATERIA </a> <br />
+            </div>
+        </div>
+
+
+
+    </div>
+    <script>
+
+    //Refresh();
+    function Refresh() {
+        var cboMateria = document.getElementById("IdCurso");
+        cboMateria.addEventListener("change", Refresh);
+        window.location.href = ("@Url.Content("~/Materia/ListadoMaterias")" + "?IdCurso=" + cboMateria.value + " &esCompleto=False");
+
 
     }
-    <a href="@Url.Action("CargarMateria", "Materia")" class="btn btn-outline-danger">Agregar Materia</a>
-    <button class="btn btn-block" type="submit">
-        @Html.ActionLink("AgregarMateria", "CargarMateria", "Materia")
-    </button>
-}
+    </script>
+    @*<script src="~/lib/jquery/dist/jquery-ui-1.12.1.min.js"></script>*@
+    @*<script>
+        $(document).ready(function () {
+            $("#txtFiltro").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#listado tr").not(':first').filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>*@
 
+}
 
 
 

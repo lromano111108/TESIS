@@ -6,82 +6,288 @@
 @{
     ViewBag.Title = "MostrarDatosDocentes";
     List<RubricaWeb.ViewModels.VM_Materia> itemsMaterias = (List<RubricaWeb.ViewModels.VM_Materia>)ViewBag.listaMaterias;
+    List<RubricaWeb.ViewModels.VM_ReporteEstudiante> temasAdeudados = (List<RubricaWeb.ViewModels.VM_ReporteEstudiante>)ViewBag.TemasAdeudados;
 
 }
+<link href="~/Content/accordion.css" rel="stylesheet" />
 
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(Model => Model.IdEstudiante)
     <main>
-        <div class="container py-4">
-            <header class="pb-3 mb-4 border-bottom">
-                <h1> Datos del Estudiante</h1>
-            </header>
+        <div class="container p-1">
 
-            <div class="p-5 mb-4 bg-light rounded-3">
-                <div class="container-fluid py-5">
+            <div class="p-1 mb-4 rounded-3">
+                <div class="container-fluid p-3" style="background-color:rgba(255, 255, 255, 0.82)">
                     <h1 class="display-5 fw-bold">@Model.NombreCompleto</h1>
                     <p class="col-md-8 fs-4">
                         <b> DNI : </b> @Model.Dni <br />
                         <b>CURSO : </b> @Model.Curso <br />
-
                     </p>
-                    <a href="@Url.Action("ListadoEstudiantes", "Estudiante", new {idCurso = 0, esCompleto = true })" class="btn btn-outline-info">Listado Estudiantes</a>
-                    <a href="@Url.Action("EditarEstudiante", "Estudiante", new {IdEstudiante= Model.IdEstudiante})" class="btn btn-outline-info">Editar</a>
-                    <a href="@Url.Action("ListadoEstudiantes", "Estudiante", new {idCurso= Model.IdCurso, esCompleto = false})" class="btn btn-outline-info">Listado Curso</a>
+                    <a href="@Url.Action("ListadoEstudiantes", "Estudiante", new { idCurso = 0, esCompleto = true })" class="btn btn-info">Listado Completo Estudiantes</a>
+                    <a href="@Url.Action("EditarEstudiante", "Estudiante", new { IdEstudiante = Model.IdEstudiante })" class="btn btn-info">Editar</a>
+                    @*<a href="@Url.Action("ListadoEstudiantes", "Estudiante", new { idCurso = Model.IdCurso, esCompleto = false })" class="btn btn-info">Volver Listado</a>*@
+                    <a href="@Url.Action("LibretaEstudiante", "Reporte", new { IdEstudiante = Model.IdEstudiante })" class="btn btn-info"> Ver Libreta</a>
+                    @*<a href="@Url.Action("GraficosEstudiante", "Estudiante", new { IdEstudiante = Model.IdEstudiante })" class="btn btn-info">Grafico</a>*@
+
                 </div>
             </div>
         </div>
     </main>
-
-    <div class="row">
-        <div class="col-10 offset-1">
-            <h4 class="text-center"> Materias</h4>
-            <table class="table table-bordered table-striped">
-
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            MATERIA
-                        </th>
-                        <th class="text-center">
-                            NOTAS
-                        </th>
-                        <th class="text-center">
-                            Accion
-                        </th>
+}
 
 
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        foreach (var item in itemsMaterias)
+
+
+
+<div class="row text-center">
+    <div class="col-lg-10 mx-auto">
+        <!-- Accordion -->
+        <div id="accordionExample" class="accordion shadow">
+
+            <!-- Accordion item 1 -->
+            <div class="card">
+                <div id="headingOne" class="card-header bg-white shadow-sm border-0">
+                    <h6 class="mb-0 font-weight-bold text-center">
+                        <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="d-block position-relative text-dark text-uppercase collapsible-link py-2">
+                            Listado de Materias
+                            <i class="fas fa-info d-flex float-right"></i>
+                        </a>
+                    </h6>
+
+                </div>
+                <div id="collapseOne" aria-labelledby="headingOne" data-parent="#accordionExample" class="collapse">
+                    <div class="card-body p-5">
+                        @using (Html.BeginForm())
                         {
-                            <tr class="text-center">
-                                <td>
-                                    @Html.Label(item.materia)
-                                </td>
-                                <td>
-                                    @Html.Label(item.curso)
-                                </td>
-
-                                <td>
-                                    @Html.HiddenFor(IdMateria => item.idMateria)
-                                    <a href="@Url.Action("BajaMateriaDocente", "Docente", new { @IdEstudiante = Model.IdEstudiante, @idMateria = item.idMateria})" class="btn btn-info">VER NOTAS</a>
+                            @Html.HiddenFor(Model => Model.IdEstudiante)
 
 
-                                </td>
-                            </tr>
+                            <div class="row">
+                                <div class="col-10 offset-1">
+                                    <table class="table table-bordered table-light">
+
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th class="text-center">
+                                                    MATERIA
+                                                </th>
+                                                <th class="text-center">
+                                                    Curso
+                                                </th>
+                                                <th class="text-center">
+                                                    Accion
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                foreach (var item in itemsMaterias)
+                                                {
+                                                    <tr class="text-center">
+                                                        <td>
+                                                            @Html.Label(item.materia)
+                                                        </td>
+                                                        <td>
+                                                            @Html.Label(item.curso)
+                                                        </td>
+
+                                                        <td>
+                                                            @Html.HiddenFor(IdMateria => item.idMateria)
+                                                            <a href="@Url.Action("LibretaMateria", "Rubrica", new { @idMateria = item.idMateria, @pagina = 1 })" class="btn btn-info">VER NOTAS</a>
+
+
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
                         }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accordion item 2 -->
+            <div class="card">
+                <div id="headingTwo" class="card-header bg-white shadow-sm border-0">
+                    <h6 class="mb-0 font-weight-bold">
+                        <a type="button" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="d-block position-relative collapsed text-dark text-uppercase collapsible-link py-2">
+                            Reportes<i class="fas fa-info d-flex float-right"></i>
+                        </a>
+                    </h6>
+                </div>
+                <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordionExample" class="collapse w-100">
+                    <div class="card-body p-5">
+
+                        <div class="row text-center justify-content-center">
+                            <div class="col-4">
+                                <h5 class="font-weight-bolder text-center">Gráfico de Rendimiento </h5>
+                                <p class="col-12 mb-4">
+                                    Este grafico te muestra la evolución de todas las materias del estudiante, donde podras ver que notas tiene en un gráfico de área para que puedas observar
+                                    en el transcurso del año y sus temas o trabajos, como son las notas del estudiante.<br />
+                                    <a href="@Url.Action("GraficosEstudiante", "Estudiante", new { IdEstudiante = Model.IdEstudiante })" class="text-success btn btn-block"> <i class="fas fa-chart-bar fa-3x"></i> <br />Ver Grafico</a>
+                                </p>
+                            </div>
+                            <div class="col-4">
+                                <h5 class="font-weight-bolder">Gráfico de Promedio (Sin Aplazos) </h5>
+                                <p class="col-12 mb-4">
+                                    Este grafico de barras te muestra el promedio de todas las materias del estudiante, sin tener en cuenta los aplazos <br /><br /><br />
+
+                                    <a href="@Url.Action("GraficosEstudiante", "Estudiante", new { IdEstudiante = Model.IdEstudiante })" class="text-success btn btn-block float-end"> <i class="fas fa-chart-area fa-3x font-weight-bolder"></i> <br />Ver Grafico</a>
+                                </p>
+                            </div>
+                            <div class="col-4">
+                                <h5 class="font-weight-bolder">Porcentaje de Materias Aprobadas y Desaprobadas </h5>
+                                <p class="col-12 mb-4">
+                                    Este grafico de tortas muestra el porcentaje y la cantidad de materias aprobadas y desaprobadas del estudiante al momento<br />
+                                    <a href="@Url.Action("GraficosEstudiante", "Estudiante", new { IdEstudiante = Model.IdEstudiante })" class="text-success btn btn-block float-end"> <i class="fas fa-chart-pie fa-3x font-weight-bolder"></i> <br />Ver Grafico</a>
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row text-center justify-content-center">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accordion item 3 -->
+            <div class="card">
+                <div id="headingThree" class="card-header bg-white shadow-sm border-0">
+                    <h6 class="mb-0 font-weight-bold">
+                        <a href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="d-block position-relative collapsed text-dark text-uppercase collapsible-link py-2">
+                            TEMAS ADEUDADOS<i class="fas fa-info d-flex float-right"></i>
+                        </a>
+                    </h6>
+                </div>
+                <div id="collapseThree" aria-labelledby="headingThree" data-parent="#accordionExample" class="collapse">
+                    @{bool bandera = true;
+                        <div class="card-body m-1">
+                            <div></div>
+
+                            @foreach (var materia in temasAdeudados)
+                            {
+
+                                if (bandera)
+                                {
+                                    <div class="m-1">
+                                        <h5><b>Materia: </b></h5> @Html.Label(@materia.materia, htmlAttributes: new { @class = "text-uppercase" })
+                                        <h6><b>Numero de Tema: </b></h6> @materia.idNroTema
+                                        <h6><b>Tema:</b></h6>@Html.Label(@materia.descripcionTema, htmlAttributes: new { @class = "text-uppercase small" })
+
+                                    </div>
+                                    bandera = false;
+                                }
+                                else
+                                { <div class="m-1 border-top">
+                                        <h5><b>Materia: </b></h5> @Html.Label(@materia.materia, htmlAttributes: new { @class = "text-uppercase" })
+                                        <h6><b>Numero de Tema: </b></h6> @materia.idNroTema
+                                        <h6><b>Tema:</b></h6>@Html.Label(@materia.descripcionTema, htmlAttributes: new { @class = "text-uppercase small" })
+
+                                    </div>
+                                }
+                            }
+                        </div>
                     }
-                </tbody>
-            </table>
+                </div>
+            </div>
+
+            <!-- Accordion item 4 -->
+            <!--<div class="card">
+                <div id="headingFour" class="card-header bg-white shadow-sm border-0">
+                    <h6 class="mb-0 font-weight-bold">
+                        <a href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" class="d-block position-relative collapsed text-dark text-uppercase collapsible-link py-2">
+                            ¿COMO AGREGO UN TEMA?
+                            <i class="fas fa-info d-flex float-right"></i>
+                        </a>
+                    </h6>
+                </div>
+                <div id="collapseFour" aria-labelledby="headingFour" data-parent="#accordionExample" class="collapse">
+                    <div class="card-body p-5">
+                        <p class="font-weight-light m-0">
+                            En el panel principal vas a encontrar junto a tu materia el icono NUEVO TEMA y desde allí, comenzar a cargar los criterios y aprendizajes.
+                        </p>
+                    </div>
+                </div>
+            </div>-->
+            <!-- Accordion item 5 -->
+            <!--<div class="card">
+                <div id="headingFive" class="card-header bg-white shadow-sm border-0">
+                    <h6 class="mb-0 font-weight-bold">
+                        <a href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" class="d-block position-relative collapsed text-dark text-uppercase collapsible-link py-2">
+                            ¿COMO HAGO PARA EVALUAR A UN ESTUDIANTE?
+                            <i class="fas fa-info d-flex float-right"></i>
+                        </a>
+                    </h6>
+                </div>
+                <div id="collapseFive" aria-labelledby="headingFive" data-parent="#accordionExample" class="collapse">
+                    <div class="card-body p-5">
+                        <p class="font-weight-light m-0">
+                            Siempre que hayas cargado algún tema a evaluar, luego en tu listado de Temas Cargados, podrás elegir el tema e ingresar a la Rubrica, donde verás los Criterios que ya planteaste.
+                        </p>
+                    </div>
+                </div>
+            </div>-->
+            <!-- Accordion item 6 -->
+            <!--<div class="card">
+                <div id="headingSix" class="card-header bg-white shadow-sm border-0">
+                    <h6 class="mb-0 font-weight-bold">
+                        <a href="#" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix" class="d-block position-relative collapsed text-dark text-uppercase collapsible-link py-2">
+                            ¿COMO CARGO LA RUBRICA?
+                            <i class="fas fa-info d-flex float-right"></i>
+                        </a>
+                    </h6>
+                </div>
+                <div id="collapseSix" aria-labelledby="headingSix" data-parent="#accordionExample" class="collapse">
+                    <div class="card-body p-5">
+                        <p class="font-weight-light m-0">
+                            Si ya cargaste el tema, eligiendo en la lista la rubrica de ese tema, se te abrirá el listado de estudiantes de esa materia, donde cada columna es un criterio que deberás evaluar de 1 a 4, donde 1 es POCO LOGRADO y 4 ES MUY LOGRADO.
+                            Al finalizar, haces click en el boton guardar, y automaticamente podrás ver que la nota se actualiza.
+                        </p>
+                    </div>
+                </div>
+            </div>-->
 
         </div>
     </div>
+</div>
 
 
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable(@Html.Raw(ViewBag.Grafico));
+        //    ([
+        //    ['Year', 'Sales', 'Expenses'],
+        //    ['2013', 1000, 400],
+        //    ['2014', 1170, 460],
+        //    ['2015', 660, 1120],
+        //    ['2016', 1030, 540]
+        //]);
+        @*(@Html.Raw(ViewBag.Grafico));*@
 
-}
+
+        var options = {
+            widht: 9,
+            height: 500,
+            title: 'Evolucion Notas',
+            hAxis: { title: 'Temas', titleTextStyle: { color: '#333' } },
+            vAxis: { title: 'Notas', minValue: 0, maxValue: 11 },
+          //chartArea: { left: 10, top: 10, width: '50%', height: '75%' }
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+
+</script>

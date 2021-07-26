@@ -7,85 +7,88 @@
 
 }
 
-<h2>Carga Docente</h2>
+
 
 @using (Html.BeginForm())
 {
-<form>
+    <form class="" style="background-color:rgba(255, 255, 255, 0.82)">
+        <div class="container mt-3" style="background-color:rgba(255, 255, 255, 0.82)">
+            <h2 class="text-center font-weight-bolder m-4">Agregar Docente</h2>
 
-    <div class="row mb-4">
-        <div class="col">
-            <div class="form-outline">
-                @Html.TextBoxFor(model => model.NombreDocente, htmlAttributes: new { @class = "form-control", @id = "txtNombreDocente", required = "required" })
-                <label class="form-label text-lg-center" for="form3Example1">Nombre</label>
+            <div class="row mb-4">
+                <div class="col-6">
+                    <div class="form-outline">
+                        @Html.TextBoxFor(model => model.NombreDocente, htmlAttributes: new { @class = "form-control", @id = "txtNombreDocente", required = "required", type = "Text" })
+                        <label class="form-label text-lg-center" for="form3Example1">Nombre</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-outline">
+                        @Html.TextBoxFor(model => model.ApellidoDocente, htmlAttributes: new { @class = "form-control", @id = "txtApellidoDocente", required = "required", type = "Text" })
+                        <label class="form-label text-center" for="form3Example2">Apellido</label>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="form-outline">
-                @Html.TextBoxFor(model => model.ApellidoDocente, htmlAttributes: new { @class = "form-control", @id = "txtApellidoDocente", required = "required" })
-                <label class="form-label text-center" for="form3Example2">Apellido</label>
+
+            <div class="row mb-4">
+                <div class="col-6">
+                    <div class="form-outline">
+                        @Html.TextBoxFor(model => model.Direccion, htmlAttributes: new { @class = "form-control", @id = "txtDireccion", required = "required", type = "Text" })
+                        <label class="form-label text-lg-center" for="form3Example1">Direccion</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-outline">
+                        @Html.TextBoxFor(model => model.Telefono, htmlAttributes: new { @class = "form-control", @id = "txtTelefono", required = "required", type = "number" })
+                        <label class="form-label text-center" for="form3Example2">Telefono </label>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row mb-4">
-        <div class="col">
-            <div class="form-outline">
-                @Html.TextBoxFor(model => model.Direccion, htmlAttributes: new { @class = "form-control", @id = "txtDireccion", required = "required" })
-                <label class="form-label text-lg-center" for="form3Example1">Direccion</label>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-outline">
-                @Html.TextBoxFor(model => model.Telefono, htmlAttributes: new { @class = "form-control", @id = "txtTelefono", required = "required" })
-                <label class="form-label text-center" for="form3Example2">Telefono </label>
-            </div>
-        </div>
-    </div>
-
-    <!-- Dni input-->
-    <div class="row mb-4">
-        <div class="col">
-            <div class="form-outline mb-4">
-                @Html.TextBoxFor(model => model.DniDocente, htmlAttributes: new {Type="", @class = "form-control", @id = "txtDniDocente", required = "required" })
+            <!-- Dni input-->
+            <div class="row mb-4">
+                <div class="col-6">
+                    <div class="form-outline mb-4">
+                        @Html.TextBoxFor(model => model.DniDocente, htmlAttributes: new { @class = "form-control", @id = "txtDniDocente", required = "required", type = "Text" })
 
 
-                <label class="form-label text-center" for="form3Example3">Numero de Documento</label>
-            </div>
-        </div>
+                        <label class="form-label text-center" for="form3Example3">Numero de Documento</label>
+                    </div>
+                </div>
 
-       
-        <div class="col">
-            <div class="form-outline mb-4">
-                @Html.TextBoxFor(model => model.Email, htmlAttributes: new {Type="email", @class = "form-control", @id = "txtDniDocente", required = "required" })
-                <label class="form-label text-center" for="form3Example3">E-Mail</label>
-            </div>
-        </div>
 
-    </div>
-
-    <div class="row mb-4">
-        
-        <!-- Rol DropDownList-->
-        <div class="col">
-            <div class="form-outline mb-4">
-                @Html.DropDownList("IdRol", items, "Elija un Rol", htmlAttributes: new { @class = "form-control", required = "required" })
+                <div class="col-6">
+                    <div class="form-outline mb-4">
+                        @Html.TextBoxFor(model => model.Email, htmlAttributes: new { Type = "email", @class = "form-control", @id = "txtDniDocente", required = "required" })
+                        <label class="form-label text-center" for="form3Example3">E-Mail</label>
+                    </div>
+                </div>
 
             </div>
-        </div>
 
-    </div>
+            <div class="row mb-4">
+
+                <!-- Rol DropDownList-->
+                <div class="col-12">
+                    <div class="form-outline mb-4">
+                        @Html.DropDownList("IdRol", items, "Elija un Rol", htmlAttributes: new { @class = "form-control", required = "required" })
+
+                    </div>
+                </div>
+
+            </div>
 
 
-    <!-- CargarButton-->
-    <div class="container">
-        <div class="row">
-            <div class="col text-center">
-                <button type="submit" class="btn btn-primary">Cargar</button>
+            <!-- CargarButton-->
+            <div class="container">
+                <div class="row">
+                    <div class="col text-center mb-4">
+                        <button type="submit" class="btn btn-primary">Cargar</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 
 
 

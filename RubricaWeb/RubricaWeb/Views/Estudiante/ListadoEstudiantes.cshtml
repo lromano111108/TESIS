@@ -2,73 +2,123 @@
 
 
 @{
-    ViewBag.Title = "ListadoEstudiantes";
+    //ViewBag.Title = "ListadoEstudiantes";
     List<RubricaWeb.ViewModels.VM_Estudiante> itemsEstudiantes = (List<RubricaWeb.ViewModels.VM_Estudiante>)ViewBag.listaEstudiantes;
+    List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
+
 
 }
-
-<h2>ListadoEstudiantes</h2>
 
 
 
 @using (Html.BeginForm())
 
 {
-    int contador = 1;
+    //int contador = 1;
     int index = 1;
-    <div class="row">
-        <div class="col-10 offset-1">
-            <h4 class="text-center"> Listado </h4>
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            N°
-                        </th>
-                        <th class="text-center">
-                            Apellido y Nombre
-                        </th>
-                        <th class="text-center">
-                            Documento de Identidad
-                        </th>
-                        <th class="text-center">
-                            Curso
-                        </th>
-                        <th class="text-center">
-                            Acciones
-                        </th>
-                    </tr>
-                </thead>
-                @foreach (var item in itemsEstudiantes)
-                {
-                    <tbody>
-                        <tr class="text-center">
-                            <td>  @(index ++) </td>
-                            <td>
-                                @Html.DisplayFor(Model => item.NombreCompleto)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(Model => item.Dni)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(Model => item.Curso)
-                            </td>
-                            <td>
-                                <a href="@Url.Action("EliminarEstudiante", "Estudiante", new { @IdEstudiante = item.IdEstudiante })" class="btn btn-danger">ELIMINAR</a>
-                                <a href="@Url.Action("MostrarDatosEstudiante", "Estudiante", new { @IdEstudiante = item.IdEstudiante })" class="btn btn-info">DATOS</a>
-                            </td>
+    <div class=" container mt-2">
+        <div class="col-10 ">
+            <h2 class="text-center font-weight-bolder" style="background-color:rgba(255, 255, 255, 0.82)"> @ViewBag.Mensaje </h2>
+            <div class="row mb-4">
+                <div class="col-12 h6 align-content-end">
+                    @Html.DropDownList("IdCurso", items, "Filtrar por Curso", htmlAttributes: new { @class = "form-control h6", @onchange = "Refresh()", @id = "IdCurso" })
+                </div>
+             
+                <table class="table bg-light border-1 table-hover rounded " id="tabla">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="text-center">
+                                N°
+                            </th>
+                            <th class="text-center">
+                                Apellido y Nombre
+                            </th>
+                            <th class="text-center">
+                                DNI
+                            </th>
+                            <th class="text-center">
+                                Curso
+                            </th>
+                            <th class="text-center">
+                                Acciones
+                            </th>
                         </tr>
-                    </tbody>
-                }
-            </table>
+                    </thead>
+                    @foreach (var item in itemsEstudiantes)
+                    {
+                        <tbody>
+                            <tr class="text-center align-items-center">
+                                <td class="align-middle">  @(index++) </td>
+                                <td class="align-middle">
+                                    @Html.DisplayFor(Model => item.NombreCompleto)
+                                </td>
+                                <td class="align-middle">
+                                    @Html.DisplayFor(Model => item.Dni)
+                                </td>
+                                <td class="align-middle">
+                                    @Html.DisplayFor(Model => item.Curso)
+                                </td>
+                                <td class="align-middle">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <a href="@Url.Action("EliminarEstudiante", "Estudiante", new { @IdEstudiante = item.IdEstudiante })" style="width:20px; height:20px;" class=" text-danger" title="Eliminar"><i class="fas fa-user-slash"></i> <br /> Eliminar</a>
+                                        </div>
+                                        <div class="col-4">
+                                            <a href="@Url.Action("MostrarDatosEstudiante", "Estudiante", new { @IdEstudiante = item.IdEstudiante })" class="text-info"><i class="fas fa-info" data-toggle="tooltip" data-placement="top" title="Ver Info"></i> <br /> Ver Info</a>
+                                        </div>
+                                        <div class="col-4">
+                                            <a href="@Url.Action("LibretaEstudiante", "Reporte", new { IdEstudiante = item.IdEstudiante })" class="text-info"><i class="far fa-file-alt" data-toggle="tooltip" data-placement="top" title="Libreta"></i> <br /> Libreta</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    }
+
+                </table>
+
+            </div>
         </div>
     </div>
-    <br />
-
-
-
-
-
 
 }
+<div class="row text-center d-flex justify-content-center">
+    @{ if (!@ViewBag.Boton)
+        {
+            <a href="@Url.Action("Print", "Estudiante", new { idCurso = @ViewBag.idCurso, esCompleto = ViewBag.boton })" class="btn text-dark bg-success rounded-circle p-3" title="IMPRIMIR"><i class="fas fa-print fa-3x text-light"></i></a>
+        }
+        <br />
+    }
+</div>
+
+
+
+
+
+<script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+//Refresh();
+    function Refresh() {
+        var cboMateria = document.getElementById("IdCurso");
+        cboMateria.addEventListener("change", Refresh);
+        window.location.href = ("@Url.Content("~/Estudiante/ListadoEstudiantes")" + "?IdCurso=" + cboMateria.value + " &esCompleto=False");
+
+
+    }
+</script>
+
+
+@*<script src="~/lib/jquery/dist/jquery-ui-1.12.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#txtFiltro").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#tabla tr").not(':first').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>*@
 

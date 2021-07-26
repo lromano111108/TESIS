@@ -14,11 +14,11 @@
     @Html.HiddenFor(Model => Model.IdDocente)
     <main>
         <div class="container py-4">
-            <header class="pb-3 mb-4 border-bottom">
-                <h1> Datos del Docente</h1>
+            <header class="pb-3 mb-4 border-bottom text center font-weight-bolder" style="background-color:rgba(255, 255, 255, 0.82)" >
+                <h1 class="text center mt-3"> Datos del Docente</h1>
             </header>
 
-            <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="p-5 mb-4  rounded-3"style="background-color:rgba(255, 255, 255, 0.82)">
                 <div class="container-fluid py-5">
                     <h1 class="display-5 fw-bold">@Model.NombreDocente</h1>
                     <p class="col-md-8 fs-4">
@@ -29,7 +29,8 @@
                         <b>Rol Principal: </b> @Model.Rol <br />
                     </p>
                     <a href="@Url.Action("ListadoDocentes", "Docente", new { })" class="btn btn-outline-info">Volver</a>
-                    <a href="@Url.Action("EditarDocente", "Docente", new {@idDocente= Model.IdDocente })" class="btn btn-outline-info">Editar</a>
+                    <a href="@Url.Action("EditarDocente", "Docente", new { @idDocente = Model.IdDocente })" class="btn btn-outline-info">Editar</a>
+                    <a href="@Url.Action("AsignarMateriasDocentes", "Docente", new {@id=Model.IdDocente, @parametro="docente"})" class="btn btn-outline-info">Asignar Materia</a>
                 </div>
             </div>
         </div>
@@ -40,7 +41,7 @@
             <h4 class="text-center"> Materias Asignadas</h4>
             <table class="table table-bordered table-striped">
 
-                <thead>
+                <thead class="thead-dark">
                     <tr>
                         <th class="text-center">
                             Materia
@@ -59,7 +60,7 @@
                     @{
                         foreach (var item in itemsMaterias)
                         {
-                            <tr class="text-center">
+                            <tr class="text-center bg-light">
                                 <td>
                                     @Html.Label(item.materia)
                                 </td>

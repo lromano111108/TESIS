@@ -1,0 +1,73 @@
+﻿@model  List<RubricaWeb.ViewModels.VM_Estudiante>
+
+@{
+    ViewBag.Title = "ImprimirLibreta";
+    Layout = null;
+
+
+    List<RubricaWeb.ViewModels.VM_Estudiante> itemsEstudiantes = (List<RubricaWeb.ViewModels.VM_Estudiante>)ViewBag.listaEstudiantes;
+    List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
+   
+
+    //List<SelectListItem> combo = (List<SelectListItem>)ViewBag.comboCriterios;
+
+    //RubricaWeb.ViewModels.VM_Tema tema = ViewBag.datosTema;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>rubrica</title>
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/impresionLista.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+</head>
+<body class="">
+
+    <div class="container text-center">
+
+        <h1 class="text-center text-dark fw-bolder"> Listado de @ViewBag.Curso</h1>
+
+        @using (Html.BeginForm())
+        {
+            <div class="row text-center d-inline-flex ">
+
+                <table class="table  m-0 p-0">
+
+                    <thead>
+                        <tr class="justify-content-center small bg-info">
+                            <th>N°</th>
+                            <th>LEGAJO</th>
+                            <th scope="row" class="">APELLIDO Y NOMBRE</th>
+                            <th>DNI</th>
+                            <th>CURSO</th>
+                        </tr>
+                    </thead>
+                    <tbody class="">
+                        @{ int nros = 1;
+                            foreach (var item in itemsEstudiantes)
+                            {
+                                <tr class="">
+                                    <td class=" p-2">@(nros ++)</td>
+                                    <td class=" p-2">@(item.IdEstudiante)</td>
+                                    <td class=" p-2">@(item.NombreCompleto)</td>
+                                    <td class=" p-2"> @(item.Dni)</td>
+                                    <td class=" p-2"> @(item.Curso)</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        }
+    </div>
+
+
+    <p class="font-weight-bold float-right m-3"> Fecha de Impresión: @DateTime.Now.ToString()</p>
+</body>
+</html>

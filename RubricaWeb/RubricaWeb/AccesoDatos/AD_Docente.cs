@@ -10,7 +10,6 @@ namespace RubricaWeb.AccesoDatos
 {
     public class AD_Docente
     {
-
         public static VM_Docente ObtenerDocenteXId(int idDocente)
         {
             VM_Docente resultado = new VM_Docente();
@@ -70,9 +69,6 @@ namespace RubricaWeb.AccesoDatos
             return resultado;
         }
 
-
-
-
         public static bool AgregarDocente(Docente nuevoDocente)
         {
             bool resultado = false;
@@ -84,7 +80,7 @@ namespace RubricaWeb.AccesoDatos
             {
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = @"INSERT INTO Docentes VALUES(@dniDocente,@nombreDocente, @idRol, @apellidoDocente,1,@direccion, @telefono, @email)";
+                string consulta = @"INSERT INTO Docentes VALUES(@dniDocente,@nombreDocente, @idRol, @apellidoDocente,1,@direccion, @telefono, @email,@password)";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@dniDocente", nuevoDocente.DniDocente);
                 cmd.Parameters.AddWithValue("@nombreDocente", nuevoDocente.NombreDocente);
@@ -93,6 +89,7 @@ namespace RubricaWeb.AccesoDatos
                 cmd.Parameters.AddWithValue("@direccion", nuevoDocente.Direccion);
                 cmd.Parameters.AddWithValue("@telefono", nuevoDocente.Telefono);
                 cmd.Parameters.AddWithValue("@email", nuevoDocente.Email);
+                cmd.Parameters.AddWithValue("@password", "");
 
 
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -114,8 +111,6 @@ namespace RubricaWeb.AccesoDatos
 
             return resultado;
         }
-
-
 
         public static List<VM_Docente> ListadoDocentes()
         {
@@ -184,6 +179,7 @@ namespace RubricaWeb.AccesoDatos
 
                 string consulta = @"select idDocente , apellidoDocente + ' , ' + nombreDocente AS 'NOMBRE'
                                     from Docentes
+                                    where activo = 'True'
                                     order by 2 asc
                                     ";
                 cmd.Parameters.Clear();
@@ -222,7 +218,6 @@ namespace RubricaWeb.AccesoDatos
             return resultado;
         }
 
-
         public static bool EliminarDocente(int idDocente)
         {
             bool resultado = false;
@@ -260,6 +255,39 @@ namespace RubricaWeb.AccesoDatos
                 cn.Close();
             }
 
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"DELETE FROM Docentes_por_Materias
+                                    
+                                    WHERE idDocente = @idDocente";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@idDocente", idDocente);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            finally
+            {
+                cn.Close();
+            }
+
+
+
             return resultado;
         }
 
@@ -274,8 +302,7 @@ namespace RubricaWeb.AccesoDatos
             {
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = @"update Docentes_por_Materias
-                                    SET [Activo] = 'False'
+                string consulta = @"DELETE FROM Docentes_por_Materias
                                     WHERE idDocente=@idDocente
                                     AND idMateria= @idMateria";
                 cmd.Parameters.Clear();
@@ -304,9 +331,6 @@ namespace RubricaWeb.AccesoDatos
 
             return resultado;
         }
-
-
-
         public static Docente DocenteParaEditar(int idDocente)
         {
             Docente resultado = new Docente();
@@ -363,9 +387,6 @@ namespace RubricaWeb.AccesoDatos
 
             return resultado;
         }
-
-
-
         public static bool ActualizarDatosDocente(Docente nuevoDocente)
         {
             bool resultado = false;
@@ -419,8 +440,6 @@ namespace RubricaWeb.AccesoDatos
 
             return resultado;
         }
-
-
         public static VM_Docente ObtenerDocenteXMateria(int idMateria)
         {
             VM_Docente resultado = new VM_Docente();

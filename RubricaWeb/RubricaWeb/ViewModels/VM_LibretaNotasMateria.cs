@@ -28,8 +28,11 @@ namespace RubricaWeb.ViewModels
         public double Promedio { get; set; }
 
         public int IdMateria { get; set; }
+        public int IdEstudiante { get; set; }
 
         public int IdTema { get; set; }
+
+        public bool Condicion { get; set; }
 
 
     }

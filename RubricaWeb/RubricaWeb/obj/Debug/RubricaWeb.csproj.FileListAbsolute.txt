@@ -148,3 +148,4 @@ D:\Documentos Notebook\TUP\TESIS\RubricaWeb\RubricaWeb\bin\ru\Microsoft.CodeAnal
 D:\Documentos Notebook\TUP\TESIS\RubricaWeb\RubricaWeb\bin\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
 D:\Documentos Notebook\TUP\TESIS\RubricaWeb\RubricaWeb\bin\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
 D:\Documentos Notebook\TUP\TESIS\RubricaWeb\RubricaWeb\bin\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Documentos Notebook\TUP\TESIS\RubricaWeb\RubricaWeb\bin\Rotativa.dll

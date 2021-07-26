@@ -1,0 +1,8 @@
+﻿body {
+    background: #dd5e89;
+    background: -webkit-linear-gradient(to left, #dd5e89, #f7bb97);
+    background: linear-gradient(to left, #dd5e89, #f7bb97);
+    min-height: 100vh;
+    font-family: 'Montserrat', sans-serif;
+    background-image: url(../Content/img/blackboard-1846865_1920.jpg);
+}

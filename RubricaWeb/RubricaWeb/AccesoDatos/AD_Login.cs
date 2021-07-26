@@ -106,6 +106,61 @@ namespace RubricaWeb.AccesoDatos
         }
 
 
+
+
+
+        public static bool ValidarPassword (Login modelo)
+        {
+            Docente docente = new Docente();
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"SELECT idDocente, idRol FROM DOCENTES 
+                                    where dniDocente = @usuario
+									AND password = @password ";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@usuario", modelo.Usuario);
+                cmd.Parameters.AddWithValue("@password", modelo.Password);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        docente.IdDocente = int.Parse(dr["idDocente"].ToString());
+                        docente.IdRol = int.Parse(dr["idRol"].ToString());
+
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+
         public static Docente Ingresar(Login modelo)
         {
             Docente resultado = new Docente();

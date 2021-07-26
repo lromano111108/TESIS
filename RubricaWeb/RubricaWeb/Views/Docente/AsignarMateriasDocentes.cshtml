@@ -1,59 +1,195 @@
 ﻿@model RubricaWeb.ViewModels.VM_DocenteXMateria
 
-
-
 @{
     ViewBag.Title = "AsignarMateriasDocentes";
 
     List<SelectListItem> itemsDocentes = (List<SelectListItem>)ViewBag.itemsDocentes;
     List<SelectListItem> itemsCursos = (List<SelectListItem>)ViewBag.itemsCursos;
+    int id = ViewBag.id;
+    string parametro = ViewBag.parametro;
+    string materia = "";
+    string curso = "";
+    string docente = "";
 
+    if (!(ViewBag.Materia is null))
+    {
+        materia = ViewBag.Materia;
+    }
+    else
+    {
+        materia = "";
+    }
+
+    if (!(ViewBag.Curso is null))
+    {
+        curso = ViewBag.Curso;
+    }
+    else
+    {
+        curso = "";
+    }
+
+    if (!(ViewBag.NombreDocente is null))
+    {
+        docente = ViewBag.NombreDocente;
+    }
+    else
+    {
+        docente = "";
+    }
 }
 
-<h2>Asignar Materias al Docente</h2>
+
 
 @using (Html.BeginForm())
 {
-    <form>
-
-        <div class="row mb-4">
-            <div class="col">
-                <div class="form-outline mb-4">
-                    @Html.DropDownList("IdDocente", itemsDocentes, "DOCENTE", htmlAttributes: new { @class = "form-control"})
+    if (parametro.Equals("completo"))
+    {
+        <form>
+            <div class="container mt-3" style="background-color:rgba(255, 255, 255, 0.82)">
+                <h2 class="m-3 font-weight-bolder text-center">Asignar Materia Docentes</h2>
+                <div class="row mb-4 ">
+                    <div class="col-12  justify-content-center text-center d-block">
+                        <div class="form-outline mb-4 text-center">
+                            @Html.DropDownList("IdDocente", itemsDocentes, "DOCENTE", htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
                 </div>
-            </div>      
-        </div>
-        <div class="row mb-4">
+                <div class="row mb-4">
 
-            <!-- Rol DropDownList-->
-            <div class="col">
-                <div class="form-outline mb-4">
-                    @Html.DropDownList("IdCurso", itemsCursos, "CURSO", htmlAttributes: new { @class = "form-control"})
+                    <!-- Rol DropDownList-->
+                    <div class="col-6">
+                        <div class="form-outline mb-4">
+                            @Html.DropDownList("IdCurso", itemsCursos, "CURSO", htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-6 form-group">
+                        <select id="materia" name="idMateria" class="form-control">
+                        </select>
+                    </div>
+                </div>
+
+                <!-- CargarButton-->
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col text-center m-4">
+                            <button type="submit" class="btn btn-primary">Cargar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col form-group">                
-                <select id="materia" name="idMateria" class="form-control">
-                   
-                </select>
-            </div>           
-        </div>
+        </form>
+    }
+    else
 
-        <!-- CargarButton-->
-        <div class="container">
-            <div class="row">
-               
-                <div class="col text-center">
-                    <button type="submit" class="btn btn-primary">Cargar</button>
+    {
+        <form>
+            <div class="container mt-3" style="background-color:rgba(255, 255, 255, 0.82)">
+                <h2 class="m-3 font-weight-bolder text-center">@ViewBag.Titulo</h2>
+                <div class="row mb-4 ">
+                    <div class="col-12  justify-content-center text-center d-block">
+                        @if (parametro.Equals("docente"))
+                        {
+                        <div class="form-outline mb-4 text-center">
+                            @Html.HiddenFor(model => Model.idDocente)
+                            @Html.DropDownList("IdDocente", itemsDocentes, "DOCENTE", htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                            <label class="form-label" for="form3Example3">DOCENTE</label>
+
+                        </div>
+                        }
+                        else
+                        {
+                            <div class="form-outline mb-4 text-center">
+                                @Html.DropDownList("IdDocente", itemsDocentes, "Elija un Docente", htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        }
+
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    @if (parametro.Equals("materia"))
+                    {
+                        <div class="col-6">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => Model.idMateria)
+                                @Html.TextBox("Materia", null, htmlAttributes: new { Type = "text", @class = "form-control", @value = materia.ToUpper(), @disabled = "disabled" })
+                                <label class="form-label text-center" for="form3Example3">MATERIA</label>
+                                <div class="">
+                                    <div class="form-outline mb-4">
+                                        @Html.TextBox("Curso", null, htmlAttributes: new { Type = "text", @class = "form-control", @value = curso, @disabled = "disabled" })
+                                        <label class="form-label text-center" for="form3Example3">CURSO</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-6">
+                            <div class="form-outline mb-4">
+                                @Html.DropDownList("IdCurso", itemsCursos, "CURSO", htmlAttributes: new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                        <div class="col-6 form-group">
+                            <select id="materia" name="idMateria" class="form-control">
+                            </select>
+                        </div>
+
+                    }
+
+                </div>
+
+                <!-- CargarButton-->
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col text-center m-4">
+                            <button type="submit" class="btn btn-primary">Cargar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+
+
+    <!--<form>
+        <div class="container mt-3" style="background-color:rgba(255, 255, 255, 0.82)">
+            <h2 class="m-3 font-weight-bolder text-center">Asignar una Materia</h2>
+            <div class="row mb-4 ">
+                <div class="col-12  justify-content-center text-center d-block">
+                    <div class="form-outline mb-4 text-center">
+                       @* @Html.DropDownList("IdDocente", itemsDocentes, "DOCENTE", htmlAttributes: new { @class = "form-control" })*@
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-4">-->
+    <!-- Rol DropDownList-->
+    <!--<div class="col-6">
+            <div class="form-outline mb-4">
+                @*Html.DropDownList("IdCurso", itemsCursos, "CURSO", htmlAttributes: new { @class = "form-control" })*@
+            </div>
+        </div>
+        <div class="col-6 form-group">
+            <select id="materia" name="idMateria" class="form-control">
+            </select>
+        </div>
+    </div>-->
+    <!-- CargarButton-->
+    <!--<div class="container">
+                <div class="row">
+
+                    <div class="col text-center m-4">
+                        <button type="submit" class="btn btn-primary">Cargar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </form>
-
-
-
-
-
-
+    </form>-->
 }
 
 

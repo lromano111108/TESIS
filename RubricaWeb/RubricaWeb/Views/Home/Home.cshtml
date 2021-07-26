@@ -1,0 +1,152 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.Title = "Home";
+
+}
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>INICIO - RUBRICAWEB</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Core theme CSS (includes Bootstrap)-->
+
+
+    <link href="~/Content/home.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body style="        background-image: url('../../Content/img/biblioteca baja resol.jpg'), linear-gradient(black, black);
+        background-size: cover;
+
+        filter: contrast(1.8)">
+
+    <!-- Header-->
+    <header class="py-5">
+        <div class="container px-lg-5">
+            <div class="p-4 p-lg-5 rounded-3 text-center" style="background-color:rgba(255, 255, 255, 0.82)">
+                <div class="m-4 m-lg-5">
+                    <h1 class="display-5 fw-bold"> Hola @ViewBag.Nombre</h1>
+                    <p class="fs-4">
+                        Bienvenida/o, desde esta pantalla podrás acceder a la carga, modificación y baja de Estudiantes, Docentes y Materias. Tambien podrás acceder a los listados
+                        de Estudiantes y acceder a sus notas.
+                    </p>
+                    <a class="btn btn-primary btn-lg" href="@Url.Action("Logout", "Home")">Salir</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Page Content-->
+    <section class="pt-4">
+        <div class="container px-lg-5">
+            <!-- Page Features-->
+            <div class="row gx-lg-5">
+                <div class="col-lg-6 col-xxl-4 mb-5">
+                    <div class="card  border-0 h-100 " style="background-color:rgba(255, 255, 255, 0.82)">
+                        <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0 rounded-top">
+                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i class="fas fa-user-graduate"></i></div>
+                            <h2 class="fs-4 fw-bold">Estudiantes</h2>
+                            <p class="mb-0">Desde aqui podrá Agregar Estudiantes, Modificar Datos y Ver Listado de Estudiantes</p>
+                            <div class="row mt-4">
+                                <div class="col-6 ">
+                                    <a href="@Url.Action("CargaEstudiante", "Estudiante", new {})"><i class="fas fa-plus-circle" style="width:40px; height:40px;"></i><br /> NUEVO </a> <br />
+                                </div>
+                                <div class="col-6">
+                                    <a href="@Url.Action("ListadoEstudiantes", "Estudiante", new {idCurso = 0, esCompleto = true})"><i class="fas fa-address-book" style="width:40px; height:40px;"></i><br /> LISTADO</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xxl-4 mb-5">
+                    <div class="card  border-0 rounded-2 h-100" style="background-color:rgba(255, 255, 255, 0.82)">
+                        <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i class="fas fa-user-friends"></i></div>
+                            <h2 class="fs-4 fw-bold">Docentes</h2>
+                            <p class="mb-0">Desde aqui podrá Agregar Docentes, Modificar Datos, Ver Listado de Docentes y Asignar Materias</p>
+                            <div class="row mt-4">
+                                <div class="col-4 ">
+                                    <a href="@Url.Action("CargaDocente", "Docente", new {})"><i class="fas fa-user-plus" style="width:40px; height:40px;"></i><br /> NUEVO </a> <br />
+                                </div>
+                                <div class="col-4">
+                                    <a href="@Url.Action("ListadoDocentes", "Docente", new {})"><i class="fas fa-user-friends" style="width:40px; height:40px;"></i><br /> LISTADO</a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="@Url.Action("AsignarMateriasDocentes", "Docente", new {@id=0 , @parametro="completo"})"><i class="fas fa-random" style="width:40px; height:40px;"></i><br /> ASIGNAR MATERIA</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 align-items-center d-flex justify-content-center">
+                    <div class="col-lg-6 col-xxl-4 mb-5 ">
+                        <div class="card border-0 h-100 rounded" style="background-color:rgba(255, 255, 255, 0.82)">
+                            <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+                                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i class="fas fa-book-reader"></i></div>
+                                <h2 class="fs-4 fw-bold">Materias</h2>
+                                <p class="mb-0">Desde aqui podrá Agregar Docentes, Modificar Datos, Ver Listado de Docentes y Asignar Materias</p>
+
+                                <div class="row mt-4">
+                                    <div class="col-4 ">
+                                        <a href="@Url.Action("CargarMateria", "Materia", new {})"><i class="fas fa-file-medical" style="width:40px; height:40px;"></i><br /> NUEVA <br />MATERIA </a> <br />
+                                    </div>
+                                    <div class="col-4">
+                                        <a href="@Url.Action("ListadoMaterias", "Materia", new {idCurso = 0, esCompleto = true})"><i class="fas fa-book" style="width:40px; height:40px;"></i><br /> LISTADO</a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a href="@Url.Action("AsignarMateriasDocentes", "Docente", new {})"><i class="fas fa-random" style="width:40px; height:40px;"></i><br /> ASIGNAR DOCENTE</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             
+                @*<div class="col-lg-6 col-xxl-4 mb-5">
+                    <div class="card  border-0 h-100" style="background-color:rgba(255, 255, 255, 0.82)">
+                        <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i class="fas fa-graduation-cap"></i></div>
+
+                            <h2 class="fs-4 fw-bold">NOTAS</h2>
+                            <p class="mb-0">Desde aqui podrá Ver Notas por Materias o Notas Por Estudiantes</p>
+                        </div>
+                    </div>
+                </div>*@
+
+            </div>
+        </div>
+    </section>
+    <!-- Footer-->
+    <footer class=" bg-dark ">
+        <div class=" row text-center">
+            <div class="col-12 d-flex p-3 mt-3 justify-content-center align-items-center text-center">
+                <div class="col-4 m-0">
+                    <a class="text-light small" href="~/Content/sources/TerminosYCondicionesRW.pdf"><i class="far fa-file-alt fa-2x text-white"></i><br>Términos y Condiciones</a>
+                </div>
+                <div class="col-4 m-0">
+                    <p class="text-light m-0 small"> <i class="far fa-copyright fa-2x"></i><br />Copyright 2021 - RW Software<br />Todos los derechos reservados.</p>
+                </div>
+                <div class="col-4 m-0">
+                    <a class="text-light small" href="@Url.Action("PreguntasFrecuentes", "Home")"> <i class="far fa-question-circle fa-2x text-white"></i><br />Preguntas Frecuentes</a>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+</body>
+</html>

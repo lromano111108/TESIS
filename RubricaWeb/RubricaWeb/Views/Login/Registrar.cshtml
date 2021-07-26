@@ -14,66 +14,39 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Rubrica Web</title>
-    <link href="~/Content/login.css" rel="stylesheet" id="bootstrap-css">
+    @*<link href="~/Content/login.css" rel="stylesheet" id="bootstrap-css">*@
+    <link href="~/Content/login2.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" />"
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
 
-    @using (Html.BeginForm())
-    {
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <form class="box" method="post">
+                            <h1>Registrarse en RubricaWeb</h1>
 
-        <!------ Include the above in your HEAD tag ---------->
+                            <p class="text-muted"> @ViewBag.mensaje </p>
 
+                            @Html.TextBoxFor(model => model.Usuario, htmlAttributes: new { @class = "form-control", @id = "username", required = "required", @placeholder = "ingrese su DNI", @type = "text" })
 
-        <div id="login">
-            <div class="container">
-                <div id="login-row" class="row justify-content-center align-items-center">
-                    <div id="login-column" class="col-md-6">
-                        <div id="login-box" class="col-md-12">
-                            <form id="login-form" class="form" action="" method="post">
-                                <h3 class="text-center text-info">REGISTRARSE</h3>
-
-                                @Html.Label(mensaje, htmlAttributes: new { @class = "text-center badge badge-danger " })
+                            @Html.PasswordFor(model => model.Password, htmlAttributes: new { @class = "form-control inputPass", @id = "password1", required = "required", @name = "clave1", @type = "password", @placeholder = "Ingrese Su Contraseña:" })
+                            @Html.PasswordFor(model => model.Password2, htmlAttributes: new { @class = "form-control inputPass", @id = "password2", required = "required", @name = "clave2", @type = "password", @placeholder = "Ingrese Nuevamente" })
 
 
-                                <div class="form-group">
-                                    <label for="username" class="text-info">Ingrese su Usuario</label><br>
-                                    @*<input type="text" name="username" id="username" class="form-control">*@
-                                    @Html.TextBoxFor(model => model.Usuario, htmlAttributes: new { @class = "form-control", @id = "username", required = "required", @placeholder = "ingrese su DNI" })
-
-                                </div>
-                                <div class="form-group">
-
-                                    <label for="password" class="text-info">Ingrese Su Contraseña:</label><br>
-                                    @*<input type="text" name="password" id="password" class="form-control">*@
-                                    @Html.PasswordFor(model => model.Password, htmlAttributes: new { @class = "form-control", @id = "password1", required = "required", @name = "clave1" })
-                                    <label for="password" class="text-info">Ingrese Nuevamente Su Contraseña:</label><br>
-                                    @*<input type="text" name="password" id="password" class="form-control">*@
-                                    @Html.PasswordFor(model => model.Password2, htmlAttributes: new { @class = "form-control", @id = "password2", required = "required", @name = "clave2" })
-                                </div>
-
-
-
-                                <div class="form-group">
-
-                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="Registrar">
-
-
-                                </div>
-
-                            </form>
-                        </div>
+                           
+                            <input type="submit" name="submit" class="btn btn-info btn-md" value="REGISTRAR">
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
 
 
-    }
 </body>
-
-
 </html>
