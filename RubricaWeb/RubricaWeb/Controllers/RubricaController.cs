@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using RubricaWeb.Models;
 using RubricaWeb.AccesoDatos;
 using RubricaWeb.ViewModels;
+using System.Data;
+using Rotativa;
 
 namespace RubricaWeb.Controllers
 {
@@ -23,7 +25,14 @@ namespace RubricaWeb.Controllers
             VM_Tema tema = AD_Rubrica.datosTemaACargar(idMateria, idNroTema);
             ViewBag.datosTema = tema;
 
+            string grafico = AD_Reportes.graficoReporte1(idMateria);
 
+
+            //DataTable graficoConTabla = AD_Reportes.graficoReporteConTabla(idMateria);
+
+            //ViewBag.GraficoConTabla = graficoConTabla;
+
+            ViewBag.Grafico = grafico;
             ViewBag.NombreMateria = nuevaMateria.materia;
             ViewBag.NombreCurso = nuevaMateria.curso;
             List<VM_ComboValorCriterios> valorCriterio = AD_ViewModel.ComboValorCriterios();
@@ -40,7 +49,6 @@ namespace RubricaWeb.Controllers
 
             ViewBag.comboCriterios = combo;
 
-
             return View(lista);
         }
 
@@ -54,11 +62,12 @@ namespace RubricaWeb.Controllers
                 double nota = AD_Rubrica.CalcularNota(valoracion, CantCriterios);
                 valoracion.Nota = nota;
                 AD_Rubrica.GuardarValoracionTema(valoracion);
+               
             }
 
-            int idMateria = modelo[1].IdMateria;
-            int idNroTema = modelo[1].IdNroTema;
-            int idTema = modelo[1].IdTema;
+            int idMateria = modelo[0].IdMateria;
+            int idNroTema = modelo[0].IdNroTema;
+            int idTema = modelo[0].IdTema;
 
             return RedirectToAction("Rubrica", "Rubrica", new { idMateria, idNroTema, idTema });
             //return View(idMateria,idNroTema,idTema);
@@ -68,6 +77,7 @@ namespace RubricaWeb.Controllers
 
         public ActionResult CargaTemas(int idCurso, int idDocente, int idMateria)
         {
+           
             VM_Materia nuevaMateria = AD_Materia.datosMateria(idMateria);
 
             List<VM_Estudiante> lista = AD_Estudiante.ListadoEstudiantesCursoXID(nuevaMateria.idCurso);
@@ -75,6 +85,9 @@ namespace RubricaWeb.Controllers
 
             ViewBag.NombreMateria = nuevaMateria.materia;
             ViewBag.NombreCurso = nuevaMateria.curso;
+            ViewBag.IdDocente = idDocente;
+
+
             List<VM_Tema> valorCriterio = AD_Rubrica.comboNumeroTema(idMateria);
             List<SelectListItem> combo = valorCriterio.ConvertAll(i =>
             {
@@ -113,11 +126,7 @@ namespace RubricaWeb.Controllers
 
                     AD_Rubrica.AgregarTemaPorEstudiante(estudiante.IdEstudiante, idTema,CantCriterios);
 
-
                 }
-                
-               
-
                 return RedirectToAction("ListadoTemasCargados", "Rubrica", new { model.IdMateria });
             }
             else
@@ -127,8 +136,68 @@ namespace RubricaWeb.Controllers
             }
         }
 
+        public ActionResult EditarCargaTemas(int IdTema, int idDocente)
+        {
+            VM_Tema Tema = AD_Rubrica.ObtenerTemaRubrica(IdTema);
+
+            VM_Materia materia = AD_Materia.datosMateria(Tema.IdMateria);
+
+            ViewBag.NombreMateria = materia.materia;
+            ViewBag.NombreCurso = materia.curso;
+            ViewBag.IdDocente = idDocente;
 
 
+            List<VM_Tema> valorCriterio = AD_Rubrica.comboNumeroTema(Tema.IdMateria);
+            List<SelectListItem> combo = valorCriterio.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.NumeroDeTema.ToString(),
+                    Value = i.IdTema.ToString(),
+
+                    Selected = false
+                };
+            });
+
+            ViewBag.comboCriterios = combo;
+
+            return View(Tema);
+        }
+
+        [HttpPost]
+        public ActionResult EditarCargaTemas(VM_Tema model)
+        {
+            bool resultado = AD_Rubrica.EditarTema(model);
+
+            if (resultado)
+            {
+
+                VM_Docente docente = AD_Docente.ObtenerDocenteXMateria(model.IdMateria);
+
+                int idTema = model.IdTema;
+                int CantCriteriosActualizado = AD_Rubrica.ContarCriteriosTemas(idTema);
+
+
+                List<VM_Estudiante> lista = AD_Estudiante.ListadoEstudiantesCursoXID(model.Idcurso);
+          
+                foreach (var estudiante in lista)
+                {
+                    
+                    AD_Rubrica.AgregarTemaPorEstudiante(estudiante.IdEstudiante, idTema, CantCriteriosActualizado);
+
+
+                }
+
+
+
+                return RedirectToAction("ListadoTemasCargados", "Rubrica", new { model.IdMateria });
+            }
+            else
+            {
+                return View(model);
+
+            }
+        }
         public ActionResult ListadoTemasCargados(int idMateria)
         {
             List<VM_ListadoRubrica> lista = AD_Rubrica.listaTemasMateria(idMateria);
@@ -155,16 +224,165 @@ namespace RubricaWeb.Controllers
 
 
 
-        public ActionResult LibretaMateria(int idMateria)
+        public ActionResult LibretaMateria(int idMateria, int pagina)
         {
             List<VM_LibretaNotasMateria> lista = AD_Rubrica.ListadoNotasPorMateria(idMateria);
+            VM_Materia materia = AD_Materia.datosMateria(idMateria);
+            ViewBag.Materia = materia;
+
+           
+            string tabla = AD_Reportes.graficoReporte1(idMateria);
+            ViewBag.Grafico = tabla;
+           
+
+            string graficoBarra= AD_Reportes.GraficoCantidadTemasAdeudadosEstudiante(idMateria);
+            ViewBag.GraficoBarra = graficoBarra;
+
+            //ViewBag.Numero2 = numero2;
+            int CantidadTemasCargados = AD_Rubrica.ContarTemasMateria(idMateria);
+            double promedio = 0;
+
+            foreach(var estudiante in lista)
+            {
+
+                promedio = AD_Rubrica.CalcularPromedio(estudiante, CantidadTemasCargados);
+                estudiante.Promedio = promedio;
+
+               
+            }
+
+            if (pagina == 2)
+            {
+                return RedirectToAction("LibretaMateriaP2", "Rubrica", new { idMateria });
+                
+            }
+            return View(lista);
+         
+        }
+
+
+        public ActionResult LibretaCualificaciones(int idMateria, int pagina)
+        {
+            List<VM_LibretaNotasMateria> lista = AD_Rubrica.ListadoNotasPorMateria(idMateria);
+            VM_Materia materia = AD_Materia.datosMateria(idMateria);
+            ViewBag.Materia = materia;
+            int CantidadTemasCargados = AD_Rubrica.ContarTemasMateria(idMateria);
+            double promedio = 0;
+
+            foreach (var estudiante in lista)
+            {
+
+                promedio = AD_Rubrica.CalcularPromedio(estudiante, CantidadTemasCargados);
+                estudiante.Promedio = promedio;
+
+
+            }
+
+
+            if (pagina == 2)
+            {
+                return RedirectToAction("LibretaCualificacionesP2", "Rubrica", new { idMateria });
+
+            }
+            return View(lista);
+
+          
+
+        }
+
+
+        public ActionResult LibretaCualificacionesP2(int idMateria)
+        {
+            List<VM_LibretaNotasMateria> lista = AD_Rubrica.ListadoNotasPorMateria(idMateria);
+            VM_Materia materia = AD_Materia.datosMateria(idMateria);
+            ViewBag.Materia = materia;
+            int CantidadTemasCargados = AD_Rubrica.ContarTemasMateria(idMateria);
+            double promedio = 0;
+
+            foreach (var estudiante in lista)
+            {
+
+                promedio = AD_Rubrica.CalcularPromedio(estudiante, CantidadTemasCargados);
+                estudiante.Promedio = promedio;
+
+
+            }
 
             return View(lista);
 
-
-
-            
         }
 
+        public ActionResult LibretaEstudiante()
+        {
+            return View();
+        }
+
+
+
+        public ActionResult LibretaMateriaP2(int idMateria)
+        {
+            List<VM_LibretaNotasMateria> lista = AD_Rubrica.ListadoNotasPorMateria(idMateria);
+            VM_Materia materia = AD_Materia.datosMateria(idMateria);
+            ViewBag.Materia = materia;
+            int CantidadTemasCargados = AD_Rubrica.ContarTemasMateria(idMateria);
+            double promedio = 0;
+
+            foreach (var estudiante in lista)
+            {
+
+                promedio = AD_Rubrica.CalcularPromedio(estudiante, CantidadTemasCargados);
+                estudiante.Promedio = promedio;
+
+
+            }
+
+
+
+            return View(lista);
+
+        }
+
+
+         public ActionResult Print(int idMAteria, int pagina)
+        {
+            
+
+            return new ActionAsPdf("VistaReportePDF", new {idMAteria,pagina }) {FileName="Libreta Notas.pdf"};
+
+        }
+
+
+        public ActionResult VistaReportePDF(int idMateria, int pagina)
+        {
+            List<VM_LibretaNotasMateria> lista = AD_Rubrica.ListadoNotasPorMateria(idMateria);
+            VM_Materia materia = AD_Materia.datosMateria(idMateria);
+            ViewBag.Materia = materia;
+
+
+            string tabla = AD_Reportes.graficoReporte1(idMateria);
+            ViewBag.Grafico = tabla;
+
+
+            //ViewBag.Numero2 = numero2;
+            int CantidadTemasCargados = AD_Rubrica.ContarTemasMateria(idMateria);
+            double promedio = 0;
+
+            foreach (var estudiante in lista)
+            {
+
+                promedio = AD_Rubrica.CalcularPromedio(estudiante, CantidadTemasCargados);
+                estudiante.Promedio = promedio;
+
+
+            }
+
+            if (pagina == 2)
+            {
+                return RedirectToAction("LibretaMateriaP2", "Rubrica", new { idMateria });
+
+            }
+            return View(lista);
+
+        }
     }
 }

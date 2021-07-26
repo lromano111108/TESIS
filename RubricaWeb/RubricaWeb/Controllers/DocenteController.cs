@@ -72,8 +72,14 @@ namespace RubricaWeb.Controllers
 
 
 
-        public ActionResult AsignarMateriasDocentes()
+        public ActionResult AsignarMateriasDocentes(int id, string parametro)
         {
+            ViewBag.id = id;
+            ViewBag.parametro = parametro;
+
+
+
+
             List<Docente> listaDocentes = AD_Docente.ComboDocentes();
             List<SelectListItem> itemsDocentes = listaDocentes.ConvertAll(i =>
             {
@@ -100,8 +106,6 @@ namespace RubricaWeb.Controllers
             });
             ViewBag.itemsMaterias = itemsMaterias;
 
-
-
             List<VM_Curso> listaCursos = AD_ViewModel.ListaDeCursos();
             List<SelectListItem> itemsCursos = listaCursos.ConvertAll(i =>
             {
@@ -115,7 +119,40 @@ namespace RubricaWeb.Controllers
             });
             ViewBag.itemsCursos = itemsCursos;
 
+
+
+            if (parametro.Equals("completo") && id == 0)
+            {
+                return View();
+
+            }
+
+            else
+            {
+                if (parametro.Equals("docente"))
+                {
+                    ViewBag.Titulo="Asignar Materia";
+                    VM_DocenteXMateria docente = new VM_DocenteXMateria();
+                    docente.idDocente = id;
+                    VM_Docente infoDocente = AD_Docente.ObtenerDocenteXId(id);
+                    ViewBag.NombreDocente = infoDocente.NombreDocente;
+                    return View(docente);
+                }
+                else if(parametro.Equals("materia"))
+                {
+                    ViewBag.Titulo = "Asignar Docente";
+
+                    VM_Materia materia = AD_Materia.infoMateria(id);
+                    ViewBag.Materia= materia.materia;//nombre materia
+                    ViewBag.Curso= materia.curso;//noombre Curso
+                    
+                    VM_DocenteXMateria docenteXMateria = new VM_DocenteXMateria();
+                    docenteXMateria.idMateria = id;
+                    return View(docenteXMateria);
+                }
+            }
             return View();
+
 
         }
 
@@ -128,20 +165,16 @@ namespace RubricaWeb.Controllers
             }
 
            else if (ModelState.IsValid)
-            {            
-
-
+            {          
                 bool resultado = AD_ViewModel.cargarDocentesXMateria(model);
 
                 if (resultado)
                 {
-
                     return RedirectToAction("ListadoDocentes", "Docente");
                 }
                 else
                 {
                     return View(model);
-
                 }
             }
             else
@@ -253,6 +286,52 @@ namespace RubricaWeb.Controllers
         }
 
 
+
+
+
+        public ActionResult PanelDocenteCopia(int idDocente)
+        {
+            VM_Docente resultado = AD_Docente.ObtenerDocenteXId(idDocente);
+            List<VM_Materia> lista = AD_Materia.ListaMateriasPorDocentes(idDocente);
+            ViewBag.listaMaterias = lista;
+            ViewBag.docente = resultado;
+            int idMateria = 0;
+            foreach (var item in lista)
+            {
+                idMateria = item.idMateria;
+            }
+
+            List<VM_Tema> listaCursos = AD_Rubrica.comboTemasCargados();
+            List<SelectListItem> itemsTemas = listaCursos.ConvertAll(i =>
+            {
+                return new SelectListItem()
+                {
+                    Text = i.NumeroDeTema,
+                    Value = i.IdTema.ToString(),
+
+                    Selected = false
+                };
+            });
+            ViewBag.itemsTemas = itemsTemas;
+
+            //List<VM_Tema> listaTemas = AD_ViewModel.ListaDeCursos();
+            //List<SelectListItem> itemsTemas = listaTemas.ConvertAll(i =>
+            //{
+            //    return new SelectListItem()
+            //    {
+            //        Text = i.NombreCurso,
+            //        Value = i.IdCurso.ToString(),
+
+            //        Selected = false
+            //    };
+            //});
+
+
+
+
+            return View(resultado);
+
+        }
         public ActionResult EditarDocente(int idDocente)
         {
             List<VM_Rol> listaDocentes = AD_ViewModel.ListaDeRoles();

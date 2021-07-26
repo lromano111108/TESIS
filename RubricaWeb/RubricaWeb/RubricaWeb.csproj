@@ -72,6 +72,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.7.3\lib\net461\Rotativa.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -164,6 +167,7 @@
     <Compile Include="AccesoDatos\AD_Estudiante.cs" />
     <Compile Include="AccesoDatos\AD_Login.cs" />
     <Compile Include="AccesoDatos\AD_Materia.cs" />
+    <Compile Include="AccesoDatos\AD_Reportes.cs" />
     <Compile Include="AccesoDatos\AD_Rubrica.cs" />
     <Compile Include="AccesoDatos\AD_ViewModel.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -174,6 +178,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MateriaController.cs" />
+    <Compile Include="Controllers\ReporteController.cs" />
     <Compile Include="Controllers\RubricaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -183,8 +188,12 @@
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Materia.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\VM_EstudiantesXMateria.cs" />
+    <Compile Include="ViewModels\VM_LibretaEstudiante.cs" />
     <Compile Include="ViewModels\VM_LibretaNotasMateria.cs" />
     <Compile Include="ViewModels\VM_ListadoRubrica.cs" />
+    <Compile Include="ViewModels\VM_Reporte.cs" />
+    <Compile Include="ViewModels\VM_ReporteEstudiante.cs" />
     <Compile Include="ViewModels\VM_Tema.cs" />
     <Compile Include="ViewModels\VM_ComboValorCriterios.cs" />
     <Compile Include="ViewModels\VM_Curso.cs" />
@@ -196,23 +205,68 @@
     <Compile Include="ViewModels\VM_Rubrica.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\accordion.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Chart.css" />
+    <Content Include="Content\Chart.min.css" />
+    <Content Include="Content\estiloLibretaEstudiante.css" />
+    <Content Include="Content\home.css" />
+    <Content Include="Content\home.js" />
+    <Content Include="Content\img\biblioteca baja resol.jpg" />
+    <Content Include="Content\img\biblioteca.jpg" />
+    <Content Include="Content\img\bibliotecaBajaRes.jpg" />
+    <Content Include="Content\img\black-1072366_1920.jpg" />
+    <Content Include="Content\img\blackboard-1846865_1920.jpg" />
+    <Content Include="Content\img\blackboard-3707295.jpg" />
+    <Content Include="Content\img\books-1845614.jpg" />
+    <Content Include="Content\img\books-462579_1920.jpg" />
+    <Content Include="Content\img\books-5937823_1920.jpg" />
+    <Content Include="Content\img\books-baja resolucion.jpg" />
+    <Content Include="Content\img\docentes.png" />
+    <Content Include="Content\img\estudiante.png" />
+    <Content Include="Content\img\icon\lista.ico" />
+    <Content Include="Content\img\icon\masMateria.ico" />
+    <Content Include="Content\img\icon\nuevoPersona.ico" />
+    <Content Include="Content\img\icon\relacionar.ico" />
+    <Content Include="Content\img\icon\relacionar2.ico" />
+    <Content Include="Content\img\libros.jpg" />
+    <Content Include="Content\img\logo_RW1.png" />
+    <Content Include="Content\img\materia1.png" />
+    <Content Include="Content\img\materia2.png" />
+    <Content Include="Content\img\nota1.png" />
+    <Content Include="Content\img\pastel-2571378.jpg" />
+    <Content Include="Content\img\pencils-762555_1920.jpg" />
+    <Content Include="Content\img\pizarron.jpg" />
+    <Content Include="Content\img\study-1894569.jpg" />
+    <Content Include="Content\img\whiteboard-2.jpg" />
+    <Content Include="Content\img\whiteboard-4083244.png" />
+    <Content Include="Content\impresionLista.css" />
+    <Content Include="Content\layoutDocente.css" />
+    <Content Include="Content\libreta-listado-rubrica.css" />
+    <Content Include="Content\login2.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\rubrica.css" />
+    <Content Include="Content\stylePregFrecuentes.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Rotativa\wkhtmltoimage.exe" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\bootstrap-dtpicker.min.css" />
     <Content Include="Scripts\bootstrap-dtpicker.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -232,6 +286,8 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="App_Browsers\qt.browser" />
+    <Content Include="Content\sources\TerminosYCondicionesRW.pdf" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
@@ -356,6 +412,22 @@
     <Content Include="Views\Rubrica\CargaTemas.cshtml" />
     <Content Include="Views\Rubrica\ListadoTemasCargados.cshtml" />
     <Content Include="Views\Rubrica\LibretaMateria.cshtml" />
+    <Content Include="Views\Shared\_Layout_Docente.cshtml" />
+    <Content Include="Views\Rubrica\LibretaCualificaciones.cshtml" />
+    <Content Include="Views\Rubrica\LibretaMateriaP2.cshtml" />
+    <Content Include="Views\Rubrica\LibretaCualificacionesP2.cshtml" />
+    <Content Include="Views\Docente\PanelDocenteCopia.cshtml" />
+    <Content Include="Views\Rubrica\VPCargaTemas.cshtml" />
+    <Content Include="Views\Home\Home.cshtml" />
+    <Content Include="Views\Rubrica\EditarCargaTemas.cshtml" />
+    <Content Include="Views\Rubrica\LibretaEstudiante.cshtml" />
+    <Content Include="Views\Home\PreguntasFrecuentes.cshtml" />
+    <Content Include="Views\Rubrica\VistaReportePDF.cshtml" />
+    <Content Include="Views\Reporte\LibretaEstudiante.cshtml" />
+    <Content Include="Views\Reporte\VistaImpresionLibreta.cshtml" />
+    <Content Include="Views\Estudiante\ImpresionListado.cshtml" />
+    <Content Include="Views\Estudiante\GraficosEstudiante.cshtml" />
+    <Content Include="Views\Materia\ModificarMateria.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

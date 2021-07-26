@@ -8,7 +8,7 @@
     ViewBag.Title = "PanelDocente";
     List<RubricaWeb.ViewModels.VM_Materia> itemsMaterias = (List<RubricaWeb.ViewModels.VM_Materia>)ViewBag.listaMaterias;
     List<SelectListItem> items = (List<SelectListItem>)ViewBag.itemsTemas;
-
+    Layout = "~/Views/Shared/_Layout_Docente.cshtml";
 
 }
 
@@ -18,112 +18,120 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(Model => Model.IdDocente)
 
-    @using (Html.BeginForm())
-    {
-        @Html.HiddenFor(Model => Model.IdDocente)
-        <main>
-            <div class="container py-4">
+    <div class="container  ">
 
-                <div class="p-5 mb-4 bg-light rounded-3">
-                    <div class="container-fluid py-5">
-                        <h1 class="display-5 fw-bold">Hola @Model.NombreDocente</h1>
-                        <p class="col-md-8 fs-4">
-                            <b> DNI: </b> @Model.DniDocente <br />
-                            <b>Dirección: </b> @Model.Direccion <br />
-                            <b>Telefono: </b> @Model.Telefono <br />
-                            <b>E-mail: </b> @Model.Email <br />
-                            <b>Rol Principal: </b> @Model.Rol <br />
-                        </p>
-                        @*<a href="@Url.Action("ListadoDocentes", "Docente", new { })" class="btn btn-outline-info">Volver</a>
-                            <a href="@Url.Action("EditarDocente", "Docente", new {@idDocente= Model.IdDocente })" class="btn btn-outline-info">Editar</a>*@
-                    </div>
+
+        <div class="container-fluid py-5 text-white align-items-center d-flex flex-column">
+            <div class="row">
+                <h1 class="h1 " style="font-size:50px">Hola @Model.NombreDocente</h1>
+            </div>
+            <div class="row">
+                <p class="" style="font-size:25px">
+                    <b> DNI: </b> @Model.DniDocente <br />
+                    <b>Dirección: </b> @Model.Direccion <br />
+                    <b>Telefono: </b> @Model.Telefono <br />
+                    <b>E-mail: </b> @Model.Email <br />
+                    <b>Rol Principal: </b> @Model.Rol <br />
+                </p>
+
+                <div class="col-12 text-center">
+                    <a class=" text-center text-light lead" href="@Url.Action("Logout", "Home")"><i class="fas fa-sign-out-alt fa-2x text-white mb-2"></i> <br />Salir</a>
                 </div>
-            </div>
-        </main>
-
-        <div class="row">
-            <div class="col-10 offset-1">
-                <h4 class="text-center"> Materias</h4>
-                <table class="table table-bordered table-striped">
-
-                    <thead>
-                        <tr>
-                            <th class="text-center">
-                                Materia
-                            </th>
-                            <th class="text-center">
-                                Curso
-                            </th>
-                            <th class="text-center">
-                                Accion
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            foreach (var item in itemsMaterias)
-                            {
-                                <tr class="text-center">
-                                    <td>
-                                        @Html.Label(item.materia)
-                                    </td>
-                                    <td>
-                                        @Html.Label(item.curso)
-                                    </td>
-
-                                    <td>
-                                        @Html.HiddenFor(IdMateria => item.idMateria, new { @Name = item.idMateria })
-                                        @Html.HiddenFor(idCurso => item.idCurso)
-                                        @*<a href="@Url.Action("Rubrica", "Rubrica", new {  @idDocente = Model.IdDocente,@idMateria = item.idMateria, @idCurso = item.idCurso})" class="btn btn-danger">Cargar Trabajo</a>
-                                        <a href="@Url.Action("BajaMateriaDocente", "Docente", new { @idDocente = Model.IdDocente, @idCurso = item.idCurso})" class="btn btn-info">Ver Notas</a>
-                                        <a href="@Url.Action("BajaMateriaDocente", "Docente", new { @idDocente = Model.IdDocente, @idMateria = item.idMateria})" class="btn btn-date">Dar de Baja</a>
-                                        <a href="@Url.Action("CargaTemas", "Rubrica", new {  @idDocente = Model.IdDocente,@idMateria = item.idMateria, @idCurso = item.idCurso})" class="btn btn-dark">CREAR Tema</a>*@
-
-                                        <div class="dropdown">
-                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                Rubrica
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="@Url.Action("CargaTemas", "Rubrica", new {  @idDocente = Model.IdDocente,@idMateria = item.idMateria, @idCurso = item.idCurso})">Crear Tema</a>
-                                                <a class="dropdown-item" href="@Url.Action("ListadoTemasCargados", "Rubrica", new {  @idMateria = item.idMateria, @idCurso = item.idCurso})">Lista</a>
-                                                <a class="dropdown-item" href="@Url.Action("LibretaMateria", "Rubrica", new {  @idMateria = item.idMateria})">Ver Notas</a>
-                                            </div>
-                                        </div>
-
-                                        @*<div class="col form-group">
-                                                <select id="materia" name="idMateria" class="form-control">
-                                                <option value="cargar_tema();"> seleccione un tema</option>
-                                                </select>
-                                            </div>*@
-                                        @*<div class="form-group">
-
-                                            <div class="col-sm-6">
-                                                @Html.DropDownList("idNroTema", items, "Elija un Tema", htmlAttributes: new { @class = "form-control"})
-                                                @Html.DropDownListFor(m => m.idNroTema, items, "", htmlAttributes: new { @class = "form-control", required = "required" ,@Name = "nroTema", @onchange = "cambioTema()" })
-                                                <a href="@Url.Action("Rubrica", "Rubrica", new { @idNroTema=Model.idNroTema ,  @idMateria = item.idMateria})" class="btn btn-light">VER RUBRICA</a>
-
-                                            </div>*@
-
-
-
-                                        <!--</div>-->
-
-                                    </td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
 
             </div>
+
         </div>
 
+    </div>
+
+
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-10 offset-1">
+
+                    <table class="table border-1 font-weight-bolder text-white" style="">
+
+                        <thead class="h3 table-bordered thead-dark ">
+                            <tr class="align-middle">
+                                <th class="text-center">
+                                    MATERIA
+                                </th>
+                                <th class="text-center">
+                                    CURSO
+                                </th>
+                                <th class="text-center">
+                                    ACCIONES
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var item in itemsMaterias)
+                                {
+                                    <tr class="text-center h4 align-middle" style=" background-color: (255, 255, 255, 0.25)">
+                                        <td class="align-middle">
+                                            @Html.Label(item.materia)
+                                        </td>
+                                        <td class="align-middle">
+                                            @Html.Label(item.curso)
+                                        </td>
+
+                                        <td class="align-middle">
+                                            @Html.HiddenFor(IdMateria => item.idMateria, new { @Name = item.idMateria })
+                                            @Html.HiddenFor(idCurso => item.idCurso)
+
+
+                                            <div class="row justify-content-center">
+                                                <div class="col-12 justify-content-center ">
+                                                    <div class="row d-flex pb-1 m-0 align-items-center">
+                                                        <div class="col-4  m-0 ">
+                                                            <a class="text-light small" href="@Url.Action("CargaTemas", "Rubrica", new {  @idDocente = Model.IdDocente,@idMateria = item.idMateria, @idCurso = item.idCurso})"><i class="fas fa-plus-circle fa-lg m-0 p-0"></i> <br />Nuevo Tema</a>
+                                                        </div>
+                                                        <div class="col-4 p-0 m-0   ">
+                                                            <a class="text-light small" href="@Url.Action("ListadoTemasCargados", "Rubrica", new {  @idMateria = item.idMateria, @idCurso = item.idCurso})"><i class="fas fa-clipboard-list fa-lg m-0 p-0"></i>  <br />Temas Cargados</a>
+                                                        </div>
+                                                        <div class="col-4 m-0">
+                                                            <a class="text-light small" href="@Url.Action("LibretaMateria", "Rubrica", new {  @idMateria = item.idMateria, @pagina=1})"><i class="fas fa-sort-numeric-up fa-lg"></i>  <br />Calificaciones</a>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+
+
+                                            @*<div class="dropdown">
+                                                    <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
+                                                        Ver Mas...
+                                                    </button>
+                                                    <div class="dropdown-menu  bg-light h6">
+                                                        <a class="dropdown-item font-weight-bold" href="@Url.Action("CargaTemas", "Rubrica", new {  @idDocente = Model.IdDocente,@idMateria = item.idMateria, @idCurso = item.idCurso})">Crear Tema</a>
+                                                        <a class="dropdown-item font-weight-bold" href="@Url.Action("ListadoTemasCargados", "Rubrica", new {  @idMateria = item.idMateria, @idCurso = item.idCurso})">Lista</a>
+                                                        <a class="dropdown-item font-weight-bold" href="@Url.Action("LibretaMateria", "Rubrica", new {  @idMateria = item.idMateria, @pagina=1})">Calificaciones</a>
+                                                        <a class="dropdown-item font-weight-bold" href="@Url.Action("LibretaCualificaciones", "Rubrica", new {  @idMateria = item.idMateria,@pagina=1})">Cualificaciones</a>
+
+                                                    </div>
+                                                </div>*@
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
-    }
 
+}
 
 
 

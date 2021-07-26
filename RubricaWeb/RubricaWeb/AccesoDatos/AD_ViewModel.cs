@@ -10,6 +10,56 @@ namespace RubricaWeb.AccesoDatos
 {
     public class AD_ViewModel
     {
+        public static VM_Curso ObtenerCursoXId(int idCurso)
+        {
+            VM_Curso resultado = new VM_Curso();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"SELECT idCurso, nombreCurso FROM CURSOS
+                                    WHERE idCurso=@idCurso
+                                    ; ";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@idCurso", idCurso);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader(); //ejecuta la sentencia sql
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado.IdCurso = int.Parse(dr["IdCurso"].ToString());
+                        resultado.NombreCurso = dr["NombreCurso"].ToString();
+                        
+
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            finally //si hay o no hay error haga un connexion.close -SIEMPRE CERRAMOS LA CONEXION!!!!
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
 
         public static List<VM_Curso> ListaDeCursos()
         {

@@ -49,18 +49,24 @@ namespace RubricaWeb.AccesoDatos
         }
 
 
-        public static List<VM_Materia> ListadoMaterias()
+        public static List<VM_Materia> ListadoMaterias(int idCurso)
         {
             List<VM_Materia> resultado = new List<VM_Materia>();
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
 
             SqlConnection cn = new SqlConnection(cadenaConexion);
 
+
+
+
             try
             {
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = @"SELECT m.materia , c.nombreCurso, D.apellidoDocente + ' , ' + D.nombreDocente AS 'DOCENTE', m.idMateria, m.idCurso, c.orden, m.horas, D.idDocente
+                if (idCurso == 0)
+                {
+
+                    string consulta = @"SELECT m.materia , c.nombreCurso, D.apellidoDocente + ' , ' + D.nombreDocente AS 'DOCENTE', m.idMateria, m.idCurso, c.orden, m.horas, D.idDocente
                                     FROM Materias M
                                     LEFT JOIN Cursos C ON c.idCurso=m.idCurso
 									left JOIN Docentes_por_Materias DM ON DM.idMateria=M.idMateria 
@@ -72,17 +78,50 @@ namespace RubricaWeb.AccesoDatos
                                     LEFT JOIN Cursos C ON c.idCurso=m.idCurso
 									left JOIN Docentes_por_Materias DM ON DM.idMateria=M.idMateria 
 									left JOIN  Docentes D ON D.idDocente=DM.idDocente
-                                    WHERE DM.activo='False'
+                                    WHERE M.activo='False'
+                                    ORDER BY C.orden ASC
                                     ";
-                cmd.Parameters.Clear();
+                    cmd.Parameters.Clear();
 
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = consulta;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = consulta;
 
-                cn.Open();
-                cmd.Connection = cn;
+                    cn.Open();
+                    cmd.Connection = cn;
+
+                }
+                else
+                {
+                    string consulta = @"SELECT m.materia , c.nombreCurso, D.apellidoDocente + ' , ' + D.nombreDocente AS 'DOCENTE', m.idMateria, m.idCurso, c.orden, m.horas, D.idDocente
+                                    FROM Materias M
+                                    LEFT JOIN Cursos C ON c.idCurso=m.idCurso
+									left JOIN Docentes_por_Materias DM ON DM.idMateria=M.idMateria 
+									left JOIN  Docentes D ON D.idDocente=DM.idDocente
+                                    WHERE m.activo='True'	
+									AND M.idCurso=@idCurso
+
+									EXCEPT 
+									SELECT m.materia , c.nombreCurso, D.apellidoDocente + ' , ' + D.nombreDocente AS 'DOCENTE', m.idMateria, m.idCurso, c.orden, m.horas , D.idDocente
+                                    FROM Materias M
+                                    LEFT JOIN Cursos C ON c.idCurso=m.idCurso
+									left JOIN Docentes_por_Materias DM ON DM.idMateria=M.idMateria 
+									left JOIN  Docentes D ON D.idDocente=DM.idDocente
+                                    WHERE DM.activo='False'
+									AND M.idCurso=@idCurso
+                                    ORDER BY C.orden ASC
+                                    ";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@idCurso", idCurso);
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = consulta;
+
+                    cn.Open();
+                    cmd.Connection = cn;
+                }
+
+
                 SqlDataReader dr = cmd.ExecuteReader();
-
                 if (dr != null)
                 {
                     while (dr.Read())
@@ -104,7 +143,7 @@ namespace RubricaWeb.AccesoDatos
                         {
                             itemsLista.idDocente = int.Parse(idDocente);
                         }
-                        
+
 
 
                         resultado.Add(itemsLista);
@@ -124,7 +163,55 @@ namespace RubricaWeb.AccesoDatos
 
             return resultado;
         }
+        public static int ultimoIdMateria()
+        {
+            int resultado = 0;
 
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"SELECT MAX(idMateria) as 'id'  FROM Materias ";
+                cmd.Parameters.Clear();
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader(); //ejecuta la sentencia sql
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado = int.Parse(dr["id"].ToString());
+
+
+                    }
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            finally //si hay o no hay error haga un connexion.close -SIEMPRE CERRAMOS LA CONEXION!!!!
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
 
         public static List<Materia> ComboMateria()
         {
@@ -294,6 +381,7 @@ namespace RubricaWeb.AccesoDatos
                                     JOIN Cursos C ON C.idCurso=M.idCurso
                                     WHERE DO.idDocente=@idDocente
                                     AND DM.Activo = 'true'
+                                    ORDER BY  C.nombreCurso ASC, M.materia ASC
                                     ";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@idDocente", idDocente);
@@ -368,9 +456,9 @@ namespace RubricaWeb.AccesoDatos
 
                         resultado.idDocente = int.Parse(dr["idDocente"].ToString());
                         resultado.idMateria = int.Parse(dr["idMateria"].ToString());
-                        
+
                     }
-                   
+
                 }
 
             }
@@ -384,7 +472,7 @@ namespace RubricaWeb.AccesoDatos
             {
                 cn.Close();
             }
-            if ((resultado.idDocente & resultado.idMateria) !=0)
+            if ((resultado.idDocente & resultado.idMateria) != 0)
             {
                 existe = true;
             }
@@ -394,7 +482,7 @@ namespace RubricaWeb.AccesoDatos
         public static VM_Materia datosMateria(int idMateria)
         {
             VM_Materia resultado = new VM_Materia();
-            
+
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
 
             SqlConnection cn = new SqlConnection(cadenaConexion);
@@ -403,13 +491,173 @@ namespace RubricaWeb.AccesoDatos
             {
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = @"SELECT M.idMateria, M.idCurso, M.Materia, c.nombreCurso
+                string consulta = @"SELECT M.idMateria, M.idCurso, M.Materia, c.nombreCurso, DM.idDocente
                                     FROM Materias M
                                     JOIN Cursos C ON c.idCurso=m.idCurso
-                                    WHERE idMateria = @idMateria
-                                    AND activo = 'true' ";
+									JOIN Docentes_por_Materias DM ON DM.idMateria=M.idMateria
+                                    WHERE M.idMateria = @idMateria
+                                    AND M.activo = 'true' ";
                 cmd.Parameters.Clear();
-              
+
+                cmd.Parameters.AddWithValue("@idMateria", idMateria);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader(); //ejecuta la sentencia sql
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado.idCurso = int.Parse(dr["idCurso"].ToString());
+                        resultado.idMateria = int.Parse(dr["idMateria"].ToString());
+                        resultado.materia = dr["Materia"].ToString();
+                        resultado.curso = dr["nombreCurso"].ToString();
+                        resultado.idDocente = int.Parse(dr["idDocente"].ToString());
+
+                    }
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            finally //si hay o no hay error haga un connexion.close -SIEMPRE CERRAMOS LA CONEXION!!!!
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+
+        public static bool EditarMateria(Materia materia)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"UPDATE [dbo].[Materias]
+                                   SET [materia] = @materia
+                                  ,[idCurso] = @IdCurso
+                                  ,[Activo] = 1
+                                  ,[horas] = @horas
+                                 WHERE idMateria = @IdMateria
+                                   ";
+                cmd.Parameters.Clear();//si tenia un parametro cargado, que lo limpie
+                cmd.Parameters.AddWithValue("@materia", materia.NombreMateria);
+                cmd.Parameters.AddWithValue("@IdCurso", materia.IdCurso);
+                cmd.Parameters.AddWithValue("@horas", materia.Horas);
+                cmd.Parameters.AddWithValue("@IdMateria", materia.IdMateria);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+
+        public static Materia MateriaXId(int idMateria)
+        {
+            Materia resultado = new Materia();
+
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"SELECT *
+                                    FROM Materias M
+                                    WHERE M.idMateria = @idMateria
+                                    AND M.activo = 'true' ";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@idMateria", idMateria);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader(); //ejecuta la sentencia sql
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        resultado.NombreMateria = dr["Materia"].ToString();
+                        resultado.Horas = int.Parse(dr["Horas"].ToString());
+                        resultado.IdCurso = int.Parse(dr["idCurso"].ToString());
+
+                    }
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            finally //si hay o no hay error haga un connexion.close -SIEMPRE CERRAMOS LA CONEXION!!!!
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+
+        public static VM_Materia infoMateria(int idMateria)
+        {
+            VM_Materia resultado = new VM_Materia();
+
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"SELECT *
+                                    FROM materias M
+                                    JOIN Cursos C ON C.idCurso=M.idCurso
+                                    WHERE M.idMateria= @idMateria
+                                    AND M.Activo='TRUE'";
+                cmd.Parameters.Clear();
+
                 cmd.Parameters.AddWithValue("@idMateria", idMateria);
 
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -445,11 +693,9 @@ namespace RubricaWeb.AccesoDatos
             {
                 cn.Close();
             }
-            
+
             return resultado;
         }
-
-
 
     }
 }

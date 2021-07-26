@@ -1,0 +1,315 @@
+﻿@model List<RubricaWeb.ViewModels.VM_LibretaNotasMateria>
+
+@{
+    ViewBag.Title = "VistaReportePDF";
+    Layout = null;
+    RubricaWeb.ViewModels.VM_Materia materia = (RubricaWeb.ViewModels.VM_Materia)ViewBag.Materia;
+
+
+    //List<RubricaWeb.ViewModels.VM_Estudiante> itemsCurso = (List<RubricaWeb.ViewModels.VM_Estudiante>)ViewBag.listaEstudiantes;
+    //string nombreMateria = ViewBag.NombreMateria;
+    //string nombreCurso = ViewBag.NombreCurso;
+    string Grafico = ViewBag.Grafico;
+
+    //List<SelectListItem> combo = (List<SelectListItem>)ViewBag.comboCriterios;
+
+    //RubricaWeb.ViewModels.VM_Tema tema = ViewBag.datosTema;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>rubrica</title>
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/impresionLista.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+</head>
+<body class="container-fluid">
+
+
+    <h1 class="text-center text-dark fw-bolder">@materia.materia</h1>
+    <h3 class="text-center text-dark fw-bolder">@materia.curso</h3>
+
+
+
+
+    @using (Html.BeginForm())
+    {
+        @*@Html.HiddenFor(Model => Model.IdDocente)idNroTema*@
+
+
+        @*<div class="col-1 p-0 border">
+                @Html.DropDownListFor(model => model[1].Numerotema, new SelectList(combo, "Value", "Text"), "Valor", htmlAttributes: new { @class = "form-control dropdown text-center", @Name = "valorCriterio" })
+
+
+                @Html.DropDownList("idCombo", combo, "combo", htmlAttributes: new { @class = "form-control", @onchange= "Refresh()" })
+
+
+            </div>*@
+
+
+        <div class="container-fluid">
+            <div class="table-responsive-sm">
+                <table class="">
+                    <tbody class="text-center small">
+                        <tr class="justify-content-center small bg-info">
+                            <th scope="row">N°</th>
+                            <th scope="col" class="col-3"> Nombre y Apellido</th>
+                            <th scope="col">TEMA 1</th>
+                            <th scope="col">TEMA 2</th>
+                            <th scope="col">TEMA 3</th>
+                            <th scope="col">TEMA 4</th>
+                            <th scope="col">TEMA 5</th>
+                            <th scope="col">TEMA 6</th>
+                            <th scope="col">TEMA 7</th>
+                            <th scope="col">TEMA 8</th>
+                            <th scope="col">TEMA 9</th>
+                            <th scope="col">TEMA 10</th>
+                            <th scope="col">TEMA 11</th>
+                            <th scope="col">TEMA 12</th>
+                            <th scope="col">CONDICION</th>
+                            <th scope="col">PROMEDIO</th>
+                        </tr>
+                        @{ int nros = 1;
+                            for (int i = 0; i < Model.Count; i++)
+                            {
+                                <tr class="">
+                                    <td scope="row">@(nros ++)</td>
+
+                                    <td class="align-content-center">@(Model[i].NombreEstudiante)</td>
+
+
+                                    @if (Model[i].Nota1 < 7)
+                                    {
+                                        if (Model[i].Nota1 > 0)
+                                        {
+                                            <td class=" col-1  col-xs-1 font-weight-bolder text-danger"> @(Model[i].Nota1.ToString())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="col-1 col-xs-1  "></td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="col-1   col-xs-1">  @(Model[i].Nota1.ToString())</td>
+                                    }
+
+                                    @if (Model[i].Nota2 < 7)
+                                    {
+                                        if (Model[i].Nota2 > 0)
+                                        {
+                                            <td class=" col-1  col-xs-1 font-weight-bolder text-danger"> @(Model[i].Nota2.ToString())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="col-1   col-xs-1  "></td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="col-1   col-xs-1">  @(Model[i].Nota2.ToString())</td>
+                                    }
+
+                                    @if (Model[i].Nota3 < 7)
+                                    {
+                                        if (Model[i].Nota3 > 0)
+                                        {
+                                            <td class=" col-1  col-xs-1  font-weight-bolder text-danger"> @(Model[i].Nota3.ToString())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="col-1   col-xs-1    "></td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="col-1   col-xs-1   "> @(Model[i].Nota3.ToString())</td>
+                                    }
+
+                                    @if (Model[i].Nota4 < 7)
+                                    {
+                                        if (Model[i].Nota4 > 0)
+                                        {
+                                            <td class=" col-1  col-xs-1 font-weight-bolder  text-danger"> @(Model[i].Nota4.ToString())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="col-1   col-xs-1   "></td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="col-1   col-xs-1   "> @(Model[i].Nota4.ToString())</td>
+                                    }
+
+
+                                    @if (Model[i].Nota5 < 7)
+                                    {
+                                        if (Model[i].Nota5 > 0)
+                                        {
+                                            <td class=" col-1  col-xs-1  font-weight-bolder text-danger"> @(Model[i].Nota5.ToString())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="col-1   col-xs-1  r "></td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="col-1   col-xs-1     "> @(Model[i].Nota5.ToString())</td>
+                                    }
+
+                                    @if (Model[i].Nota6 < 7)
+                                    {
+                                        if (Model[i].Nota6 > 0)
+                                        {
+                                            <td class=" col-1  col-xs-1 font-weight-bolder  text-danger"> @(Model[i].Nota6.ToString())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="col-1   col-xs-1   "></td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="col-1   col-xs-1    "> @(Model[i].Nota6.ToString())</td>
+                                    }
+
+                                    @if (Model[i].Nota7 < 7)
+                                    {
+                                        if (Model[i].Nota7 > 0)
+                                        {
+                                            <td class=" col-1  col-xs-1 font-weight-bolder text-danger"> @(Model[i].Nota7.ToString())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="col-1   col-xs-1    "></td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="col-1   col-xs-1    "> @(Model[i].Nota7.ToString())</td>
+                                    }
+
+
+                                    @if (Model[i].Nota8 < 7)
+                                    {
+                                        if (Model[i].Nota8 > 0)
+                                        {
+                                            <td class=" col-1  col-xs-1 font-weight-bolder  text-danger"> @(Model[i].Nota8.ToString())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="col-1   col-xs-1  "></td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="col-1   col-xs-1     "> @(Model[i].Nota8.ToString())</td>
+                                    }
+
+
+                                    @if (Model[i].Nota9 < 7)
+                                    {
+                                        if (Model[i].Nota9 > 0)
+                                        {
+                                            <td class=" col-1  col-xs-1 font-weight-bolder text-danger"> @(Model[i].Nota9.ToString())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="col-1   col-xs-1    "></td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="col-1   col-xs-1     "> @(Model[i].Nota9.ToString())</td>
+                                    }
+
+
+                                    @if (Model[i].Nota10 < 7)
+                                    {
+                                        if (Model[i].Nota10 > 0)
+                                        {
+                                            <td class=" col-1  col-xs-1 font-weight-bolder  text-danger"> @(Model[i].Nota10.ToString())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="col-1   col-xs-1   "></td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="col-1   col-xs-1     "> @(Model[i].Nota10.ToString())</td>
+                                    }
+
+                                    @if (Model[i].Nota11 < 7)
+                                    {
+                                        if (Model[i].Nota11 > 0)
+                                        {
+                                            <td class=" col-1  col-xs-1  font-weight-bolder text-danger"> @(Model[i].Nota11.ToString())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="col-1   col-xs-1   "></td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="col-1   col-xs-1    "> @(Model[i].Nota11.ToString())</td>
+                                    }
+
+
+                                    @if (Model[i].Nota12 < 7)
+                                    {
+                                        if (Model[i].Nota12 > 0)
+                                        {
+                                            <td class=" col-1  col-xs-1 font-weight-bolder text-danger"> @(Model[i].Nota12.ToString())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="col-1   col-xs-1    "></td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="col-1   col-xs-1     "> @(Model[i].Nota12.ToString())</td>
+                                    }
+
+
+                                    @if (Model[i].Condicion)
+                                    {
+                                        <td class="col-1  col-xs-1     font-weight-bold text-success "> REGULAR  </td>
+                                    }
+                                    else
+                                    {
+                                        <td class=" col-1 col-xs-1     text-danger font-weight-bold "> COLOQUIO</td>
+                                    }
+
+                                    @if (Model[i].Condicion)
+                                    {
+                                        <td class=" col-1 col-xs-1    font-weight-bold  "> @(Model[i].Promedio.ToString())  </td>
+                                    }
+                                    else
+                                    {
+                                        <td class=" col-1  col-xs-1   font-weight-bold "> </td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <p class="font-weight-bold float-right m-3"> Fecha de Impresión: @DateTime.Now.ToString()</p>   
+    }
+
+
+
+
+</body>
+</html>

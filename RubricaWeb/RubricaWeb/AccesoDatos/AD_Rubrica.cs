@@ -46,7 +46,7 @@ namespace RubricaWeb.AccesoDatos
                     cmd.Parameters.AddWithValue("@descripcionCriterio2", DBNull.Value); ;
 
                 }
-                else cmd.Parameters.AddWithValue("@descripcionCriterio2", nuevoTema.DescripcionCriterio2); ;
+                else cmd.Parameters.AddWithValue("@descripcionCriterio2", nuevoTema.DescripcionCriterio2);
 
                 if (nuevoTema.DescripcionCriterio3 is null)
                 {
@@ -160,6 +160,7 @@ namespace RubricaWeb.AccesoDatos
 
             try
             {
+
                 SqlCommand cmd = new SqlCommand();
 
                 string consulta = @"SELECT idNroTema, numeroTema 
@@ -385,7 +386,178 @@ namespace RubricaWeb.AccesoDatos
             return resultado;
         }
 
+        public static VM_Tema ObtenerTemaRubrica(int idTema)
+        {
+            VM_Tema resultado = new VM_Tema();
 
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"SELECT T.* , M.idCurso, NT.numeroTema
+                                    FROM temas T
+                                    JOIN Materias M ON M.idMateria=T.idMateria
+                                    JOIN Numeros_Temas NT on NT.idNroTema=t.idNroTema
+                                    WHERE idTema= @idTema ";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@idTema", idTema);
+
+
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader(); //ejecuta la sentencia sql
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        resultado.IdMateria = int.Parse(dr["idMateria"].ToString());
+                        resultado.IdNroTema = int.Parse(dr["idNroTema"].ToString());
+                        resultado.DescripcionTema = dr["descripcionTema"].ToString();
+                        resultado.IdTema = int.Parse(dr["idTema"].ToString());
+                        resultado.Aprendizaje = dr["aprendizaje"].ToString();
+                        resultado.Idcurso = int.Parse(dr["idCurso"].ToString());
+
+                        resultado.NumeroDeTema = dr["numeroTema"].ToString();
+
+
+
+                        resultado.Idcurso = int.Parse(dr["idCurso"].ToString());
+
+                        resultado.DescripcionCriterio1 = dr["descripcionCriterio1"].ToString();
+                        resultado.DescripcionCriterio2 = dr["descripcionCriterio2"].ToString();
+                        resultado.DescripcionCriterio3 = dr["descripcionCriterio3"].ToString();
+                        resultado.DescripcionCriterio4 = dr["descripcionCriterio4"].ToString();
+                        resultado.DescripcionCriterio5 = dr["descripcionCriterio5"].ToString();
+                        resultado.DescripcionCriterio6 = dr["descripcionCriterio6"].ToString();
+
+
+                    }
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            finally //si hay o no hay error haga un connexion.close -SIEMPRE CERRAMOS LA CONEXION!!!!
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+
+        public static bool EditarTema(VM_Tema nuevoTema)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"UPDATE [dbo].[Temas]
+                                       SET [descripcionTema] = @descripcionTema
+                                          ,[aprendizaje] = @aprendizaje
+                                          ,[descripcionCriterio1] = @descripcionCriterio1 
+                                          ,[descripcionCriterio2] = @descripcionCriterio2 
+                                          ,[descripcionCriterio3] = @descripcionCriterio3 
+                                          ,[descripcionCriterio4] = @descripcionCriterio4
+                                          ,[descripcionCriterio5] = @descripcionCriterio5
+                                          ,[descripcionCriterio6] = @descripcionCriterio6
+                                     WHERE idTema =@idTema ";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@idTema", nuevoTema.IdTema);
+                cmd.Parameters.AddWithValue("@idMateria", nuevoTema.IdMateria);
+                cmd.Parameters.AddWithValue("@idNroTema", nuevoTema.IdTema);
+                cmd.Parameters.AddWithValue("@descripcionTema", nuevoTema.DescripcionTema);
+                cmd.Parameters.AddWithValue("@aprendizaje", nuevoTema.Aprendizaje);
+
+                if (nuevoTema.DescripcionCriterio1 is null)
+                {
+                    cmd.Parameters.AddWithValue("@descripcionCriterio1", DBNull.Value);
+
+                }
+                else cmd.Parameters.AddWithValue("@descripcionCriterio1", nuevoTema.DescripcionCriterio1);
+
+                if (nuevoTema.DescripcionCriterio2 is null)
+                {
+                    cmd.Parameters.AddWithValue("@descripcionCriterio2", DBNull.Value); ;
+
+                }
+                else cmd.Parameters.AddWithValue("@descripcionCriterio2", nuevoTema.DescripcionCriterio2); ;
+
+                if (nuevoTema.DescripcionCriterio3 is null)
+                {
+                    cmd.Parameters.AddWithValue("@descripcionCriterio3", DBNull.Value);
+                }
+                else cmd.Parameters.AddWithValue("@descripcionCriterio3", nuevoTema.DescripcionCriterio3);
+
+                if (nuevoTema.DescripcionCriterio4 is null)
+                {
+                    cmd.Parameters.AddWithValue("@descripcionCriterio4", DBNull.Value);
+                }
+                else cmd.Parameters.AddWithValue("@descripcionCriterio4", nuevoTema.DescripcionCriterio4);
+
+                if (nuevoTema.DescripcionCriterio5 is null)
+                {
+                    cmd.Parameters.AddWithValue("@descripcionCriterio5", DBNull.Value);
+                }
+                else cmd.Parameters.AddWithValue("@descripcionCriterio5", nuevoTema.DescripcionCriterio5);
+
+                if (nuevoTema.DescripcionCriterio6 is null)
+                {
+                    cmd.Parameters.AddWithValue("@descripcionCriterio6", DBNull.Value);
+                }
+                else cmd.Parameters.AddWithValue("@descripcionCriterio6", nuevoTema.DescripcionCriterio6);
+
+
+
+
+
+                //cmd.Parameters.AddWithValue("@descripcionCriterio1", nuevoTema.DescripcionCriterio1);
+                //cmd.Parameters.AddWithValue("@descripcionCriterio2", nuevoTema.DescripcionCriterio2);
+                //cmd.Parameters.AddWithValue("@descripcionCriterio3", nuevoTema.DescripcionCriterio3);
+                //cmd.Parameters.AddWithValue("@descripcionCriterio4", nuevoTema.DescripcionCriterio4);
+                //cmd.Parameters.AddWithValue("@descripcionCriterio5", nuevoTema.DescripcionCriterio5);
+                //cmd.Parameters.AddWithValue("@descripcionCriterio6", DBNull.Value);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
         public static List<VM_ListadoRubrica> listaTemasMateria(int idMateria)
         {
             List<VM_ListadoRubrica> resultado = new List<VM_ListadoRubrica>();
@@ -459,6 +631,151 @@ namespace RubricaWeb.AccesoDatos
 
         public static bool AgregarTemaPorEstudiante(int idEstudiante, int idTema, int CantCriterios)
         {
+            bool hayCriterio = false;
+            bool resultado = false;
+            int criteriosTemaPrevio = 0;
+
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"SELECT cantCriteriosEvaluados FROM Valoracion_Criterios_Estudiantes 
+                                    WHERE idTema=@idTema AND idEstudiante=@idEstudiante ";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+                cmd.Parameters.AddWithValue("@idTema", idTema);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader(); //ejecuta la sentencia sql
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        criteriosTemaPrevio = int.Parse(dr["cantCriteriosEvaluados"].ToString());
+                            hayCriterio = true;
+
+                    }
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            finally //si hay o no hay error haga un connexion.close -SIEMPRE CERRAMOS LA CONEXION!!!!
+            {
+                cn.Close();
+            }
+
+
+            if (!hayCriterio || criteriosTemaPrevio == 0)
+            {
+
+                try
+                {
+                    SqlCommand cmd = new SqlCommand();
+
+                    string consulta = @"INSERT INTO Valoracion_Criterios_Estudiantes 
+                                    VALUES  (@idEstudiante,@idTema, @valoracionCriterio1, @valoracionCriterio2,
+                                             @valoracionCriterio3,@valoracionCriterio4, @valoracionCriterio5,
+                                             @valoracionCriterio6,@cantCriteriosEvaluados,@nota)";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+                    cmd.Parameters.AddWithValue("@idTema", idTema);
+                    cmd.Parameters.AddWithValue("@valoracionCriterio1", 0);
+                    cmd.Parameters.AddWithValue("@valoracionCriterio2", 0);
+                    cmd.Parameters.AddWithValue("@valoracionCriterio3", 0);
+                    cmd.Parameters.AddWithValue("@valoracionCriterio4", 0);
+                    cmd.Parameters.AddWithValue("@valoracionCriterio5", 0);
+                    cmd.Parameters.AddWithValue("@valoracionCriterio6", 0);
+                    cmd.Parameters.AddWithValue("@cantCriteriosEvaluados", CantCriterios);
+                    cmd.Parameters.AddWithValue("@nota", 0);
+
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = consulta;
+
+                    cn.Open();
+                    cmd.Connection = cn;
+                    cmd.ExecuteNonQuery();
+                    resultado = true;
+                }
+                catch (Exception exc)
+                {
+                    throw exc;
+                }
+                finally
+                {
+                    cn.Close();
+                }
+
+
+            }
+
+
+            else if (hayCriterio & CantCriterios != criteriosTemaPrevio)
+            {
+
+                try
+                {
+                    SqlCommand cmd = new SqlCommand();
+
+                    string consulta = @"UPDATE [dbo].[Valoracion_Criterios_Estudiantes]
+                                       SET [cantCriteriosEvaluados] = @cantCriteriosEvaluados
+                                     WHERE idEstudiante=@idEstudiante
+                                     AND idTema=@idTema ";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+                    cmd.Parameters.AddWithValue("@idTema", idTema);
+                    cmd.Parameters.AddWithValue("@cantCriteriosEvaluados", CantCriterios);
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = consulta;
+
+                    cn.Open();
+                    cmd.Connection = cn;
+                    cmd.ExecuteNonQuery();
+                    resultado = true;
+                }
+                catch (Exception exc)
+                {
+                    throw exc;
+                }
+                finally
+                {
+                    cn.Close();
+                }
+
+
+
+            }
+
+            //bool resultado = false;
+            //string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            //SqlConnection cn = new SqlConnection(cadenaConexion);
+
+
+
+            return resultado;
+        }
+
+
+        public static bool EditarTemaPorEstudiante(int idEstudiante, int idTema, int CantCriterios)
+        {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
 
@@ -468,21 +785,22 @@ namespace RubricaWeb.AccesoDatos
             {
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = @"INSERT INTO Valoracion_Criterios_Estudiantes 
-                                    VALUES  (@idEstudiante,@idTema, @valoracionCriterio1, @valoracionCriterio2,
-                                             @valoracionCriterio3,@valoracionCriterio4, @valoracionCriterio5,
-                                             @valoracionCriterio6,@cantCriteriosEvaluados,@nota)";
+                string consulta = @"UPDATE [dbo].[Valoracion_Criterios_Estudiantes]
+                                    SET [cantCriteriosEvaluados] = @cantCriteriosEvaluados     
+                                    WHERE where idEstudiante=@idEstudiante
+                                    AND idTema=@idTema
+                                    ";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@idEstudiante", idEstudiante);
                 cmd.Parameters.AddWithValue("@idTema", idTema);
-                cmd.Parameters.AddWithValue("@valoracionCriterio1", 0);
-                cmd.Parameters.AddWithValue("@valoracionCriterio2", 0);
-                cmd.Parameters.AddWithValue("@valoracionCriterio3", 0);
-                cmd.Parameters.AddWithValue("@valoracionCriterio4", 0);
-                cmd.Parameters.AddWithValue("@valoracionCriterio5", 0);
-                cmd.Parameters.AddWithValue("@valoracionCriterio6", 0);
+                //cmd.Parameters.AddWithValue("@valoracionCriterio1", 0);
+                //cmd.Parameters.AddWithValue("@valoracionCriterio2", 0);
+                //cmd.Parameters.AddWithValue("@valoracionCriterio3", 0);
+                //cmd.Parameters.AddWithValue("@valoracionCriterio4", 0);
+                //cmd.Parameters.AddWithValue("@valoracionCriterio5", 0);
+                //cmd.Parameters.AddWithValue("@valoracionCriterio6", 0);
                 cmd.Parameters.AddWithValue("@cantCriteriosEvaluados", CantCriterios);
-                cmd.Parameters.AddWithValue("@nota", 0);
+                //cmd.Parameters.AddWithValue("@nota", 0);
 
 
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -504,7 +822,6 @@ namespace RubricaWeb.AccesoDatos
 
             return resultado;
         }
-
         public static int ultimoIdTema()
         {
             int resultado = 0;
@@ -561,8 +878,36 @@ namespace RubricaWeb.AccesoDatos
             double resultado = 0;
             double total = 0;
 
-            total = modelo.ValorCriterio1 + modelo.ValorCriterio2 + modelo.ValorCriterio3 +
-                    modelo.ValorCriterio4 + modelo.ValorCriterio5 + modelo.ValorCriterio6;
+            switch (cantidadCriterios)
+            {
+                case 1:
+                    total = modelo.ValorCriterio1;
+                    break;
+                case 2:
+                    total = modelo.ValorCriterio1 + modelo.ValorCriterio2;
+                    break;
+                case 3:
+                    total = modelo.ValorCriterio1 + modelo.ValorCriterio2 + modelo.ValorCriterio3;
+                    break;
+                case 4:
+                    total = modelo.ValorCriterio1 + modelo.ValorCriterio2 + modelo.ValorCriterio3 +
+                            modelo.ValorCriterio4;
+                    break;
+                case 5:
+                    total = modelo.ValorCriterio1 + modelo.ValorCriterio2 + modelo.ValorCriterio3 +
+                             modelo.ValorCriterio4 + modelo.ValorCriterio5;
+                    break;
+                case 6:
+                    total = modelo.ValorCriterio1 + modelo.ValorCriterio2 + modelo.ValorCriterio3 +
+                            modelo.ValorCriterio4 + modelo.ValorCriterio5 + modelo.ValorCriterio6;
+                    break;
+
+                default: break;
+
+
+
+            }
+
 
             if (total != 0)
 
@@ -677,6 +1022,7 @@ namespace RubricaWeb.AccesoDatos
                 cmd.Parameters.AddWithValue("@valoracionCriterio5", valoracion.ValorCriterio5);
                 cmd.Parameters.AddWithValue("@valoracionCriterio6", valoracion.ValorCriterio6);
 
+
                 cmd.Parameters.AddWithValue("@nota", valoracion.Nota);
 
                 cmd.Parameters.AddWithValue("@idEstudiante", valoracion.IdEstudiante);
@@ -701,6 +1047,12 @@ namespace RubricaWeb.AccesoDatos
             {
                 cn.Close();
             }
+
+
+
+            bool condicion = CalcularCondicion(valoracion.IdMateria, valoracion.IdEstudiante);
+
+
 
             return resultado;
         }
@@ -824,48 +1176,17 @@ namespace RubricaWeb.AccesoDatos
 
             try
             {
-                SqlCommand cmd = new SqlCommand();
-
-                string consulta = @"SELECT E.apellidoEstudiante + ', ' + E.nombreEstudiante  AS 'NOMBRE ESTUDIANTE', VCE1.nota AS 'NOTA 1', 
-                                                                        (SELECT VCE2.nota FROM Valoracion_Criterios_Estudiantes VCE2
-	                                                                        JOIN TEMAS T2 ON VCE2.idTema=T2.idTema
-	                                                                        WHERE VCE2.idEstudiante=VCE1.idEstudiante										
-	                                                                        and T2.idNroTema=2
-	                                                                        and T2.idMateria=@idMateria) as 'NOTA 2',
-                                                                        (SELECT VCE3.nota FROM Valoracion_Criterios_Estudiantes VCE3
-	                                                                        JOIN TEMAS T3 ON VCE3.idTema=T3.idTema
-	                                                                        WHERE VCE3.idEstudiante=VCE1.idEstudiante										
-	                                                                        and T3.idNroTema=3
-	                                                                        and T3.idMateria=@idMateria) as 'NOTA 3',
-                                                                        (SELECT VCE4.nota FROM Valoracion_Criterios_Estudiantes VCE4
-	                                                                        JOIN TEMAS T4 ON VCE4.idTema=T4.idTema
-	                                                                        WHERE VCE4.idEstudiante=VCE1.idEstudiante										
-	                                                                        and T4.idNroTema=4
-	                                                                        and T4.idMateria=@idMateria) as 'NOTA 4',
-                                                                        (SELECT VCE5.nota FROM Valoracion_Criterios_Estudiantes VCE5
-	                                                                        JOIN TEMAS T5 ON VCE5.idTema=T5.idTema
-	                                                                        WHERE VCE5.idEstudiante=VCE1.idEstudiante										
-	                                                                        and T5.idNroTema=5
-	                                                                        and T5.idMateria=@idMateria) as 'NOTA 5',								
-                                                                        (SELECT VCE6.nota FROM Valoracion_Criterios_Estudiantes VCE6
-	                                                                        JOIN TEMAS T6 ON VCE6.idTema=T6.idTema
-	                                                                        WHERE VCE6.idEstudiante=VCE1.idEstudiante
-	                                                                        and T6.idNroTema=6
-	                                                                        and T6.idMateria=@idMateria) as 'NOTA 6' ,
-	                                t1.idMateria, T1.idTema
-                                    FROM Valoracion_Criterios_Estudiantes VCE1
-                                    JOIN ESTUDIANTES E ON E.idEstudiante=VCE1.idEstudiante
-                                    JOIN Temas T1 on t1.idTema=VCE1.idTema
-                                    WHERE T1.idNroTema	= 1
-                                    and t1.idMateria=@idMateria
-                                    ORDER BY T1.idNroTema ASC, 1 ASC ";
-                cmd.Parameters.Clear();
-
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = consulta;
-                cmd.Parameters.AddWithValue("@idMateria", idMateria);
                 cn.Open();
-                cmd.Connection = cn;
+                SqlCommand cmd = cn.CreateCommand();
+                cmd.CommandText = "sp_obtenerNotasLibreta";
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                //string consulta = @"EXEC sp_InsertarDocenteXMateria (@idMateria, @idDocente)";
+                cmd.Parameters.Clear();
+                cmd.Parameters.Add(new SqlParameter("@idMateria", idMateria));
+
+
+
+
                 SqlDataReader dr = cmd.ExecuteReader();
 
                 if (dr != null)
@@ -873,10 +1194,12 @@ namespace RubricaWeb.AccesoDatos
                     while (dr.Read())
                     {
                         VM_LibretaNotasMateria itemsLista = new VM_LibretaNotasMateria();
-                       
+
                         itemsLista.NombreEstudiante = dr["NOMBRE ESTUDIANTE"].ToString();
                         itemsLista.IdTema = int.Parse(dr["IdTema"].ToString());
                         itemsLista.IdMateria = int.Parse(dr["idMateria"].ToString());
+                        itemsLista.IdEstudiante = int.Parse(dr["IdEstudiante"].ToString());
+                        itemsLista.Condicion = bool.Parse(dr["CONDICION"].ToString());
 
                         itemsLista.Nota1 = double.Parse(dr["NOTA 1"].ToString());
                         itemsLista.Nota2 = double.Parse(dr["NOTA 2"].ToString());
@@ -884,6 +1207,12 @@ namespace RubricaWeb.AccesoDatos
                         itemsLista.Nota4 = double.Parse(dr["NOTA 4"].ToString());
                         itemsLista.Nota5 = double.Parse(dr["NOTA 5"].ToString());
                         itemsLista.Nota6 = double.Parse(dr["NOTA 6"].ToString());
+                        itemsLista.Nota7 = double.Parse(dr["NOTA 7"].ToString());
+                        itemsLista.Nota8 = double.Parse(dr["NOTA 8"].ToString());
+                        itemsLista.Nota9 = double.Parse(dr["NOTA 9"].ToString());
+                        itemsLista.Nota10 = double.Parse(dr["NOTA 10"].ToString());
+                        itemsLista.Nota11 = double.Parse(dr["NOTA 11"].ToString());
+                        itemsLista.Nota12 = double.Parse(dr["NOTA 12"].ToString());
 
 
 
@@ -905,7 +1234,344 @@ namespace RubricaWeb.AccesoDatos
             return resultado;
         }
 
+        public static List<VM_LibretaNotasMateria> NotasEstudiantePorMateria(int idMateria, int idEstudiante)
+        {
+            List<VM_LibretaNotasMateria> resultado = new List<VM_LibretaNotasMateria>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
 
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                cn.Open();
+                SqlCommand cmd = cn.CreateCommand();
+                cmd.CommandText = "sp_obtenerNotasLibreta";
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                //string consulta = @"EXEC sp_InsertarDocenteXMateria (@idMateria, @idDocente)";
+                cmd.Parameters.Clear();
+                cmd.Parameters.Add(new SqlParameter("@idMateria", idMateria));
+
+
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        VM_LibretaNotasMateria itemsLista = new VM_LibretaNotasMateria();
+
+
+
+                        itemsLista.Nota1 = double.Parse(dr["NOTA 1"].ToString());
+                        itemsLista.Nota2 = double.Parse(dr["NOTA 2"].ToString());
+                        itemsLista.Nota3 = double.Parse(dr["NOTA 3"].ToString());
+                        itemsLista.Nota4 = double.Parse(dr["NOTA 4"].ToString());
+                        itemsLista.Nota5 = double.Parse(dr["NOTA 5"].ToString());
+                        itemsLista.Nota6 = double.Parse(dr["NOTA 6"].ToString());
+                        itemsLista.Nota7 = double.Parse(dr["NOTA 7"].ToString());
+                        itemsLista.Nota8 = double.Parse(dr["NOTA 8"].ToString());
+                        itemsLista.Nota9 = double.Parse(dr["NOTA 9"].ToString());
+                        itemsLista.Nota10 = double.Parse(dr["NOTA 10"].ToString());
+                        itemsLista.Nota11 = double.Parse(dr["NOTA 11"].ToString());
+                        itemsLista.Nota12 = double.Parse(dr["NOTA 12"].ToString());
+
+
+
+                        resultado.Add(itemsLista);
+                    }
+                }
+
+            }
+            catch (Exception exc)
+            {
+
+                throw exc;
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+
+        public static int ContarTemasMateria(int idMateria)
+        {
+            int resultado = 0;
+
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"SELECT COUNT(*) AS 'Cantidad Temas'
+                                    FROM TEMAS
+                                    WHERE idMateria=@idMateria
+                                    ";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@idMateria", idMateria);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader(); //ejecuta la sentencia sql
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado = int.Parse(dr["Cantidad Temas"].ToString());
+
+
+                    }
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            finally //si hay o no hay error haga un connexion.close -SIEMPRE CERRAMOS LA CONEXION!!!!
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+
+
+
+        public static double CalcularPromedio(VM_LibretaNotasMateria estudiante, int cantidadTemas)
+        {
+            double resultado = 0;
+
+            if (cantidadTemas != 0)
+            {
+                double suma = estudiante.Nota1 + estudiante.Nota2 + estudiante.Nota3 +
+                               estudiante.Nota4 + estudiante.Nota5 + estudiante.Nota6 +
+                               estudiante.Nota7 + estudiante.Nota8 + estudiante.Nota9 +
+                               estudiante.Nota10 + estudiante.Nota11 + estudiante.Nota12;
+
+
+                resultado = Math.Ceiling((suma / cantidadTemas) * 2) / 2;
+
+
+            }
+
+
+            return resultado;
+        }
+
+
+        public static bool CalcularCondicion(int idMateria, int idEstudiante)
+        {
+
+            bool resultado = true;
+
+
+            List<double> notasEstudiante = AD_Rubrica.obtenerNotasEstudiante(idMateria, idEstudiante);
+
+            int cantidadTemas = ContarTemasMateria(idMateria);
+
+
+
+            double[] cantidad = new double[cantidadTemas - 1];
+
+            /*//cantidad[0] = estudiante.Nota1;
+            if (estudiante.Nota1.Equals(null))
+            {
+
+                return false;
+
+            }
+            else
+            {
+                cantidad[0] = estudiante.Nota1;
+            }
+
+            //cantidad[1] = estudiante.Nota2;
+
+            if (estudiante.Nota2.Equals(null))
+            {
+
+                return false;
+
+            }
+            else
+            {
+                cantidad[1] = estudiante.Nota2;
+            }
+
+
+
+            cantidad[2] = estudiante.Nota3;
+            cantidad[3] = estudiante.Nota4;
+            cantidad[4] = estudiante.Nota5;
+            cantidad[5] = estudiante.Nota6;
+            // cantidad[6] = estudiante.Nota7;
+            if (!(estudiante.Nota7.Equals(null)))
+            {
+
+                cantidad[6] = estudiante.Nota7;
+
+            }
+
+            //cantidad[7] = estudiante.Nota8;
+            if (!(estudiante.Nota8.Equals(null)))
+            {
+
+                cantidad[7] = estudiante.Nota8;
+
+            }
+
+            cantidad[8] = estudiante.Nota9;
+            cantidad[9] = estudiante.Nota10;
+            cantidad[10] = estudiante.Nota11;
+            cantidad[11] = estudiante.Nota12;*/
+
+
+            foreach (var item in notasEstudiante)
+            {
+                if (item < 7)
+                {
+                    resultado = false;
+                    break;
+                }
+            }
+
+
+            //for (int i = 0; i < cantidadTemas; i++)
+            //{
+            //    if (cantidad[i] < 7)
+            //    {
+                   
+            //        resultado = false;
+            //        break;
+            //    }
+
+            //}
+
+
+            //foreach (var nota in cantidad)
+            //{
+            //    if (nota < 7)
+            //    {
+            //        resultado = false;
+            //        break;
+            //    }
+            //}
+
+            ModificarCondicionEstudiante(idEstudiante, idMateria, resultado);
+
+            return resultado;
+        }
+
+
+        public static List<double> obtenerNotasEstudiante(int idMateria, int idEstudiante)
+        {
+            List<double> lista = new List<double>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"SELECT nota FROM Valoracion_Criterios_Estudiantes VCE
+                                    JOIN TEMAS T ON t.idTema=VCE.idTema
+                                    where idEstudiante=@idEstudiante
+                                    AND T.idMateria=@idMateria
+                                    ORDER BY T.idNroTema ASC";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@idMateria", idMateria);
+                cmd.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        double nota = double.Parse(dr["nota"].ToString());
+                        lista.Add(nota);
+                    }
+                }
+
+            }
+            catch (Exception exc)
+            {
+
+                throw exc;
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return lista;
+        }
+
+        public static bool ModificarCondicionEstudiante(int idEstudiante, int idMateria, bool condicion)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = @"UPDATE Estudiantes_por_Materia
+                                   SET condicion = @condicion
+                                   WHERE idEstudiante=@idEstudiante
+		                             AND   idMateria= @idMateria
+                                   ";
+                cmd.Parameters.Clear();//si tenia un parametro cargado, que lo limpie
+                cmd.Parameters.AddWithValue("@idEstudiante", idEstudiante);
+                cmd.Parameters.AddWithValue("@idMateria", idMateria);
+                cmd.Parameters.AddWithValue("@condicion", condicion);
+
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
 
     }
 }

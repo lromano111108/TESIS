@@ -1,0 +1,225 @@
+﻿@model List<RubricaWeb.ViewModels.VM_LibretaNotasMateria>
+
+@{
+    Layout = "~/Views/Shared/_Layout_Docente.cshtml";
+    RubricaWeb.ViewModels.VM_Materia materia = (RubricaWeb.ViewModels.VM_Materia)ViewBag.Materia;
+
+    //List<RubricaWeb.ViewModels.VM_Estudiante> itemsCurso = (List<RubricaWeb.ViewModels.VM_Estudiante>)ViewBag.listaEstudiantes;
+    //string nombreMateria = ViewBag.NombreMateria;
+    //string nombreCurso = ViewBag.NombreCurso;
+
+    //List<SelectListItem> combo = (List<SelectListItem>)ViewBag.comboCriterios;
+
+    //RubricaWeb.ViewModels.VM_Tema tema = ViewBag.datosTema;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>rubrica</title>
+    @*<link href="~/Content/rubrica.css" rel="stylesheet" id="bootstrap-css">*@
+    <link href="~/Content/libreta-listado-rubrica.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+</head>
+<body class="container-fluid">
+
+
+    <h1 class="text-center text-light fw-bolder">@materia.materia</h1>
+    <h3 class="text-center text-light fw-bolder">de @materia.curso</h3>
+
+
+
+    @using (Html.BeginForm())
+    {
+        @*@Html.HiddenFor(Model => Model.IdDocente)idNroTema*@
+
+
+        @*<div class="col-1 p-0 border">
+                @Html.DropDownListFor(model => model[1].Numerotema, new SelectList(combo, "Value", "Text"), "Valor", htmlAttributes: new { @class = "form-control dropdown text-center", @Name = "valorCriterio" })
+
+
+                @Html.DropDownList("idCombo", combo, "combo", htmlAttributes: new { @class = "form-control", @onchange= "Refresh()" })
+
+
+            </div>*@
+
+        <div class="container-fluid ex1">
+
+            <div class="row  text-center table-striped bg-info small pt-2 pb-2 border border-left border-right">
+                <div class="col-1  border-right font-weight-bold bg-info " style="width:30px">N°</div>
+                <div class="col-3  border-left border-right font-weight-bold " style="width:90px">Nombre y Apellido</div>
+                <div class="col-1  border-left border-right font-weight-bold " style="width:30px">TEMA 7:</div>
+                <div class="col-1  border-left border-right font-weight-bold " style="width:30px">TEMA 8:</div>
+                <div class="col-1  border-left border-right font-weight-bold " style="width:30px">TEMA 9:</div>
+                <div class="col-1  border-left border-right font-weight-bold " style="width:30px">TEMA 10:</div>
+                <div class="col-1  border-left border-right font-weight-bold " style="width:30px">TEMA 11:</div>
+                <div class="col-1  border-left border-right font-weight-bold " style="width:30px">TEMA 12:</div>
+                <div class="col-1  border-left border-right font-weight-bold  text-center p-0">CONDICION</div>
+                <div class="col-1  border-left  font-weight-bold ">PROMEDIO</div>
+
+
+            </div>
+
+
+
+            @{ int nro = 1;
+                for (int i = 0; i < Model.Count; i++)
+
+                {
+
+
+
+                    <div class="row  text-center p-0 bg-light ">
+
+                        @*@Html.HiddenFor(Model => Model[i].IdEstudiante, new { })*@
+                        @Html.HiddenFor(Model => Model[i].IdTema, new { })
+                        @Html.HiddenFor(Model => Model[i].IdMateria, new { })
+                        @*@Html.HiddenFor(Model => Model[1].IdNroTema, new { })*@
+
+                        <div class="col-1  p-0  border ">@(nro ++)</div>
+
+                        <div class="col-3 p-0  border   ">@Html.Label(Model[i].NombreEstudiante)</div>
+
+                        @if (Model[i].Nota7 < 7)
+                        {
+                            if (Model[i].Nota7 > 0)
+                            {
+                                <div class="col-1  p-0 border text-danger font-weight-bold text-white "> NO LOGRADO</div>
+                            }
+                            else
+                            {
+                                <div class="col-1  p-0 border bg-danger text-white bg-danger ">NO PRESENTADO</div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-1   p-0 border font-weight-bold bg-success ">LOGRADO</div>
+                        }
+
+
+                        @if (Model[i].Nota8 < 7)
+                        {
+                            if (Model[i].Nota8 > 0)
+                            {
+                                <div class="col-1  p-0 border text-danger font-weight-bold text-white "> NO LOGRADO</div>
+                            }
+                            else
+                            {
+                                <div class="col-1  p-0 border bg-danger text-white bg-danger ">NO PRESENTADO</div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-1   p-0 border font-weight-bold bg-success ">LOGRADO</div>
+                        }
+
+
+                        @if (Model[i].Nota9 < 7)
+                        {
+                            if (Model[i].Nota9 > 0)
+                            {
+                                <div class="col-1  p-0 border text-danger font-weight-bold text-white "> NO LOGRADO</div>
+                            }
+                            else
+                            {
+                                <div class="col-1  p-0 border bg-danger text-white bg-danger ">NO PRESENTADO</div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-1   p-0 border font-weight-bold bg-success ">LOGRADO</div>
+                        }
+
+                        @if (Model[i].Nota10 < 7)
+                        {
+                            if (Model[i].Nota10 > 0)
+                            {
+                                <div class="col-1  p-0 border text-danger font-weight-bold text-white "> NO LOGRADO</div>
+                            }
+                            else
+                            {
+                                <div class="col-1  p-0 border bg-danger text-white bg-danger ">NO PRESENTADO</div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-1   p-0 border font-weight-bold bg-success ">LOGRADO</div>
+                        }
+
+                        @if (Model[i].Nota11 < 7)
+                        {
+                            if (Model[i].Nota11 > 0)
+                            {
+                                <div class="col-1  p-0 border text-danger font-weight-bold text-white "> NO LOGRADO</div>
+                            }
+                            else
+                            {
+                                <div class="col-1  p-0 border bg-danger text-white bg-danger ">NO PRESENTADO</div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-1   p-0 border font-weight-bold bg-success ">LOGRADO</div>
+                        }
+
+                        @if (Model[i].Nota12 < 7)
+                        {
+                            if (Model[i].Nota12 > 0)
+                            {
+                                <div class="col-1  p-0 border text-danger font-weight-bold text-white "> NO LOGRADO</div>
+                            }
+                            else
+                            {
+                                <div class="col-1  p-0 border bg-danger text-white bg-danger ">NO PRESENTADO</div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-1   p-0 border font-weight-bold bg-success ">LOGRADO</div>
+                        }
+
+                        @if (Model[i].Condicion)
+                        {
+                            <div class="col-1   p-0 border font-weight-bold text-success bg-light "> REGULAR  </div>
+                        }
+                        else
+                        {
+                            <div class="col-1   p-0 border text-danger font-weight-bold bg-light"> COLOQUIO</div>
+                        }
+
+                        @if (Model[i].Condicion)
+                        {
+                            <div class="col-1  bg-light font-weight-bold p-0 border"> @Html.Label(Model[i].Promedio.ToString())  </div>
+                        }
+                        else
+                        {
+                            <div class="col-1  bg-light  p-0 font-weight-bold border"> </div>
+                        }
+
+
+                    </div>
+
+                }
+            }
+
+
+            <div class="row justify-content-end pr-3 h4">
+                <a class="alert-link text-primary" href="@Url.Action("LibretaCualificaciones", "Rubrica", new {  @idMateria = Model[0].IdMateria, @pagina=1})">1</a>
+                <div class="alert-link text-primary"> - </div>
+                <a class="alert-link text-primary" href="@Url.Action("LibretaCualificacionesP2", "Rubrica", new {  @idMateria = Model[0].IdMateria, @pagina=2})">2</a>
+            </div>
+            <div class="row">
+                <a class="btn-link" href="@Url.Action("LibretaMateria", "Rubrica", new {  @idMateria = Model[0].IdMateria, @pagina=1})">CALIFICACIONES</a>
+            </div>
+        </div>
+
+
+
+    }
+
+
+
+</body>
+</html>

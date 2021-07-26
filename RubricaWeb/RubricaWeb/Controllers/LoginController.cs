@@ -13,7 +13,7 @@ namespace RubricaWeb.Controllers
         // GET: Login
         public ActionResult Login()
         {
-            ViewBag.error = "";
+            ViewBag.Mensaje = "Ingresar DNI y Contraseña";
             return View();
         }
 
@@ -26,13 +26,14 @@ namespace RubricaWeb.Controllers
 
             if (controlar.IdDocente != 0 || controlar.IdRol != 0)
             {
+               
                 modelo.IdUsuario = controlar.IdDocente;
-                AD_Login.AgregarPassword(modelo);
+                //AD_Login.AgregarPassword(modelo);
 
-                return RedirectToAction("PanelDocente", "Docente", new { controlar.IdDocente, controlar.IdRol });
+                return RedirectToAction("Home", "Home", new { controlar.IdDocente, controlar.IdRol });
             }
 
-            ViewBag.error = "Usuario o Contraseña Incorrectos";
+            ViewBag.Mensaje = "Usuario o Contraseña Incorrectos";
             return View(modelo);
         }
 
@@ -45,34 +46,33 @@ namespace RubricaWeb.Controllers
 
         [HttpPost]
         public ActionResult Registrar(Login modelo)
-            {
-            if (modelo.Password == modelo.Password2)
-            {
+        {
+            Docente controlar = AD_Login.comprobarQueHayDocente(modelo);
 
-                Docente controlar = AD_Login.comprobarQueHayDocente(modelo);
-
-                if (controlar.IdDocente != 0 || controlar.IdRol != 0)
+            if (controlar.IdDocente != 0 & controlar.IdRol != 0)
+            {
+                if (modelo.Password == modelo.Password2)
                 {
                     modelo.IdUsuario = controlar.IdDocente;
                     AD_Login.AgregarPassword(modelo);
 
-                    return RedirectToAction("MostrarDatosDocentes", "Docente", new { controlar.IdDocente, controlar.IdRol });
+                    return RedirectToAction("Home", "Home", new { controlar.IdDocente, controlar.IdRol });
                 }
-
+                else
+                {
+                    ViewBag.mensaje = "Debe Ingresar 2 Contraseñas Iguales";
+                    return View(modelo);
+                }
             }
-
             else
             {
-                ViewBag.mensaje = "Debe Ingresar 2 Contraseñas Iguales";
+                ViewBag.mensaje = "El usuario es incorrecto";
                 return View(modelo);
-               
-
             }
-
-
-
-            return View();
         }
+
+
+
 
 
 

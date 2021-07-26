@@ -184,7 +184,7 @@ namespace RubricaWeb.AccesoDatos
 
                 cn.Open();
                 cmd.Connection = cn;
-                SqlDataReader dr = cmd.ExecuteReader(); 
+                SqlDataReader dr = cmd.ExecuteReader();
 
                 if (dr != null)
                 {
@@ -206,15 +206,13 @@ namespace RubricaWeb.AccesoDatos
                 throw;
             }
 
-            finally 
+            finally
             {
                 cn.Close();
             }
 
             return resultado;
         }
-
-
 
         public static List<VM_Materia> ListaMateriaPorEstudiante(int idEstudiante)
         {
@@ -227,7 +225,7 @@ namespace RubricaWeb.AccesoDatos
             {
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = @"SELECT M.materia, C.nombreCurso
+                string consulta = @"SELECT M.materia, C.nombreCurso, M.idMateria, C.idCurso
                                     FROM CURSOS C
                                     JOIN Estudiantes E ON E.idCurso= C.idCurso
                                     JOIN Materias M ON M.idCurso = C.idCurso
@@ -251,7 +249,9 @@ namespace RubricaWeb.AccesoDatos
                         VM_Materia itemsLista = new VM_Materia();
                         itemsLista.materia = dr["Materia"].ToString();
                         itemsLista.curso = dr["nombreCurso"].ToString();
-                       
+                        itemsLista.idMateria =int.Parse(dr["idMateria"].ToString());
+                        itemsLista.idCurso=int.Parse(dr["idcurso"].ToString());
+
 
 
 
@@ -308,7 +308,7 @@ namespace RubricaWeb.AccesoDatos
                         resultado.IdEstudiante = int.Parse(dr["IdEstudiante"].ToString());
                         resultado.NombreEstudiante = dr["NombreEstudiante"].ToString();
                         resultado.ApellidoEstudiante = dr["ApellidoEstudiante"].ToString();
-                        resultado.DniEstudiante = dr["DniEstudiante"].ToString();                        
+                        resultado.DniEstudiante = dr["DniEstudiante"].ToString();
                         resultado.IdCurso = int.Parse(dr["IdCurso"].ToString());
 
                     }
@@ -340,7 +340,7 @@ namespace RubricaWeb.AccesoDatos
 
             SqlConnection cn = new SqlConnection(cadenaConexion);
 
-            try 
+            try
             {
                 SqlCommand cmd = new SqlCommand();
 
@@ -356,7 +356,7 @@ namespace RubricaWeb.AccesoDatos
                 cmd.Parameters.AddWithValue("@DniEstudiante", nuevoEstudiante.DniEstudiante);
                 cmd.Parameters.AddWithValue("@NombreEstudiante", nuevoEstudiante.NombreEstudiante);
                 cmd.Parameters.AddWithValue("@IdCurso", nuevoEstudiante.IdCurso);
-                cmd.Parameters.AddWithValue("@ApellidoEstudiante", nuevoEstudiante.ApellidoEstudiante);                
+                cmd.Parameters.AddWithValue("@ApellidoEstudiante", nuevoEstudiante.ApellidoEstudiante);
                 cmd.Parameters.AddWithValue("@IdEstudiante", nuevoEstudiante.IdEstudiante);
 
 
@@ -439,6 +439,47 @@ namespace RubricaWeb.AccesoDatos
 
             return resultado;
         }
+
+
+        public static bool AgregarEstudianteXMateria(int idEstudiante, int idMateria)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                cn.Open();
+                SqlCommand cmd = cn.CreateCommand();
+                cmd.CommandText = "sp_InsertarEstudianteXMateria";
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                //string consulta = @"EXEC sp_InsertarDocenteXMateria (@idMateria, @idDocente)";
+                cmd.Parameters.Clear();
+                cmd.Parameters.Add(new SqlParameter("@idEstudiante", idEstudiante));
+                cmd.Parameters.Add(new SqlParameter("@idMateria", idMateria));
+
+
+
+
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+
+      
 
 
 

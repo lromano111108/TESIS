@@ -1,9 +1,10 @@
 ﻿@model RubricaWeb.ViewModels.VM_Tema
 @{
-    //Layout = null;
+    Layout = "~/Views/Shared/_Layout_Docente.cshtml";
     List<RubricaWeb.ViewModels.VM_Estudiante> itemsCurso = (List<RubricaWeb.ViewModels.VM_Estudiante>)ViewBag.listaEstudiantes;
     string nombreMateria = ViewBag.NombreMateria;
     string nombreCurso = ViewBag.NombreCurso;
+    int idDocente = ViewBag.IdDocente;
 
     List<SelectListItem> combo = (List<SelectListItem>)ViewBag.comboCriterios;
 }
@@ -19,43 +20,139 @@
 </head>
 <body class="container-fluid">
 
-    @using (Html.BeginForm())
-    {
-        @*@Html.HiddenFor(Model => Model.IdDocente)*@
 
-        <div class="container-fluid">
-            <header class="pb-3 mb-4 border-bottom">
-                <h3 class="text-center"> @Html.Label(nombreMateria)</h3>
-                <h5 class="text-center"> @Html.Label(nombreCurso)</h5>
-            </header>
+    @*@Html.HiddenFor(Model => Model.IdDocente)*@
 
-            <div class="container-fluid">
-                <div class="form-group">
-                    <div class="form-row">
-                        <div class="form-outline">
-                            <h1 class="display-5 fw-bold">Tema Nro: @Html.DropDownList("IdTema", combo, "Elija el numero de Tema", htmlAttributes: new { @class = "form-control dropdown", }) </h1>
-                            <h1 class="">Titulo Tema:  @Html.TextBoxFor(model => Model.DescripcionTema, htmlAttributes: new { @class = "form-control form-control-lg", @required = "required" }) </h1>
-                            <h2 class="display-5 fw-bold">Aprendizajes:  @Html.TextAreaFor(model => Model.Aprendizaje, htmlAttributes: new { @class = "form-control form-control-lg", @rows = "4", @placeholder = "Frase que resuma el aprendizaje a obtener segun los criterios", @required = "required" }) </h2>
-                            <h4 class=""> Criterio 1 @Html.TextBoxFor(model => Model.DescripcionCriterio1, htmlAttributes: new { @class = "form-control form-control-md" })</h4>
-                            <h4 class=""> Criterio 2 @Html.TextBoxFor(model => Model.DescripcionCriterio2, htmlAttributes: new { @class = "form-control form-control-md" })</h4>
-                            <h4 class="display-5 fw-bold"> Criterio 3  @Html.TextBoxFor(model => Model.DescripcionCriterio3, htmlAttributes: new { @class = "form-control form-control-md" })</h4>
-                            <h4 class="display-5 fw-bold"> Criterio 4  @Html.TextBoxFor(model => Model.DescripcionCriterio4, htmlAttributes: new { @class = "form-control form-control-md" })</h4>
-                            <h4 class="display-5 fw-bold"> Criterio 5 @Html.TextBoxFor(model => Model.DescripcionCriterio5, htmlAttributes: new { @class = "form-control form-control-md" })</h4>
-                            <h4 class="display-5 fw-bold"> Criterio 6 @Html.TextBoxFor(model => Model.DescripcionCriterio6, htmlAttributes: new { @class = "form-control form-control-md" })</h4>
+    <div class="container-fluid ">
+        <header class="pb-3 mb-4 border-bottom text-white font-weight-bolder">
+            <h1 class="text-center"> @Html.Label(nombreMateria)</h1>
+            <h3 class="text-center"> @Html.Label(nombreCurso)</h3>
+        </header>
 
-                            <button type="submit" class="btn btn-primary">Cargar</button>
+        <div class="container">
+            <div class="row justify-content-center p-0 m-0 align-items-center">
 
-
-
-                            @*<a href="@Url.Action("ListadoDocentes", "Docente", new { })" class="btn btn-outline-info">Volver</a>
-                                <a href="@Url.Action("EditarDocente", "Docente", new {@idDocente= Model.IdDocente })" class="btn btn-outline-info">Editar</a>*@
+                <p class="display-4"> @ViewBag.Mensaje</p>
+                <div class="col-9 text-center p-2 ">
+                    @using (Html.BeginForm())
+                    {
+                        @*<div class="form-group">*@
+                        <div class="input-group mt-1  text-center d-block mb-3 ">
+                            <h2>
+                                <span class="input-group-addon badge badge-pill badge-light mb-2">Tema Nro:</span>
+                            </h2>
+                            <div class="text-center">
+                                @Html.DropDownList("IdTema", combo, "Elija el numero de Tema", htmlAttributes: new { @class = " form-control dropdown d-inline", @required = "required", @style = "max-width:45%" })
+                            </div>
                         </div>
-                    </div>
+                        <div class="input-group mt-1 text-center d-block mb-3 ">
+                            <h3>
+                                <span class="input-group-addon badge badge-pill badge-light mb-1">Titulo Tema:  </span>
+                            </h3>
+                            <div class="text-center  ">
+                                @Html.TextBoxFor(model => Model.DescripcionTema, htmlAttributes: new { @class = "form-control d-inline ", @required = "required", @style = "max-width:70%" })
+                            </div>
+                        </div>
+                        <div class="input-group mt-1 text-center d-block mb-3">
+                            <h3>
+                                <span class="input-group-addon badge badge-pill badge-light mb-1">
+                                    Aprendizajes:
+                                </span>
+                            </h3>
+
+                            <div class="text-center  ">
+                                @Html.TextAreaFor(model => Model.Aprendizaje, htmlAttributes: new
+                                {
+                                    @class = "form-control d-inline",
+                                    @style = "max-width:70%",
+                                    @rows = "4",
+                               @placeholder = "En una frase breve, resumida, significativa, colocar el /los aprendizajes propuestos para esa actividad. " +
+                               "Debe coincidir con objetivos o criterios de evaluación",
+                                    @required = "required"
+                                })
+                            </div>
+
+                        </div>
+                        <div class="input-group mt-1 text-center d-block mb-3">
+                            <h3>
+                                <span class="input-group-addon badge badge-pill badge-light mb-1">
+                                    Criterio 1
+                                </span>
+                            </h3>
+
+                            <div class="text-center">  @Html.TextBoxFor(model => Model.DescripcionCriterio1, htmlAttributes: new { @class = "form-control d-inline ", @required = "required", @style = "max-width:70%" })</div>
+
+                        </div>
+                        <div class="input-group mt-1 text-center d-block mb-3">
+                            <h3>
+                                <span class="input-group-addon badge badge-pill badge-light mb-1">
+                                    Criterio 2
+                                </span>
+                            </h3>
+
+                            <div class="text-center"> @Html.TextBoxFor(model => Model.DescripcionCriterio2, htmlAttributes: new { @class = "form-control d-inline ", @style = "max-width:70%" })</div>
+
+                        </div>
+                        <div class="input-group mt-1 text-center d-block mb-3">
+                            <h3>
+                                <span class="input-group-addon badge badge-pill badge-light mb-1">
+                                    Criterio 3
+                                </span>
+                            </h3>
+
+                            <div class="text-center">
+                                @Html.TextBoxFor(model => Model.DescripcionCriterio3, htmlAttributes: new { @class = "form-control d-inline ", @style = "max-width:70%" })
+                            </div>
+
+
+                        </div>
+                        <div class="input-group mt-1 text-center d-block mb-3">
+                            <h3>
+                                <span class="input-group-addon badge badge-pill badge-light mb-1">
+                                    Criterio 4
+                                </span>
+                            </h3>
+
+                            <div class="text-center">  @Html.TextBoxFor(model => Model.DescripcionCriterio4, htmlAttributes: new { @class = "form-control d-inline ", @style = "max-width:70%" })</div>
+
+                        </div>
+                        <div class="input-group mt-1 text-center d-block mb-3">
+                            <h3>
+                                <span class="input-group-addon badge badge-pill badge-light mb-1">
+                                    Criterio 5
+                                </span>
+                            </h3>
+
+                            <div class="text-center"> @Html.TextBoxFor(model => Model.DescripcionCriterio5, htmlAttributes: new { @class = "form-control d-inline ", @style = "max-width:70%" })</div>
+
+                        </div>
+                        <div class="input-group mt-1 text-center d-block mb-3">
+                            <h3>
+                                <span class="input-group-addon badge badge-pill badge-light mb-1">
+                                    Criterio 6
+                                </span>
+                            </h3>
+
+                            <div class="text-center"> @Html.TextBoxFor(model => Model.DescripcionCriterio6, htmlAttributes: new { @class = "form-control d-inline ", @style = "max-width:70%" })</div>
+
+                        </div>
+
+                        <a class="btn btn-danger mr-5" href="@Url.Action("PanelDocente", "Docente", new { idDocente})"><i class="fas fa-angle-double-left fa-2x "></i></a>
+
+                        <button type="submit" class="btn btn-success ml-5 "><i class="fas fa-save fa-2x "></i></button>
+
+                        @*<a href="@Url.Action("ListadoDocentes", "Docente", new { })" class="btn btn-outline-info">Volver</a>
+                            <a href="@Url.Action("EditarDocente", "Docente", new {@idDocente= Model.IdDocente })" class="btn btn-outline-info">Editar</a>*@
+
+                        @*</div>*@
+                    }
                 </div>
             </div>
-
         </div>
-    }
+
+
+    </div>
+
 </body>
 </html>
 

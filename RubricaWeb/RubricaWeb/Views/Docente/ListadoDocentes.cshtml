@@ -3,7 +3,6 @@
     ViewBag.Title = "ListadoDocentes";
 }
 
-<h2>ListadoDocentes</h2>
 
 
 
@@ -11,54 +10,55 @@
 
 {
     //LISTADO PRIMER AÑO
-    <div class="row">
+    <div class="container">
         <div class="col-10 offset-1">
-            <h4 class="text-center"> Primer Año</h4>
-            <table class="table table-bordered table-striped">
+            <h2 class="text-center rounded" style="background-color:rgba(255, 255, 255, 0.82)">
+                LISTADO DE DOCENTES</h2>
+                <table class="table table-bordered table-striped">
 
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            Apellido y Nombre
-                        </th>
-                        <th class="text-center">
-                            Dni
-                        </th>
-                        <th class="text-center">
-                            Rol
-                        </th>
-                        <th class="text-center">
-                            Acciones
-                        </th>
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="text-center">
+                                Apellido y Nombre
+                            </th>
+                            <th class="text-center">
+                                Dni
+                            </th>
+                            <th class="text-center">
+                                Rol
+                            </th>
+                            <th class="text-center">
+                                Acciones
+                            </th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        foreach (var item in Model)
-                        {
-                            <tr class="text-center">
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NombreDocente)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DniDocente)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Rol)
-                                </td>
-                                <td>
-                                    <a href="@Url.Action("EliminarDocente", "Docente", new { @idDocente = item.IdDocente })" class="btn btn-danger">ELIMINAR</a>
-                                    <a href="@Url.Action("MostrarDatosDocentes", "Docente", new { @idDocente = item.IdDocente })" class="btn btn-info">DATOS</a>
+                        </tr>
+                    </thead>
+                    <tbody class="table-bordered">
+                        @{
+                            foreach (var item in Model)
+                            {
+                                <tr class="text-center bg-light border">
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NombreDocente)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DniDocente)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Rol)
+                                    </td>
+                                    <td class="d-flex">
+                                        <a href="@Url.Action("EliminarDocente", "Docente", new { @idDocente = item.IdDocente })" class="col-6 text-danger m-0 p-0"><i class="fas fa-ban "></i> <br />ELIMINAR</a>
+                                        <a href="@Url.Action("MostrarDatosDocentes", "Docente", new { @idDocente = item.IdDocente })" class="col-6 text-info m-0 p-0"><i class="fas fa-info" data-toggle="tooltip" data-placement="top" title="Ver Info"></i> <br />  DATOS</a>
 
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            }
                         }
-                    }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
-        </div>
+</div>
     </div>
     <br />
 }
